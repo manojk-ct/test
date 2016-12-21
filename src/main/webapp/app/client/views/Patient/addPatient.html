@@ -1,0 +1,873 @@
+<div class="page"> 
+    <form name="patientForm">
+        <section class="panel panel-default">
+            <div class="panel-heading"><h3> <strong>Add Patient </strong> </h3></div>
+            <div class="panel-body">
+                <div class="panel with-nav-tabs panel-primaryy">
+                    <div class="panel-headin">
+                        <ul class="nav nav-tabs nav-justified">
+                            <li ng-repeat="tab in tabs"  ng-class="{active:isActiveTab(tab.url)}">
+                                <a role="tab" data-toggle="tab" style="cursor:pointer" ng-click="onClickTab(tab)">{{tab.title}} 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="mainView">
+                    <div ng-include="currentTab">                        
+                    </div>
+                </div>      
+                <script type="text/ng-template" id="patientInformation.html"> 
+                    <div class="form-horizontal">
+                    <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">First Name*</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.firstName.$invalid && patientForm.firstName.$dirty }">
+                                        <input  tabindex="1" type="text" class="form-control" name="firstName"  placeholder="Enter firstname" required="" ng-readonly="readStatus" ng-model="patient.firstName">
+                                        <p class="help-block" ng-show="patientForm.firstName.$error.pattern" ng-class="{ 'error_msg' : patientForm.firstName.$error.pattern}">Firstname should be text only</p>  
+                                        <p class="help-block" ng-show="patientForm.firstName.$error.required && patientForm.firstName.$dirty" ng-class="{ 'error_msg' : patientForm.firstName.$error.required }">Firstname is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Middle Name</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.middleName.$invalid && patientForm.middleName.$dirty }">
+                                        <input tabindex="2" type="text" class="form-control" name="middleName" placeholder="Enter middlename"  ng-readonly="readStatus" ng-model="patient.middleName">
+                                        <p class="help-block" ng-show="patientForm.middleName.$error.pattern" ng-class="{ 'error_msg' : patientForm.middleName.$error.pattern}">Middlename should be text only</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Last Name*</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.lastName.$invalid && patientForm.lastName.$dirty }">
+                                        <input tabindex="3" type="text" class="form-control" name="lastName"  placeholder="Enter lastname" required="" ng-readonly="readStatus"  ng-model="patient.lastName">
+                                        <p class="help-block" ng-show="patientForm.lastName.$error.pattern" ng-class="{ 'error_msg' : patientForm.lastname.$error.pattern}">Lastname should be text only</p>  
+                                        <p class="help-block" ng-show="patientForm.lastName.$error.required && patientForm.lastName.$dirty" ng-class="{ 'error_msg' : patientForm.lastname.$error.required }">Lastname is required</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Gender*</label>
+                                    <div class="dropdown col-md-8" ng-class="{'has-error': patientForm.gender.$invalid && patientForm.gender.$dirty }">
+                                        <select tabindex="4" name="gender" class="form-control" ng-model="patient.gender">
+                                            <option value="">---select---</option> <!-- not selected / blank option -->
+                                            <option value="Male">Male</option> <!-- interpolation -->
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        <p class="help-block" ng-show="patientForm.gender.$error.required && patientForm.gender.$dirty" ng-class="{ 'error_msg' : patientForm.gender.$error.required }">Gender is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Date of Birth*</label><div class="col-sm-1"></div>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.dob.$invalid && patientForm.dob.$dirty }">
+                                        <div class="input-group ui-datepicker " >
+                                            <input tabindex="5" type="text" 
+                                                class="form-control"
+                                                datepicker-popup="{{format}}"
+                                                ng-model="patient.dob"
+                                                is-open="opened"
+                                                min="minDate"
+                                                max="'2015-06-22'"
+                                                datepicker-options="dateOptions" 
+                                                date-disabled="disabled(date, mode)"
+                                                ng-required="true" 
+                                                close-text="Close"
+                                                name="dob"
+                                                placeholder="mm/dd/yyyy">
+                                                <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                        </div>
+                                    </div>                             
+                                </div> 
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Marital Status</label>
+                                    <div class="dropdown col-md-8" ng-class="{'has-error': patientForm.maritalStatus.$invalid && patientForm.maritalStatus.$dirty }">
+                                        <select tabindex="6" name="maritalStatus" class="form-control" ng-model="patient.maritalStatus">
+                                            <option value="">---select---</option> <!-- not selected / blank option -->
+                                            <option value="Unmarried">Unmarried</option>  <!-- interpolation -->
+                                            <option value="Married">Married</option>
+                                            <option value="Separated">Separated</option> 
+                                            <option value="Divorsed">Divorsed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">                   
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">SSN* </label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.ssn.$invalid && patientForm.ssn.$dirty }">
+                                        <input tabindex="7" type="text" class="form-control" name="ssn"  placeholder="Enter social security number" required="" ng-pattern="/^\d{3}-?\d{2}-?\d{4}$/" ng-readonly="readStatus" ng-model="patient.ssn">
+                                        <p class="help-block" ng-show="patientForm.ssn.$error.pattern" ng-class="{ 'error_msg' : patientForm.ssn.$error.pattern}">Social security number should be number only (Format:xxx-xx-xxxx)</p>  
+                                        <p class="help-block" ng-show="patientForm.ssn.$error.required && patientForm.ssn.$dirty" ng-class="{ 'error_msg' : patientForm.ssn.$error.required }">Social security number is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Age</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.age.$invalid && patientForm.age.$dirty }">
+                                        <input tabindex="8" type="text" class="form-control" name="age"  placeholder="Enter age" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="patient.age">
+                                        <p class="help-block" ng-show="patientForm.age.$error.pattern" ng-class="{ 'error_msg' : patientForm.age.$error.pattern}">Age should be number only</p>  
+                                    </div>
+                                </div>
+                                <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-arrow-right"></span> &nbsp;Save & Next </button>
+                            </div>
+                        </div>
+                    </div>
+                </script>            
+                <script type="text/ng-template" id="contactDetails.html"> 
+                    <div class="form-horizontal">
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-6">                            
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Address Line1*</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.adderessLine1.$invalid && patientForm.adderessLine1.$dirty }">
+                                        <input  tabindex="9" type="text" class="form-control" name="adderessLine1"  placeholder="Enter address line1" required="" ng-readonly="readStatus" ng-model="patient.addressLine1">
+                                        <p class="help-block" ng-show="patientForm.adderessLine1.$error.required && patientForm.adderessLine1.$dirty" ng-class="{ 'error_msg' : patientForm.adderessLine1.$error.required }">Address line1 is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4  control-label">Address Line2</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.adderessLine2.$invalid && patientForm.adderessLine2.$dirty }">
+                                        <input tabindex="10" type="text" class="form-control" name="adderessLine2" placeholder="Enter address line2" ng-readonly="readStatus" ng-model="patient.addressLine2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">City*</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.city.$invalid && patientForm.city.$dirty }">
+                                        <input tabindex="11"  type="text" class="form-control" name="city" placeholder="Enter city" required="" ng-readonly="readStatus"  ng-model="patient.city">
+                                        <p class="help-block" ng-show="patientForm.city.$error.pattern" ng-class="{ 'error_msg' : patientForm.city.$error.pattern}">City should be text only</p>  
+                                        <p class="help-block" ng-show="patientForm.city.$error.required && patientForm.city.$dirty" ng-class="{ 'error_msg' : patientForm.city.$error.required }">City is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Zip Code</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.zipcode.$invalid && patientForm.zipcode.$dirty }">
+                                        <input tabindex="12" type="text" class="form-control" name="zipcode" placeholder="Enter zip code" ng-pattern="/^[0-9]*$/"  ng-readonly="readStatus" ng-model="patient.zipCode">
+                                        <p class="help-block" ng-show="patientForm.zipcode.$error.pattern" ng-class="{ 'error_msg' : patientForm.zipcode.$error.pattern}">Zip code should be number only</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Country</label>
+                                    <div class="dropdown col-md-8"  ng-class="{'has-error': patientForm.country.$invalid && patientForm.country.$dirty }">
+                                        <select tabindex="13" name="country" class="form-control" ng-modal="patient.countryId">
+                                            <option value="">---Please select---</option> 
+                                            <option value="">USA</option> <!-- interpolation -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">State*</label>
+                                    <div class="dropdown col-md-8" ng-class="{'has-error': patientForm.state.$invalid && patientForm.state.$dirty }">
+                                        <select tabindex="14" name="state" class="form-control" ng-modal="patient.stateId">
+                                            <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                            <option value="">Option 11</option> <!-- interpolation -->
+                                            <option value="">Option 12</option>
+                                        </select>
+                                        <p class="help-block" ng-show="patientForm.state.$error.required && patientForm.state.$dirty" ng-class="{ 'error_msg' : patientForm.state.$error.required }">State is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Phone No.1*</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.phone1.$invalid && patientForm.phone1.$dirty }">
+                                        <input tabindex="15" type="text" class="form-control" name="phone1" placeholder="Enter phone number1" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="patient.landLine1">
+                                        <p class="help-block" ng-show="patientForm.phone1.$error.pattern" ng-class="{ 'error_msg' : patientForm.phone1.$error.pattern}">Phone number1 should be number only</p>  
+                                        <p class="help-block" ng-show="patientForm.phone1.$error.required && patientForm.phone1.$dirty" ng-class="{ 'error_msg' : patientForm.phone1.$error.required }">Phone number1 is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Extension</label>
+                                    <div class="col-md-8"  ng-class="{'has-error': patientForm.contact_extension.$invalid && patientForm.contact_extension.$dirty }">
+                                        <input tabindex="16" type="text" class="form-control"  name="contact_extension"  placeholder="Enter phone extension" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="patient.landLineExtension">
+                                        <p class="help-block" ng-show="patientForm.contact_extension.$error.pattern" ng-class="{ 'error_msg' : patientForm.contact_extension.$error.pattern}">Extension should be number only</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Phone No.2</label>
+                                    <div class="col-md-8"  ng-class="{'has-error': patientForm.phone2.$invalid && patientForm.phone2.$dirty }">
+                                        <input tabindex="17" type="text" class="form-control"  name="phone2"  placeholder="Enter phone number2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="patient.landLine2">
+                                        <p class="help-block" ng-show="patientForm.phone2.$error.pattern" ng-class="{ 'error_msg' : patientForm.phone2.$error.pattern}">Phone number2 should be number only</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Email Id</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.email.$invalid && patientForm.email.$dirty }" >
+                                        <input tabindex="18" type="email" class="form-control" name="email"  placeholder="Enter email address" ng-readonly="readStatus" ng-model="patient.emailId">
+                                        <p class="help-block" ng-show="patientForm.email.$error.email" ng-class="{ 'error_msg' : patientForm.email.$error.email}">Invalid email address</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Fax No.</label>
+                                    <div class="col-md-8"  ng-class="{'has-error': patientForm.faxNo.$invalid && patientForm.faxNo.$dirty }">
+                                        <input tabindex="19" type="text" class="form-control" name="faxNo" placeholder="Enter fax number" ng-pattern="/^[0-9]*$/"  ng-readonly="readStatus" ng-model="patient.faxNumber">
+                                        <p class="help-block" ng-show="patientForm.faxNo.$error.pattern" ng-class="{ 'error_msg' : patientForm.faxNo.$error.pattern}">Fax number should be number only</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Trusted Email</label>
+                                    <div class="col-md-8"  ng-class="{'has-error': patientForm.trustedEmail.$invalid && patientForm.trustedEmail.$dirty }">
+                                        <input tabindex="20" type="email" class="form-control" name="trustedEmail" placeholder="Enter email address" ng-readonly="readStatus" ng-model="patient.trustedEmailId">
+                                        <p class="help-block" ng-show="patientForm.trustedEmail.$error.email" ng-class="{ 'error_msg' : patientForm.trustedEmail.$error.email}">Invalid email address</p>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4 control-label">Guardian Name</label>
+                                    <div class="col-md-8" ng-class="{'has-error': patientForm.guardianName.$invalid && patientForm.guardianName.$dirty }">
+                                        <input tabindex="21" type="text" class="form-control" name="guardianName" placeholder="Enter guardian name" ng-readonly="readStatus" ng-model="patient.guardianName">
+                                        <p class="help-block" ng-show="patientForm.guardianName.$error.pattern" ng-class="{ 'error_msg' : patientForm.guardianName.$error.pattern}">Guardian name should be text only</p>  
+                                    </div>
+                                </div>                            
+                            </div>                     
+                        </div>
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-arrow-right"></span> &nbsp; Save & Next </button>
+                    </div>
+                </script>            
+                <script type="text/ng-template" id="insuranceDetails.html"> 
+                    <div class="panel-body">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left" ng-click="insur()" ng-hide="readStatus" > <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Insurance Details </button>
+                        <br/>
+                        <div class="row">
+                            <br/>
+                            <table class="table table-bordered table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                          Insurance Type
+                                        </th>
+                                        <th>
+                                         Insurance No.
+                                        </th>
+                                        <th>
+                                            Coverage
+                                        </th>
+                                         <th>
+                                           Guarantor SSN
+                                        </th>
+                                        <th class="col-md-1">   
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="patient in currentPagePatient">
+                                        <td>{{patient.insuranceType }}</td>
+                                        <td>{{patient.insuranceNumber}}</td>
+                                        <td>{{patient.coverage}}</td>
+                                        <td>{{patient.guarantorSSN}}</td>
+                                        <td class="col-md-1"> 
+                                            <a  class="" ui-sref="editPatient({insurance:patient.insurance})" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                            &nbsp; <a  class="" ng-click="deletepatient($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                        </td>                      
+                                    </tr>
+                                </tbody>
+                            </table>         
+                        </div>
+                    </div>        
+                </script>            
+                <script  type="text/ng-template" id="insur_tabs.html" >               
+                    <div class="panel with-nav-tabs panel-primaryy ">
+                        <div class="panel-headin">
+                            <ul class="nav nav-tabs nav-justified">
+                                <li ng-repeat="tab in insurancetabs"  ng-class="{active:isActiveTab(tab.url)}">
+                                    <a role="tab" data-toggle="tab" style="cursor:pointer"
+                                       ng-click="onClickTabInsurance(tab)">{{tab.title}} 
+                                    </a>
+                                </li>
+                            </ul>
+                            <div>
+                                <div ng-include="currentInsuranceTab">
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                    <div ng-show="statusPrimaryDetails">
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-6">                                   
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Insurance</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.insurance.$invalid && formValidStatus ,'has-success' : patientForm.insurance.$valid }">
+                                                <input tabindex="22" type="text" class="form-control input-sm" name="insurance"  placeholder="Enter insurance"    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.insurance.$error.pattern" ng-class="{ 'error_msg' : patientForm.insurance.$error.pattern}"> Insurance should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Insurance Info </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.insurance_info.$invalid && formValidStatus ,'has-success' : patientForm.insurance_info.$valid }">
+                                                <input tabindex="23" type="text" class="form-control input-sm" name="insurance_info"  placeholder="Enter insurance info"    ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Insurance Type</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.insurance_type.$invalid && formValidStatus ,'has-success' : patientForm.insurance_type.$valid }">
+                                                <select tabindex="24" class="form-control input-sm"  name="insurance_type"  ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Eligibility Status </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.eligibility_status.$invalid && formValidStatus ,'has-success' : patientForm.eligibility_status.$valid }">
+                                                <input tabindex="25" type="text" class="form-control input-sm" name="eligibility_status"  placeholder="Enter eligibility status"     ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6"> 
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Status Message</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.status_message.$invalid && formValidStatus ,'has-success' : patientForm.status_message.$valid }">
+                                                <input tabindex="26" type="text" class="form-control input-sm" name="status_message"  placeholder="Enter status message"    ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label  class="col-md-4 control-label">Checked On</label>
+                                            <div class="col-md-8" ng-class="{'has-error': patientForm.checked_on.$invalid && formValidStatus ,'has-success' : patientForm.checked_on.$valid }">
+                                                <div class="input-group ui-datepicker " >
+                                                    <input  type="text" 
+                                                        class="form-control"
+                                                        datepicker-popup="{{format}}"
+                                                        ng-model="tenant.service_start_date"
+                                                        is-open="opened"
+                                                        min="minDate"
+                                                        max="'2015-06-22'"
+                                                        datepicker-options="dateOptions" 
+                                                        date-disabled="disabled(date, mode)"
+                                                        ng-required="true" placeholder="mm/dd/yyyy"  name="checked_on"
+                                                        close-text="Close"  >
+                                                        <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                                </div
+                                                <input tabindex="55" type="date" class="form-control" name="checked_on" data-date-format="mm/dd/yyyy"/>
+                                            </div>                             
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Coverage</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.coverage.$invalid && formValidStatus ,'has-success' : patientForm.coverage.$valid }">
+                                                <select tabindex="28" class="form-control input-sm"  name="coverage"  ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option> 
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Usage </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.usage.$invalid && formValidStatus ,'has-success' : patientForm.usage.$valid }">
+                                                <input tabindex="29" type="text" class="form-control input-sm" name="usage"  placeholder="Enter usage"  ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Prior Auth Reg</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.prior_authorisation_reg.$invalid && inpatientFormsuranceForm.prior_authorisation_reg.$dirty }">
+                                                <select tabindex="30" class="form-control input-sm"  name="prior_authorisation_reg"  ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option><!-- not selected / blank option -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">In Network</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.in_network.$invalid && formValidStatus ,'has-success' : patientForm.in_network.$valid }">
+                                                <select tabindex="31" class="form-control input-sm"  name="in_network" ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option><!-- not selected / blank option -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Out of Network</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.out_of_network.$invalid && formValidStatus ,'has-success' : patientForm.out_of_network.$valid }">
+                                                <select tabindex="32" class="form-control input-sm"  name="out_of_network"  ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option><!-- not selected / blank option -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Referral Necessary </label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.referral_necessary.$invalid && formValidStatus ,'has-success' : patientForm.referral_necessary.$valid }">
+                                                <select tabindex="33" class="form-control input-sm"  name="referral_necessary"   ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option><!-- not selected / blank option -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">    
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-arrow-right"></span> &nbsp; Save & Next </button>
+                        </div>
+                    </div>  
+                    <div ng-show="statusGuarantor">
+                        <div class="modal-body">
+                            <div class="form-horizontal"> 
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-6">                                    
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Self Guarantor</label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.self_guarantor.$invalid && formValidStatus ,'has-success' : patientForm.self_guarantor.$valid }">
+                                                <select tabindex="34" class="form-control input-sm"  name="self_guarantor"   ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option><!-- not selected / blank option -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">SSN</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_ssn.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_ssn.$valid }">
+                                                <input tabindex="35" type="text" class="form-control input-sm" name="guarantor_ssn"  placeholder="Enter guarantor SSN"    ng-pattern="/^[0-9{9}]$/" ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> First Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_firstname.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_firstname.$valid }">
+                                                <input tabindex="36" type="text" class="form-control input-sm" name="guarantor_firstname"  placeholder="Enter guarantor firstname"    ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Middle Name </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_middlename.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_middlename.$valid }">
+                                                <input tabindex="37" type="text" class="form-control input-sm" name="guarantor_middlename"  placeholder="Enter guarantor middlename"    ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_lastname.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_lastname.$valid }">
+                                                <input tabindex="38" type="text" class="form-control input-sm" name="guarantor_lastname"  placeholder="Enter guarantor lastname"    ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label  class="col-md-4 control-label">Date of Birth</label>
+                                            <div class="col-md-8" ng-class="{'has-error': patientForm.guarantor_dob.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_dob.$valid }">
+                                                <div class="input-group ui-datepicker " >
+                                                    <input  type="text" tabindex="39"
+                                                        class="form-control"
+                                                        datepicker-popup="{{format}}"
+                                                        ng-model="tenant.service_start_date"
+                                                        is-open="opened"
+                                                        min="minDate"
+                                                        max="'2015-06-22'"
+                                                        datepicker-options="dateOptions" 
+                                                        date-disabled="disabled(date, mode)"
+                                                        ng-required="true"   
+                                                        name="guarantor_dob"
+                                                        close-text="Close"  >
+                                                        <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                                </div>                                                
+                                            </div>                             
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Gender </label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_gender.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_gender.$valid }">
+                                                <select tabindex="40" class="form-control input-sm"  name="guarantor_gender"  ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Relationship </label>
+                                            <div class="dropdown col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_relationship.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_relationship.$valid }">
+                                                <select tabindex="41" class="form-control input-sm"  name="guarantor_relationship" ng-readonly="readStatus" >
+                                                    <option value="">---Please select---</option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Phone No.</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_phone.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_phone.$valid }">
+                                                <input tabindex="42" type="text" class="form-control input-sm" name="guarantor_phone"  placeholder="Enter guarantor phone number"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Extension </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.guarantor_extension.$invalid && formValidStatus ,'has-success' : patientForm.guarantor_extension.$valid }">
+                                                <input tabindex="43" type="text" class="form-control input-sm" name="guarantor_extension"  placeholder="Enter guarantor phone extension"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">    
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-arrow-right"></span> &nbsp; Save & Next </button>
+                        </div>
+                    </div>   
+                    <div ng-show="statusPolicyDetails">
+                        <div class="modal-body">    
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-8 col-lg-6">                                   
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Policy No.</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.policy_number.$invalid && formValidStatus ,'has-success' : patientForm.policy_number.$valid }">
+                                                <input tabindex="44" type="text" class="form-control input-sm" name="policy_number"  placeholder="Enter policy number"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.policy_number.$error.pattern" ng-class="{ 'error_msg' : patientForm.policy_number.$error.pattern}">Policy number should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Group Id </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.group_id.$invalid && formValidStatus ,'has-success' : patientForm.group_id.$valid }">
+                                                <input type="text" tabindex="45" class="form-control input-sm" name="group_id"  placeholder="Enter group id"    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.group_id.$error.pattern" ng-class="{ 'error_msg' : patientForm.group_id.$error.pattern}"> Group id should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Contract</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.contract.$invalid && formValidStatus ,'has-success' : patientForm.contract.$valid }">
+                                                <input tabindex="46" type="text" class="form-control input-sm" name="contract"  placeholder="Enter contract "    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.contract.$error.pattern" ng-class="{ 'error_msg' : patientForm.contract.$error.pattern}">Contract should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Billing Code </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.billing_code.$invalid && formValidStatus ,'has-success' : patientForm.billing_code.$valid }">
+                                                <input tabindex="47" type="text" class="form-control input-sm" name="billing_code"  placeholder="Enter billing code "    ng-pattern="/^[A-Za-z0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.billing_code.$error.pattern" ng-class="{ 'error_msg' : patientForm.billing_code.$error.pattern}"> Billing code should be text and number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Network </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.network.$invalid && formValidStatus ,'has-success' : patientForm.network.$valid }">
+                                                <input tabindex="48" type="text" class="form-control input-sm" name="network"  placeholder="Enter network "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.network.$error.pattern" ng-class="{ 'error_msg' : patientForm.network.$error.pattern}">Network should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Insurance Type Code </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.insurance_type_code.$invalid && formValidStatus ,'has-success' : patientForm.insurance_type_code.$valid }">
+                                                <input tabindex="49" type="text" class="form-control input-sm" name="insurance_type_code"  placeholder="Enter insurance type code "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.insurance_type_code.$error.pattern" ng-class="{ 'error_msg' : patientForm.insurance_type_code.$error.pattern}"> Insurance type code should be text and number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Employee Name </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.employee_name.$invalid && formValidStatus ,'has-success' : patientForm.employee_name.$valid }">
+                                                <input tabindex="50" type="text" class="form-control input-sm" name="employee_name"  placeholder="Enter employee name "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.employee_name.$error.pattern" ng-class="{ 'error_msg' : patientForm.employee_name.$error.pattern}">Employee name should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> School Name </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.school_name.$invalid && formValidStatus ,'has-success' : patientForm.school_name.$valid }">
+                                                <input tabindex="51" type="text" class="form-control input-sm" name="school_name"  placeholder="Enter school name "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.school_name.$error.pattern" ng-class="{ 'error_msg' : patientForm.school_name.$error.pattern}"> School name should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Office CoPay% </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.office_copay.$invalid && formValidStatus ,'has-success' : patientForm.office_copay.$valid }">
+                                                <input tabindex="52" type="text" class="form-control input-sm" name="office_copay"  placeholder="Enter office copay %"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.office_copay.$error.pattern" ng-class="{ 'error_msg' : patientForm.office_copay.$error.pattern}">Office copay should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Deducible Remaining</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.deducible_remaining.$invalid && formValidStatus ,'has-success' : patientForm.deducible_remaining.$valid }">
+                                                <input tabindex="53" type="text" class="form-control input-sm" name="deducible_remaining"  placeholder="Enter deducible remaining "    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.deducible_remaining.$error.pattern" ng-class="{ 'error_msg' : patientForm.deducible_remaining.$error.pattern}"> Deducible remaining should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label  class="col-md-4 control-label">Effective Start Date</label>
+                                            <div class="col-md-8" ng-class="{'has-error': patientForm.effective_start_date.$invalid && formValidStatus ,'has-success' : patientForm.effective_start_date.$valid }">
+                                                <div class="input-group ui-datepicker " >
+                                                    <input  type="text" 
+                                                        class="form-control"
+                                                        datepicker-popup="{{format}}"
+                                                        ng-model="tenant.service_start_date"
+                                                        is-open="opened"
+                                                        min="minDate"
+                                                        max="'2015-06-22'"
+                                                        datepicker-options="dateOptions" 
+                                                        date-disabled="disabled(date, mode)"
+                                                        ng-required="true" 
+                                                        placeholder="mm/dd/yyyy"
+                                                        close-text="Close"  >
+                                                    <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                                </div>
+                                            </div>                             
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label  class="col-md-4 control-label">Effective End Date</label>
+                                            <div class="col-md-8" ng-class="{'has-error': patientForm.effective_end_date.$invalid && formValidStatus ,'has-success' : patientForm.effective_end_date.$valid }">
+                                                <div class="input-group ui-datepicker " >
+                                                    <input  type="text" 
+                                                        class="form-control"
+                                                        datepicker-popup="{{format}}"
+                                                        ng-model="tenant.service_start_date"
+                                                        is-open="opened"
+                                                        min="minDate"
+                                                        max="'2015-06-22'"
+                                                        datepicker-options="dateOptions" 
+                                                        date-disabled="disabled(date, mode)"
+                                                        ng-required="true" placeholder="mm/dd/yyyy"  name="effective_end_date"
+                                                        close-text="Close"  >
+                                                    <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                                </div>
+                                            </div>                             
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6"> 
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Phone No. </label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.phone.$invalid && formValidStatus ,'has-success' : patientForm.phone.$valid }">
+                                                <input tabindex="56" type="text" class="form-control input-sm" name="phone"  placeholder="Enter phone number"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.phone.$error.pattern" ng-class="{ 'error_msg' : patientForm.phone.$error.pattern}"> Phone number should be number only</p>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.extension.$invalid && formValidStatus ,'has-success' : patientForm.extension.$valid }">
+                                                <input tabindex="57" type="text" class="form-control input-sm" name="extension"  placeholder="Enter phone extension"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus"/>
+                                                <p class="help-block" ng-show="patientForm.extension.$error.pattern" ng-class="{ 'error_msg' : patientForm.extension.$error.pattern}" > Extension should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Service Type</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.service_type.$invalid && formValidStatus ,'has-success' : patientForm.service_type.$valid }">
+                                                <input tabindex="58" type="text" class="form-control input-sm" name="service_type"  placeholder="Enter service type "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.service_type.$error.pattern" ng-class="{ 'error_msg' : patientForm.service_type.$error.pattern}"> Service type should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">    
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-arrow-right"></span> &nbsp; Save & Next </button>
+                        </div>
+                    </div>            
+                    <div ng-show="statusClaimInfo">
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <h4 > <strong> &nbsp;&nbsp;&nbsp;&nbsp; Ajuster Details</strong></h4>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> First Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.adjustor_firstname.$invalid && formValidStatus ,'has-success' : patientForm.adjustor_firstname.$valid }">
+                                                <input tabindex="59" type="text" class="form-control input-sm" name="adjustor_firstname"  placeholder="Enter adjustor firstname "     ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.adjustor_firstname.$error.pattern" ng-class="{ 'error_msg' : patientForm.adjustor_firstname.$error.pattern}"> Adjustor firstname should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.adjustor_lastname.$invalid && formValidStatus ,'has-success' : patientForm.adjustor_lastname.$valid }">
+                                                <input tabindex="60" type="text" class="form-control input-sm" name="adjustor_lastname"  placeholder="Enter adjustor lastname "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.adjustor_lastname.$error.pattern" ng-class="{ 'error_msg' : patientForm.adjustor_lastname.$error.pattern}"> Adjustor lastname should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Phone No.</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.adjustor_phone.$invalid && formValidStatus ,'has-success' : patientForm.adjustor_phone.$valid }">
+                                                <input tabindex="61" type="text" class="form-control input-sm" name="adjustor_phone"  placeholder="Enter adjustor phone "    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.adjustor_phone.$error.pattern" ng-class="{ 'error_msg' : patientForm.adjustor_phone.$error.pattern}"> Adjustor phone number should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.adjustor_extension.$invalid && formValidStatus ,'has-success' : patientForm.adjustor_extension.$valid }">
+                                                <input tabindex="62" type="text" class="form-control input-sm" name="adjustor_extension"  placeholder="Enter adjustor phone extension"    ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.adjustor_extension.$error.pattern" ng-class="{ 'error_msg' : patientForm.adjustor_extension.$error.pattern}"> Extension should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                            
+                                <div class="row">
+                                <h4 > <strong> &nbsp;&nbsp;&nbsp;&nbsp; Attorney Details </strong></h4>
+                                <br>
+                                    <div class="col-sm-8 col-lg-6">        
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.attorney_name.$invalid && formValidStatus ,'has-success' : patientForm.attorney_name.$valid }">
+                                                <input tabindex="63" type="text" class="form-control input-sm" name="attorney_name"  placeholder="Enter attorney name "    ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.attorney_name.$error.pattern" ng-class="{ 'error_msg' : patientForm.attorney_name.$error.pattern}"> Attorney name should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label"> Phone No.</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.attorney_phone.$invalid && formValidStatus ,'has-success' : patientForm.attorney_phone.$valid }">
+                                                <input tabindex="64" type="text" class="form-control input-sm" name="attorney_phone"  placeholder="Enter attorney phone number "   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.attorney_phone.$error.pattern" ng-class="{ 'error_msg' : patientForm.attorney_phone.$error.pattern}"> Attorney phone number should be number only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.attorney_extension.$invalid && formValidStatus ,'has-success' : patientForm.attorney_extension.$valid }">
+                                                <input tabindex="65" type="text" class="form-control input-sm" name="attorney_extension"  placeholder="Enter attorney phone extension "   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.attorney_extension.$error.pattern" ng-class="{ 'error_msg' : patientForm.attorney_extension.$error.pattern}"> Extension should be number only</p>
+                                            </div>
+                                        </div>                           
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h4 > <strong> &nbsp;&nbsp;&nbsp;&nbsp; Other Details</strong></h4>
+                                    <br>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">WCB Case</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.wcb_case.$invalid && formValidStatus ,'has-success' : patientForm.wcb_case.$valid }">
+                                                <input tabindex="66" type="text" class="form-control input-sm" name="wcb_case"  placeholder="Enter wcb case "     ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.wcb_case.$error.pattern" ng-class="{ 'error_msg' : patientForm.wcb_case.$error.pattern}"> WCB case should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label class="col-md-4 control-label">Policy Holder</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : patientForm.policy_holder.$invalid && formValidStatus ,'has-success' : patientForm.policy_holder.$valid }">
+                                                <input tabindex="67" type="text" class="form-control input-sm" name="policy_holder"  placeholder="Enter policy holder "     ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="patientForm.policy_holder.$error.pattern" ng-class="{ 'error_msg' : patientForm.policy_holder.$error.pattern}"> Policy holder should be text only</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>           
+                            <div class="modal-footer">    
+                                <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Save </button>
+                            </div>        
+                        </div>                 
+                    </script>              
+                    <script type="text/ng-template" id="notes.html"> 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-horizontal">
+                                   <div class="form-group" >
+                                        <label class="col-sm-2 control-label">Notes</label>
+                                        <div class="col-sm-10" ng-class="{ 'has-error' : patientForm.notes.$invalid && formValidStatus ,'has-success' : patientForm.notes.$valid }">
+                                            <textarea type="text" rows="5" class="form-control input-sm" name="notes"  placeholder="Enter notes"  value="Enter notes"   ng-readonly="readStatus">
+                                         </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="managePatient" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(patientForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ui-sref="managePatient" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                                    </div>            
+                                </div>
+                            </div>
+                        </div>                                                 
+                    </script>
+            </div>
+        </section>
+    </form>
+</div>
+
+
+

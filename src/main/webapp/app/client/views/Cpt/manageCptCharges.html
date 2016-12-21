@@ -1,0 +1,307 @@
+<div>
+<div class="page page-grid" ng-show="currentTabMain">
+    <div class="panel panel-default table-dynamic">
+        <div class="panel-heading"><strong>CPT Charges</strong> <span class="pull-right"><a ng-click="onClickAdd()" style="cursor: pointer"><span class="glyphicon glyphicon-plus"></span><span data-i18n="Add CPT Charges"></span> </a></span>  </div>
+        <div class="panel-body">
+            <div class="table-filters">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <form>
+                            <input type="text"
+                                   placeholder="Search..."
+                                   class="form-control"
+                                   ng-model="searchKeywords"
+                                   ng-keyup="search()">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <table class="table table-bordered table-striped table-responsive">
+                <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th">
+                                CPT Code
+                                <span class="ti-angle-up"
+                                      data-ng-click=" order('cptCode') "
+                                      data-ng-class="{active: row === 'cptCode'}" style="cursor: pointer"></span>
+                                <span class="ti-angle-down"
+                                      data-ng-click=" order('-cptCode') "
+                                      data-ng-class="{active: row === '-cptCode'}" style="cursor: pointer"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                TC Charge
+                                <span class="ti-angle-up"
+                                      data-ng-click=" order('tcCharge') "
+                                      data-ng-class="{active: row === 'tcCharge'}" style="cursor: pointer"></span>
+                                <span class="ti-angle-down"
+                                      data-ng-click=" order('-tcCharge') "
+                                      data-ng-class="{active: row === '-tcCharge'}" style="cursor: pointer"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th">
+                                GC Charge
+                                <span class="ti-angle-up"
+                                      data-ng-click=" order('gcCharge') "
+                                      data-ng-class="{active: row === 'gcCharge'}" style="cursor: pointer"></span>
+                                <span class="ti-angle-down"
+                                      data-ng-click=" order('-gcCharge') "
+                                      data-ng-class="{active: row === '-gcCharge'}" style="cursor: pointer"></span>
+                            </div>
+                        </th>
+                        <th>  
+                            
+                            <div class="th">
+                                Limiting Charges
+                                <span class="ti-angle-up"
+                                      data-ng-click=" order('limitingCharges') "
+                                      data-ng-class="{active: row === 'limitingCharges'}" style="cursor: pointer"></span>
+                                <span class="ti-angle-down"
+                                      data-ng-click=" order('-limitingCharges') "
+                                      data-ng-class="{active: row === '-limitingCharges'}" style="cursor: pointer"></span>
+                            </div>
+                        </th>
+                        <th class="col-md-1">
+                            <div class="th">
+                                Action
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="cptcharge in currentPageCPTCharges">
+                        <td>{{cptcharge.cptCode }}</td>
+                        <td>{{cptcharge.tcCharge}}</td>
+                        <td>{{cptcharge.gcCharge}}</td>
+                        <td>{{cptcharge.limitingCharges}}</td>
+                        <td class="col-md-1"> 
+                            <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                            &nbsp; <a  class="" ng-click="deleteCPTCharges($index)" zc-Confirm-Click="Are You sure want to delete cptCharge" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                            &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                        </td>                      
+                    </tr>
+                </tbody>
+            </table>
+            <footer class="table-footer">
+                <div class="row">
+                    <div class="col-md-6 page-num-info">
+                        <span>
+                            Show 
+                            <select ng-model="numPerPage"
+                                    ng-options="num for num in numPerPageOpt"
+                                    ng-change="onNumPerPageChange()">
+                            </select> 
+                            entries per page
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-right pagination-container">
+                        <pagination class="pagination-sm"
+                                    ng-model="currentPage"
+                                    total-items="filteredCPTCharges.length"
+                                    max-size="4"
+                                    ng-change="select(currentPage)"
+                                    items-per-page="numPerPage"
+                                    rotate="false"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;"
+                                    boundary-links="true"></pagination>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<div class="page" ng-hide="currentTabMain">
+    <form name="cptChargesForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>Add CPT Charges</strong>  </h3>
+            </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">CPT Code</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.cpt_code.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.cpt_Id" name="cpt_code" required="" ng-readonly="readStatus" tabindex="1">
+                                            <option value="">---Please select---</option>
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">State</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.state.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.stateId" name="state" required="" ng-readonly="readStatus" tabindex="3">
+                                            <option value="">---Please select---</option>
+                                            <option value="">US</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">TC Charge</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : cptChargesForm.tc_charge.$invalid && formValidStatus ,'has-success' : cptChargesForm.tc_charge.$valid }">
+                                        <input type="text" class="form-control input-sm" name="tc_charge"  placeholder="Enter TC charge" ng-model="cptcharge.tcCharge" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="5">
+                                        <p class="help-block" ng-show="cptChargesForm.tc_charge.$error.pattern" ng-class="{ 'error_msg' : cptChargesForm.tc_charge.$error.pattern }">GC charge should be numeric only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">GC Charge</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : cptChargesForm.gc_charge.$invalid && formValidStatus ,'has-success' : cptChargesForm.gc_charge.$valid }">
+                                        <input type="text" class="form-control input-sm" name="gc_charge"  placeholder="Enter GC charge" ng-model="cptcharge.gcCharge" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="7">
+                                        <p class="help-block" ng-show="cptChargesForm.gc_charge.$error.pattern" ng-class="{ 'error_msg' : cptChargesForm.gc_charge.$error.pattern }">TC charge should be numeric only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Medicare Pay</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : cptChargesForm.medicare_pay.$invalid && formValidStatus ,'has-success' : cptChargesForm.medicare_pay.$valid }">
+                                        <input type="text" class="form-control input-sm" name="medicare_pay"  placeholder="Enter medicare pay" ng-model="cptcharge.medicarePay" required="" ng-pattern="" ng-readonly="readStatus" tabindex="9">
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Pay Flag</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.pay_flag.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.payFlagListValueId" name="pay_flag" required="" ng-readonly="readStatus" tabindex="11">
+                                            <option value="">---Please select---</option> 
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Charge Type</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.charge_type.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.chargeTypeListvalueId" name="charge_type" required="" ng-readonly="readStatus" tabindex="13">
+                                            <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Form Code</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : cptChargesForm.from_code.$invalid && formValidStatus ,'has-success' : cptChargesForm.from_code.$valid }">
+                                        <input type="text" class="form-control input-sm" name="from_code"  placeholder="Enter from code" ng-model="cptcharge.formCode" required="" ng-pattern="" ng-readonly="readStatus" tabindex="15">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">POS Allowed</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.pos_allowed.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.posAllowedListValueId" name="pos_allowed" required="" ng-readonly="readStatus" tabindex="17">
+                                                <option value="">---Please select---</option> 
+                                                <option value=1>Yes</option>
+                                                <option value=0>No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Charge Description</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : cptChargesForm.charge_description.$invalid && formValidStatus ,'has-success' : cptChargesForm.charge_description.$valid }">
+                                        <input type="text" class="form-control input-sm" name="charge_description"  placeholder="Enter charge description" ng-model="cptcharge.chargeDescription" required="" ng-pattern="" ng-readonly="readStatus" tabindex="19">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Payer ID*</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.payer_id.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.payer_Id" name="payer_id" required="" ng-readonly="readStatus" tabindex="2">
+                                            <option value="">---Please select---</option> 
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Region</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.region.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.dispatchRegionId" name="region" required="" ng-readonly="readStatus" tabindex="4">
+                                            <option value="">---Please select---</option> 
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">26 Charge</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.twentysixcharge.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.charge26" name="twentysixcharge" required="" ng-readonly="readStatus" tabindex="6">
+                                            <option value="">---Please select---</option> 
+                                            <option value=1>Option 1</option>
+                                            <option value=2>Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Medicare Allowed</label>
+                                     <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.medicare_allowed.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="medicare_allowed" placeholder="Enter medicare allowed" ng-model="cptcharge.medicareAllowed" required="" ng-pattern="" ng-readonly="readStatus" tabindex="8">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Patient Pay</label>
+                                    <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.patient_pay.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="patient_pay" placeholder="Enter patient pay" ng-model="cptcharge.patientPay" required="" ng-pattern="" ng-readonly="readStatus" tabindex="10">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Limiting Charges</label>
+                                     <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.limiting_charges.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="limiting_charges" placeholder="Enter limiting charges" ng-model="cptcharge.limitingCharges" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="12">
+                                        <p class="help-block" ng-show="cptChargesForm.limiting_charges.$error.pattern" ng-class="{ 'error_msg' : cptChargesForm.limiting_charges.$error.pattern }">Limiting charges should be numeric only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Followup days</label>
+                                     <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.followup_days.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="followup_days" placeholder="Enter followup days" ng-model="cptcharge.followsDays" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="14">
+                                        <p class="help-block" ng-show="cptChargesForm.followup_days.$error.pattern" ng-class="{ 'error_msg' : cptChargesForm.followup_days.$error.pattern }">Followup days should be numeric only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">From Program Name</label>
+                                     <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.program_name.$invalid && formValidStatus }">
+                                         <input type="text" class="form-control input-sm" name="program_name" placeholder="Enter from program name" ng-model="cptcharge.formProgramName" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="16">
+                                     </div>
+                                </div>
+<!--                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Status</label>
+                                     <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptChargesForm.status.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="cptcharge.status" name="status" required="" ng-readonly="readStatus" tabindex="18">
+                                            <option value="">---Please select---</option> 
+                                            <option value="A">Active</option>
+                                            <option value="I">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>-->
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Remark</label>
+                                     <div class="col-sm-8" ng-class="{'has-error' : cptChargesForm.remark.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="remark" placeholder="Enter remark" ng-model="cptcharge.remark" required="" ng-pattern="" ng-readonly="readStatus" tabindex="20">
+                                     </div>
+                                </div>
+                            </div>    
+                        </div>    
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(cptChargesForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+                </div>
+        </div>
+    </form>
+</div>    
+</div>
+

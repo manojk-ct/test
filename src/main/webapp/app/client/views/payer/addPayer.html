@@ -1,0 +1,296 @@
+<div class="page">
+    <form name="payerForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong> {{page}} Payer</strong>  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <h4 > <strong> &nbsp; Primary Details </strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Payer Name</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.payer_name.$invalid && payerForm.payer_name.$dirty}">
+                                    <input tabindex="1" type="text" class="form-control input-sm" name="payer_name" ng-model="payer.payerName" placeholder="Enter payer name"    ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.payer_name.$error.pattern" ng-class="{ 'error_msg' : payerForm.payer_name.$error.pattern}">Payer name should be text only</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Payer Id*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.payer_id.$invalid && formValidStatus  }" >
+                                    <input tabindex="2"  type="text" class="form-control input-sm" name="payer_id" ng-model="payer.payerCode"  placeholder="Enter payer id"   required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.payer_id.$error.pattern" ng-class="{ 'error_msg' : payerForm.payer_id.$error.pattern}">Payer name should consist of text and number only</p>
+                                    <p class="help-block" ng-show="payerForm.payer_id.$error.required && payerForm.payer_id.$dirty" ng-class="{ 'error_msg' : payerForm.payer_id.$error.required }">Payer id is required</p>
+                                       
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 > <strong>&nbsp; Contact Details</strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Address Line1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_address_line1.$invalid && formValidStatus  }" >
+                                    <input tabindex="3" type="text" class="form-control input-sm" name="contact_address_line1" placeholder="Enter address line1" ng-model="payer.addressLine1" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_address_line1.$error.required && payerForm.contact_address_line1.$dirty" ng-class="{ 'error_msg' : payerForm.contact_address_line1.$error.required }">Address line1 is required</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" >
+                                <label  class="col-sm-3 control-label">City*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_city.$invalid && formValidStatus  }" >
+                                    <input tabindex="5"  type="text" class="form-control input-sm" name="contact_city" placeholder="Enter city"  required="" ng-model="payer.city"  ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_city.$error.required && payerForm.contact_city.$dirty" ng-class="{ 'error_msg' : payerForm.contact_city.$error.required }">City is required</p>
+                                    <p class="help-block" ng-show="payerForm.contact_city.$error.pattern" ng-class="{ 'error_msg' : payerForm.contact_city.$error.pattern}">City should be text only</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Country*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_country.$invalid && formValidStatus  }" >
+                                    <select tabindex="7"  class="form-control input-sm" ng-model="payer.country" name="contact_country" required="" ng-readonly="readStatus" ng-change="GetStates()" ng-options="country.country_id as country.country_name for country in countryService.countries"> 
+                                            <option value="">---Please select---</option>
+                                    </select>
+                                    <p class="help-block" ng-show="payerForm.contact_country.$error.required && payerForm.contact_country.$dirty" ng-class="{ 'error_msg' : payerForm.contact_country.$error.required }">Country is required</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Phone No.1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_phone1.$invalid && formValidStatus  }" >
+                                    <input tabindex="9"  type="text" class="form-control input-sm" name="contact_phone1" placeholder="Enter phone number1"  required="" ng-model="payer.landLine1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_phone1.$error.pattern" ng-class="{ 'error_msg' : payerForm.contact_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                    <p class="help-block" ng-show="payerForm.contact_phone1.$error.required && payerForm.contact_phone1.$dirty" ng-class="{ 'error_msg' : payerForm.contact_phone1.$error.required }">Phone number1 is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Fax No.*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_fax_number.$invalid && formValidStatus  }" >
+                                    <input tabindex="11" type="text" class="form-control input-sm" name="contact_fax_number" placeholder="Enter fax number"  ng-model="payer.faxNumber" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_fax_number.$error.pattern" ng-class="{ 'error_msg' : payerForm.contact_fax_number.$error.pattern}">Fax number should be number only</p> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Address Line2</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_address_line2.$invalid && formValidStatus  }" >
+                                    <input tabindex="4" type="text" class="form-control input-sm" name="contact_address_line2" placeholder="Enter address line2"  ng-model="payer.addressLine2" ng-readonly="readStatus">
+                                </div>
+                            </div>
+            
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Zip Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_zip_code.$invalid && formValidStatus  }" >
+                                    <input tabindex="6"  name="contact_zip_code" type="text"  class="form-control input-sm" placeholder="Enter zip code"  required="" ng-model="payer.zipCode" ng-readonly="readStatus" >
+                                    <p class="help-block" ng-show="payerForm.contact_zip_code.$error.required && payerForm.contact_zip_code.$dirty" ng-class="{ 'error_msg' : payerForm.contact_zip_code.$error.required }">Zip code is required</p>
+                                    <p class="help-block" ng-show="payerForm.contact_zip_code.$error.pattern" ng-class="{ 'error_msg' : payerForm.contact_zip_code.$error.pattern}">Zip code should consist of text and number only</p> 
+                                </div>
+
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">State/Province*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.contact_state_province.$invalid && formValidStatus  }" >
+                                    <select tabindex="8" tabindex="6" class="form-control input-sm"  name="contact_state_province"  ng-model="payer.state " ng-readonly="readStatus" required="" ng-options="state.state_id as state.state_name for state in states">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                         <!--<option ng-repeat="state in states">{{state.state_name}}</option>-->
+                                    </select>
+                                    <p class="help-block" ng-show="payerForm.contact_state_province.$error.required && payerForm.contact_state_province.$dirty" ng-class="{ 'error_msg' : payerForm.contact_state_province.$error.required }">State is required</p>
+                                </div>
+
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Phone No.2*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_phone2.$invalid && formValidStatus  }" >
+                                    <input tabindex="10"  type="text" class="form-control input-sm" name="contact_phone2" placeholder="Enter phone number2"  required="" ng-model="payer.landLine2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_phone2.$error.pattern" ng-class="{ 'error_msg' : payerForm.contact_phone2.$error.pattern}">Phone number2 should be number only</p> 
+
+                                    <p class="help-block" ng-show="payerForm.contact_phone2.$error.required && payerForm.contact_phone2.$dirty" ng-class="{ 'error_msg' : payerForm.contact_phone2.$error.required }">Phone number2 is required</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Email Id*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.contact_email_id.$invalid && formValidStatus  }" >
+                                    <input tabindex="12" type="email" class="form-control input-sm" name="contact_email_id" placeholder="Enter email address"  required="" ng-model="payer.emailId" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.contact_email_id.$error.required && payerForm.contact_email_id.$dirty" ng-class="{ 'error_msg' : payerForm.contact_email_id.$error.required }">Email id is required</p>
+                                    <p class="help-block" ng-show="payerForm.contact_email_id.$error.email" ng-class="{ 'error_msg' : payerForm.contact_email_id.$error.email}">Invalid email address</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+                <div class="row">
+                    <h4 > <strong> &nbsp; Service Details </strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Default Rate</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.default_rate.$invalid && formValidStatus  }" >
+                                    <select tabindex="13"  class="form-control input-sm"  name="default_rate"  ng-model="payer.defaultRate" ng-readonly="readStatus" ng-options="value for value in constant.DEFAULTRATE">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label"> Insurance Type*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.insurance_type.$invalid && formValidStatus  }" >
+                                    <select tabindex="15"  class="form-control input-sm"  name="insurance_type"  required="" ng-model="payer.insuranceType" ng-readonly="readStatus" ng-options="value for value in constant.INSURANCETYPE">
+                                        <option value="">---Please select---</option>
+                                    </select>
+                                    <p class="help-block" ng-show="payerForm.insurance_type.$error.required && payerForm.insurance_type.$dirty" ng-class="{ 'error_msg' : payerForm.payer_remark.$error.required }">Insurance type is required</p>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Claim Type</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.claim_type.$invalid && formValidStatus  }" >
+                                    <select tabindex="17"  class="form-control input-sm"  name="claim_type"  ng-model="payer.claimType" ng-readonly="readStatus" ng-options="value for value in constant.CLAIMTYPE">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Payer Remark </label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.payer_remark.$invalid && formValidStatus  }" >
+                                    <input tabindex="19"  type="text" class="form-control input-sm" name="payer_remark" ng-model="payer.payerRemark"  placeholder="Enter payer remark"    ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.payer_remark.$error.pattern" ng-class="{ 'error_msg' : payerForm.payer_remark.$error.pattern}">Payer remark should consist of text and number only</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>    
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Identification</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.identification.$invalid && formValidStatus  }" >
+                                    <select tabindex="14"  class="form-control input-sm"  name="identification"  ng-model="payer.identification" ng-readonly="readStatus" ng-options="value for value in constant.IDENTIFICATION">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Claim Officer Contact No.</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : payerForm.claim_officer_number.$invalid && formValidStatus  }" >
+                                    <input tabindex="16" type="text" class="form-control input-sm" name="claim_officer_number" ng-model="payer.claimOfficeNumber"  placeholder="Enter claim officer contact number"  ng-model="payer.claim" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="payerForm.claim_officer_number.$error.pattern" ng-class="{ 'error_msg' : payerForm.claim_officer_number.$error.pattern}">Claim officer number should be number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Submission Type</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.submission_type.$invalid && formValidStatus  }" >
+                                    <select tabindex="18"  class="form-control input-sm"  name="submission_type"  ng-model="payer.submissionType" ng-readonly="readStatus" ng-options="value for value in constant.SUBMISSIONTYPE">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <h4 > <strong> &nbsp; Eligibility Check </strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Clearing House</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.eligibility_clearing_house.$invalid && formValidStatus  }" >
+                                    <select tabindex="19"  class="form-control input-sm"  name="eligibility_clearing_house"  ng-model="payer.eligibilityClearingHouse" ng-readonly="readStatus" ng-options="value for value in constant.CLEARINGHOUSE">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Payer</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.eligibility_payer.$invalid && formValidStatus  }" >
+                                    <select tabindex="20"  class="form-control input-sm"  name="eligibility_payer"  ng-model="payer.eligibilityPayer" ng-readonly="readStatus">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                        <option>Payer 1</option>
+                                        <option>Payer 2</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                  <div class="row">
+                    <h4 > <strong> &nbsp; Claim Processing </strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Clearing House</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.claim_clearing_house.$invalid && formValidStatus  }" >
+                                    <select tabindex="21"  class="form-control input-sm"  name="claim_clearing_house"  ng-model="payer.claimClearingHouse" ng-readonly="readStatus" ng-options="value for value in constant.CLEARINGHOUSE">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Payer</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : payerForm.claim_payer.$invalid && formValidStatus  }" >
+                                    <select tabindex="22"  class="form-control input-sm"  name="claim_payer"  ng-model="payer.claimPayer" ng-readonly="readStatus">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                        <option>Payer 1</option>
+                                        <option>Payer 2</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <br/>
+            <div class="text-right">
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="managePayer" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(payerForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-info" ui-sref="managePayer" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+            </div>
+        </div>
+    </form>
+</div>    

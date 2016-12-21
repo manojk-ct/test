@@ -1,0 +1,192 @@
+ <div>
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>CPT Modifier</strong> 
+                <span class="pull-right">
+                    <a ng-click="onClickAdd()" style="cursor: pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add CPT Modifier"></span> 
+                    </a></span>  </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                       placeholder="Search..."
+                                       class="form-control"
+                                       ng-model="searchKeywords"
+                                       ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    CPT Code
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('cptCode') "
+                                          data-ng-class="{active: row === 'cptCode'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-cptCode') "
+                                          data-ng-class="{active: row === '-cptCode'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Modifier Pay
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('modifierPay') "
+                                          data-ng-class="{active: row === 'modifierPay'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-modifierPay') "
+                                          data-ng-class="{active: row === '-modifierPay'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Modifier Category
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('modifierCategory') "
+                                          data-ng-class="{active: row === 'modifierCategory'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-modifierCategory') "
+                                          data-ng-class="{active: row === '-modifierCategory'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>  
+                                <div class="th">
+                                    <div class="th">
+                                        Action
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cptmodifier in currentPageFacilities">
+                            <td>{{cptmodifier.cptCode }}</td>
+                            <td>{{cptmodifier.modifierPay}}</td>
+                            <td>{{cptmodifier.modifierCategory}}</td>
+
+                            <td class="col-md-1"> 
+                                <a  class=""ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteCPTmodifier($index)" zc-Confirm-Click="Are You sure want to delete cptModifier" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        ng-model="currentPage"
+                                        total-items="filteredCPTModifier.length"
+                                        max-size="4"
+                                        ng-change="select(currentPage)"
+                                        items-per-page="numPerPage"
+                                        rotate="false"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;"
+                                        boundary-links="true"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="page" ng-hide="currentTabMain">
+        <form name="cptModifierForm" novalidate role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3><strong>{{page}} CPT Modifier</strong>  </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">CPT Code</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : cptModifierForm.cpt_code.$invalid && formValidStatus  }">
+                                        <input type="text" class="form-control input-sm" name="cpt_code"  placeholder="Enter CPT code" ng-model="cptmodifier.cptCode" required="" ng-pattern="" ng-readonly="readStatus" tabindex="1">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Modifier Category</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : cptModifierForm.modifier_category.$invalid && formValidStatus  }">
+                                        <input type="text" class="form-control input-sm" name="modifier_category"  placeholder="Enter modifier category" ng-model="cptmodifier.modifierCategory" required="" ng-pattern="" ng-readonly="readStatus" tabindex="3">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Sub Type</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : cptModifierForm.sub_type.$invalid && formValidStatus  }">
+                                        <input type="text" class="form-control input-sm" name="sub_type"  placeholder="Enter sub type" ng-model="cptmodifier.subType" required="" ng-pattern="" ng-readonly="readStatus" tabindex="5">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">CPT Modifier Rule</label>
+                                    <div class="col-sm-7" ng-class="{'has-error' : cptModifierForm.cpt_modifier_rule.$invalid && formValidStatus }">
+                                        <textarea class="form-control input-sm" rows="3" cols="43" placeholder="Enter CPT modifier rule" tabindex="7" ng-model="cptmodifier.cptModifierRule" name="cpt_modifier_rule"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Modifier Pay</label>
+                                    <div class="dropdown col-sm-7" ng-class="{ 'has-error' : cptModifierForm.modifier_pay.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="2" name="modifier_pay" ng-model="cptmodifier.modifierPay">
+                                            <option value="">---Please select---</option>
+                                            <option value="Active">Option 1</option>
+                                            <option value="Active">Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Sub Category</label>
+                                    <div class="dropdown col-sm-7" ng-class="{ 'has-error' : cptModifierForm.sub_category.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="4" name="sub_category" ng-model="cptmodifier.subCategory">
+                                            <option value="">---Please select---</option>
+                                            <option value="Active">Option 1</option>
+                                            <option value="Active">Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Description</label>
+                                    <div class="col-sm-7" ng-class="{'has-error' : cptModifierForm.description.$invalid && formValidStatus }">
+                                            <textarea class="form-control input-sm" rows="2" cols="43" placeholder="Enter description" tabindex="6" name="description" ng-model="cptmodifier.description"></textarea>  
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>    
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(cptModifierForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div> 
+                </div>
+            </div>
+        </form>
+    </div>    
+</div>

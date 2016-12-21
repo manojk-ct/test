@@ -1,0 +1,196 @@
+<div>
+<div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>ICD Code</strong> <span class="pull-right"><a ng-click="onClickAdd()" style="cursor: pointer"><span class="glyphicon glyphicon-plus"></span><span data-i18n="Add ICD Code"></span> </a></span>  </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                       placeholder="Search..."
+                                       class="form-control"
+                                       ng-model="searchKeywords"
+                                       ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+            </div>
+            <br/>
+            <table class="table table-bordered table-striped table-responsive">
+                <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                               <div class="th">
+                                    ICD Code
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('icdCode') "
+                                          data-ng-class="{active: row === 'icdCode'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-icdCode') "
+                                          data-ng-class="{active: row === '-icdCode'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Reason for exam
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('reasonDescription') "
+                                          data-ng-class="{active: row === 'reasonDescription'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-reasonDescription') "
+                                          data-ng-class="{active: row === '-reasonDescription'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Reason Description
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('reasonDescription') "
+                                          data-ng-class="{active: row === 'reasonDescription'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-reasonDescription') "
+                                          data-ng-class="{active: row === '-reasonDescription'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th > 
+                                
+                                <div class="th">
+                                    Exams
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('exam') "
+                                          data-ng-class="{active: row === 'exam'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-exam') "
+                                          data-ng-class="{active: row === '-exam'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="icd in currentPageFacilities">
+                            <td>{{icd.icdCode}}</td>
+                            <td>{{icd.reasonForExam}}</td>
+                            <td>{{icd.reasonDescription}}</td>
+                            <td>{{icd.exam}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteIcdCode($index)" zc-Confirm-Click="Are You sure want to delete icd" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        ng-model="currentPage"
+                                        total-items="filteredICDCode.length"
+                                        max-size="4"
+                                        ng-change="select(currentPage)"
+                                        items-per-page="numPerPage"
+                                        rotate="false"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;"
+                                        boundary-links="true"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+</div> 
+<div class="page" ng-hide="currentTabMain">
+    <form name="icdCodeManagementForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>{{page}} ICD Code</strong>  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">ICD Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : icdCodeManagementForm.icd_code.$invalid && formValidStatus ,'has-success' : icdCodeManagementForm.icd_code.$valid }">
+                                        <input type="text" class="form-control input-sm" name="icd_code"  placeholder="Enter ICD code" ng-model="icd.icdCode" required="" ng-pattern="" ng-readonly="readStatus" tabindex="1">
+                                        <p class="help-block" ng-show="icdCodeManagementForm.icd_code.$error.required && icdCodeManagementForm.icd_code.$dirty" ng-class="{ 'error_msg' : icdCodeManagementForm.icd_code.$error.required }">ICD Code is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Reason for exam*</label>
+                                <div class="col-sm-8" ng-class="{'has-error' : icdCodeManagementForm.reason_for_exam.$invalid && formValidStatus }">
+                                        <textarea rows="3" class="form-control input-sm" cols="50" placeholder="Enter reason for exam" tabindex="3" name="reason_for_exam" ng-model="icd.reasonForExam"></textarea>
+                                        <p class="help-block" ng-show="icdCodeManagementForm.reason_for_exam.$error.required && icdCodeManagementForm.reason_for_exam.$dirty" ng-class="{ 'error_msg' : icdCodeManagementForm.reason_for_exam.$error.required }">Reason for exam is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                 <label class="col-sm-3 control-label">Remark</label>
+                                 <div class="col-sm-8" ng-class="{'has-error' : icdCodeManagementForm.remark.$invalid && formValidStatus }">
+                                         <textarea rows="2" cols="50" class="form-control input-sm" placeholder="Enter remark" tabindex="5" name="remark" ng-model="icd.remark"></textarea>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-4 control-label">Status</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : icdCodeManagementForm.status.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" tabindex="2" name="status" ng-model="icd.status">
+                                            <option value="">---Please select---</option>
+                                            <option value="scheduled">Active</option>
+                                            <option value="nonscheduled">Inactive</option>
+                                    </select>
+                                 </div>
+                            </div>
+                            <div class="form-group" >
+                                 <label class="col-sm-4 control-label">Reason Description</label>
+                                 <div class="col-sm-8" ng-class="{'has-error' : icdCodeManagementForm.reason_description.$invalid && formValidStatus }">
+                                         <textarea rows="3" cols="50" class="form-control input-sm" placeholder="Enter reason description" tabindex="4" name="reason_description" ng-model="icd.reasonDescription"></textarea>
+                                 </div>
+                            </div>
+                            <div class="form-group" >
+                                 <label class="col-sm-4 control-label">Exams*</label>
+                                 <div class="dropdown col-sm-8" ng-class="{ 'has-error' : icdCodeManagementForm.exam.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="6" ng-model="icd.exam" name="exam" multiple >
+                                             <option value="">---Please select---</option>
+                                             <option value="">Exam1</option>
+                                             <option value="">Exam2</option>
+                                        </select>
+                                        <p class="help-block" ng-show="icdCodeManagementForm.exam.$error.required && icdCodeManagementForm.exam.$dirty" ng-class="{ 'error_msg' : icdCodeManagementForm.exam.$error.required }">Exam is required</p>
+                                </div>
+                            </div>
+                         </div>    
+                    </div>    
+                </div>
+                <br/>
+                <div>
+                    <div class="text-right">
+                       <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                       <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(icdCodeManagementForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                       <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>      
+</div>
+
+    
+

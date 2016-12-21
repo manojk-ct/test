@@ -1,0 +1,610 @@
+<div class="page">
+    <form name="masterDataForm" novalidate role="form">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><h3><strong>Master data management</strong>  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <hr/>
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">Select Master Table</label>
+                         <div class="dropdown col-sm-4">
+                            <select tabindex="4" class="form-control input-sm-8"    ng-model="masterData"  ng-options="value.id as value.name for value in info_master"> 
+                               <option value="">---Please select---</option>                        
+                            </select>
+                         </div>
+                    </div>
+                    
+                    <br>    <br><br>
+                    <div ng-include="masterData">
+                        
+                    </div>
+                    <br>
+                    <br>
+  
+                </div>
+
+                <script type="text/ng-template" id="placeOfService.html">
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"  ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Place of Service </button>
+                    <br>
+                        <div >  <br> 
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center">POS Code</td>
+                                        <td class="text-center">POS Name </td>
+                                        <td class="text-center">POS Description</td>
+                                         <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pos in masterData.pos">
+                                        <td class="text-center">{{pos.posCode}}</td>
+                                        <td class="text-center">{{pos.posName}}</td>
+                                        <td class="text-center">{{pos.posDescription}}</td>
+                                 
+                                        <td ng-hide="readStatus" class="col-sm-1">
+                                          &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                          &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="addplaceOfService.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW PLACE OF SERVICE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>POS Code*</label>
+                                    <input type="text" class="form-control" name="pos_code"  placeholder="Enter POS code" ng-model="masterData.posCode" />
+                                     <p class="help-block" ng-show="masterDataForm.pos_code.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.pos_code.$error.pattern}">POS code should be text only</p> 
+                                     <p class="help-block" ng-show="masterDataForm.pos_code.$error.required && masterDataForm.pos_code.$dirty" ng-class="{ 'error_msg' : masterDataForm.pos_code.$error.required }">POS code is required</p>
+                            </div>
+                            <div class=form-group>
+                                    <label>POS Name*</label>
+                                    <input type="text" class="form-control" name="pos_name"  placeholder="Enter POS name" ng-model="masterData.posName" />
+                                    <p class="help-block" ng-show="masterDataForm.pos_name.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.pos_name.$error.pattern}">POS name should be text only</p> 
+                                    <p class="help-block" ng-show="masterDataForm.pos_name.$error.required && masterDataForm.pos_name.$dirty" ng-class="{ 'error_msg' : masterDataForm.pos_name.$error.required }">POS name is required</p>
+                            </div>
+                            <div class="form-group">
+                                    <label>POS Description</label>
+                                    <input type="text" class="form-control" name="pos_description" placeholder="Enter POS description"  ng-model="masterData.posDescription" />
+                                     <p class="help-block" ng-show="masterDataForm.pos_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.pos_description.$error.pattern}">POS description should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    
+                    <script type="text/ng-template" id="paymentType.html">
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Payment Type </button>
+                            <br>
+                            <div>  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Payment Type</td>
+                                            <td class="text-center">Payment Description</td>
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="payment in masterData.payment">
+                                            <td class="text-center">{{payment.paymentType}}</td>
+                                            <td class="text-center">{{payment.paymentDescription}}</td>
+                                         
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="addpaymentType.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW PAYMENT TYPE</h3>
+                        </div>
+                        <div class="modal-body">
+                                <div class=form-group>
+                                        <label>Payment Type</label>
+                                        <input type="text" class="form-control" name="payment_type"  placeholder="Enter payment type" ng-model="masterData.paymentType" />
+                                         <p class="help-block" ng-show="masterDataForm.payment_type.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.payment_type.$error.pattern}">Payment type should be text only</p> 
+                                </div>
+                                <div class="form-group">
+                                        <label>Payment Description</label>
+                                        <input type="text" class="form-control" name="payment_description" placeholder="Enter payment description"  ng-model="masterData.paymentDescription" />
+                                        <p class="help-block" ng-show="masterDataForm.payment_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.payment_description.$error.pattern}">Description should be text only</p> 
+                                </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>   
+                    </script>
+                    
+                    <script type="text/ng-template" id="taxanomyCode.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Taxonomy Code </button>
+                         <br>
+                            <div>  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                             <td class="text-center">Taxanomy Code</td>
+                                             <td class="text-center">Speciality Code </td>
+                                             <td class="text-center">Speciality Description</td>
+                                             <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                     <tbody>
+                                        <tr ng-repeat="taxanomy in masterData.taxanomy">
+                                            <td class="text-center">{{taxanomy.taxanomyCode}}</td>
+                                            <td class="text-center">{{taxanomy.specialityCode}}</td>
+                                            <td class="text-center">{{taxanomy.specialityDescription}}</td>
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                          &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                          &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                         </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </script>
+                    
+                    
+                        <script type="text/ng-template" id="addtaxanomyCode.html">
+                            <div class="modal-header">
+                                <h3>ADD NEW TAXANOMY CODE</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class=form-group>
+                                    <label>Taxanomy Code*</label>
+                                    <input type="text" class="form-control" name="taxanomy_code"  placeholder="Enter taxanomy code" ng-model="masterData.taxanomyCode"  />
+                                        <p class="help-block" ng-show="masterDataForm.taxanomy_code.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.taxanomy_code.$error.pattern}">Taxanomy code should be text only</p> 
+                                        <p class="help-block" ng-show="masterDataForm.taxanomy_code.$error.required && masterDataForm.taxanomy_code.$dirty" ng-class="{ 'error_msg' : masterDataForm.taxanomy_code.$error.required }">Taxanomy code is required</p>
+                                </div>
+                                <div class=form-group>
+                                    <label>Speciality Code*</label>
+                                    <input type="text" class="form-control" name="speciality_code"  placeholder="Enter speciality code" ng-model="masterData.specialityCode" />
+                                        <p class="help-block" ng-show="masterDataForm.speciality_code.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.speciality_code.$error.pattern}">Speciality code should be text only</p> 
+                                        <p class="help-block" ng-show="masterDataForm.speciality_code.$error.required && masterDataForm.speciality_code.$dirty" ng-class="{ 'error_msg' : masterDataForm.speciality_code.$error.required }">Speciality code is required</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Speciality Description</label>
+                                    <input type="text" class="form-control" name="speciality_description" placeholder="Enter speciality description"  ng-model="masterData.specialityDescription" />
+                                        <p class="help-block" ng-show="masterDataForm.speciality_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.speciality_description.$error.pattern}">Speciality description should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="modal-footer">                            
+                                <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                                <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                            </div>
+                        </script>
+                    
+                    <script type="text/ng-template" id="orderStatus.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Ordering Status </button>
+                        <br>
+                            <div >  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Ordering Status </td>
+                                            <td class="text-center">Order Description</td>
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr ng-repeat="order in masterData.order">
+                                                <td class="text-center">{{order.orderStatus}}</td>
+                                                <td class="text-center">{{order.orderDescription}}</td>
+                                                <td ng-hide="readStatus" class="col-sm-1">
+                                                    &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                                    &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                                </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="addorderStatus.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW ORDERING STATUS</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Ordering Status</label>
+                                    <input type="text" class="form-control" name="ordering_status"  placeholder="Enter order status" ng-model="masterData.orderStatus" />
+                                     <p class="help-block" ng-show="masterDataForm.ordering_status.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.ordering_status.$error.pattern}">Ordering status should be text only</p> 
+                            </div>
+                            <div class="form-group">
+                                    <label>Order Description</label>
+                                    <input type="text" class="form-control" name="order_description" placeholder="Enter order description" ng-model="masterData.orderDescription"  />
+                                      <p class="help-block" ng-show="masterDataForm.order_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.order_description.$error.pattern}">Order description should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="insuranceType.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Insurance Type </button>
+                        <br>
+                            <div >  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Insurance Code</td>
+                                          <td class="text-center">Insurance Description</td>
+
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr ng-repeat="insurance in masterData.insurance">
+                                            <td class="text-center">{{insurance.insuranceCode}}</td>
+                                            <td class="text-center">{{insurance.insuranceDescription}}</td>
+
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                   
+                    </script>
+                    
+                     <script type="text/ng-template" id="addinsuranceType.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW INSURANCE TYPE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Insurance Type*</label>
+                                    <input type="text" class="form-control" name="insurance_type"  placeholder="Enter insurance type"  ng-model="masterData.insuranceType" />
+                                     <p class="help-block" ng-show="masterDataForm.insurance_type.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.insurance_type.$error.pattern}">Insurance type should be text only</p> 
+                                     <p class="help-block" ng-show="masterDataForm.insurance_type.$error.required && masterDataForm.insurance_type.$dirty" ng-class="{ 'error_msg' : masterDataForm.insurance_type.$error.required }">Insurance type is required</p>
+                            </div>
+                            <div class="form-group">
+                                    <label>Insurance Description</label>
+                                    <input type="text" class="form-control" name="insurance_description" placeholder="Enter insurance description" ng-model="masterData.insuranceDescription"  />
+                                      <p class="help-block" ng-show="masterDataForm.insurance_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.insurance_description.$error.pattern}">Insurance description should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="medicaidType.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Medicaid Type</button>
+                        <br>
+                            <div >  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Medicaid Type</td>
+                                           <td class="text-center">Medicaid Description</td>
+
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="medicaid in masterData.medicaid">
+                                            <td class="text-center">{{medicaid.medicaidType}}</td>
+                                            <td class="text-center">{{medicaid.medicaidDescription}}</td>
+
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                  
+                    </script>
+                    
+                    <script type="text/ng-template" id="addmedicaidType.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW MEDICAID TYPE</h3>
+                        </div>
+                        <div class="modal-body">
+                                <div class=form-group>
+                                    <label>Medicaid Type</label>
+                                    <input type="text" class="form-control" name="medicaid_type"  placeholder="Enter medicaid type" ng-model="masterData.medicaidType" />
+                                     <p class="help-block" ng-show="masterDataForm.medicaid_type.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.medicaid_type.$error.pattern}">Medicaid type should be text only</p> 
+                                </div>
+                                <div class="form-group">
+                                    <label>Medicaid Description</label>
+                                    <input type="text" class="form-control" name="medicaid_description" placeholder="Enter medicaid description" ng-model="masterData.medicaidDescription"  />
+                                      <p class="help-block" ng-show="masterDataForm.medicaid_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.medicaid_description.$error.pattern}">Medicaid description should be text only</p> 
+                                </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="medicareType.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Medicare Type </button>
+                        <br>
+                            <div> <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Medicare Type</td>
+                                            <td class="text-center">Medicare Description</td>
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="medicare in masterData.medicare">
+                                            <td class="text-center">{{medicare.medicareType}}</td>
+                                            <td class="text-center">{{medicare.medicareDescription}}</td>
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                  
+                    </script>
+                    
+                     <script type="text/ng-template" id="addmedicareType.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW MEDICARE TYPE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Medicare Type</label>
+                                    <input type="text" class="form-control" name="medicare_type"  placeholder="Enter medicare type" ng-model="masterData.medicareType" />
+                                     <p class="help-block" ng-show="masterDataForm.medicare_type.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.medicare_type.$error.pattern}">Medicare type should be text only</p> 
+                            </div>
+                            <div class="form-group">
+                                    <label>Medicare Description</label>
+                                    <input type="text" class="form-control" name="medicare_description" placeholder="Enter medicare description"  ng-model="masterData.medicareDescription" />
+                                      <p class="help-block" ng-show="masterDataForm.medicare_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.medicare_description.$error.pattern}">Medicare description should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="clearingHouse.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Clearing House </button>
+                        <br>
+                            <div > <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Company Name</td>
+                                            <td class="text-center">837 Claim </td>
+                                            <td class="text-center">Phone No.</td>
+                                            <td class="text-center">Website </td>
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="clearing in masterData.clearing">
+                                            <td class="text-center">{{clearing.companyName}}</td>
+                                            <td class="text-center">{{clearing.claim}}</td>
+                                            <td class="text-center">{{clearing.phone}}</td>
+                                            <td class="text-center">{{clearing.website}}</td>
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                  
+                    </script>
+                    
+                    <script type="text/ng-template" id="addclearingHouse.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW CLEARING HOUSE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Company Name</label>
+                                    <input type="text" class="form-control" name="company_name"  placeholder="Enter company name" ng-model="masterData.companyName" />
+                                     <p class="help-block" ng-show="masterDataForm.company_name.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.company_name.$error.pattern}">Company name should be text only</p> 
+                            </div>
+                            <div class=form-group>
+                                    <label>837 Claim</label>
+                                    <input type="text" class="form-control" name="claim"  placeholder="Enter claim "  ng-model="masterData.claim"/>
+                                     <p class="help-block" ng-show="masterDataForm.claim.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.claim.$error.pattern}">Claim should be text only</p> 
+                            </div>
+                            <div class=form-group>
+                                    <label>Phone No.</label>
+                                    <input type="text" class="form-control" name="phone"  placeholder="Enter phone number" ng-model="masterData.phone" ng-pattern="/^[0-9]*$/"/>
+                                     <p class="help-block" ng-show="masterDataForm.phone.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.phone.$error.pattern}">Phone number should be number only</p> 
+                            </div>
+                            <div class=form-group>
+                                    <label>Website </label>
+                                    <input type="text" class="form-control" name="website"  placeholder="Enter website" ng-model="masterData.website" />
+                                     <p class="help-block" ng-show="masterDataForm.website.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.website.$error.pattern}">Website should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="claimType.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Claim Type </button>
+                        <br>
+                             <div>  <br> 
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-center">Claim Name</td>
+                                            <td class="text-center">Claim Description</td>
+
+
+                                            <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="claim in masterData.claim">
+                                            <td class="text-center">{{claim.claimName}}</td>
+                                            <td class="text-center">{{claim.claimDescription}}</td>
+                                            <td ng-hide="readStatus" class="col-sm-1">
+                                              &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                              &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>                 
+                    </script>
+             
+                    
+                    <script type="text/ng-template" id="addclaimType.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW CLAIM TYPE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Claim Name</label>
+                                    <input type="text" class="form-control" name="claim_name"  placeholder="Enter claim name"  ng-model="masterData.claimName"/>
+                                    <p class="help-block" ng-show="masterDataForm.claim_name.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.claim_name.$error.pattern}">Claim name should be text only</p> 
+                            </div>
+                            <div class="form-group">
+                                    <label>Claim Description</label>
+                                    <input type="text" class="form-control" name="claim_description" placeholder="Enter claim description" ng-model="masterData.claimDescription"  />
+                                    <p class="help-block" ng-show="masterDataForm.claim_description.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.claim_description.$error.pattern}">Claim description should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    
+                    <script type="text/ng-template" id="identification.html">
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Identification </button>
+                            <br>
+                                <div>
+                                <br>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center">Identification Code</td>
+                                                <td class="text-center">Identification Name</td>
+                                                <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="identification in masterData.identification">                                            
+                                                <td class="text-center">{{identification.identificationCode}}</td>
+                                                <td class="text-center">{{identification.identificationName}}</td>
+
+                                                <td ng-hide="readStatus" class="col-sm-1">
+                                                  &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                                  &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>                 
+                    </script>
+                           
+                    <script type="text/ng-template" id="addidentification.html">
+                        
+                        <div class="modal-header">
+                                <h3>ADD IDENTIFICATION</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                <label>Identification Code</label>
+                                <input type="text" class="form-control" name="identification_code"  placeholder="Enter identification code" ng-model="masterData.identificationCode" />
+                                <p class="help-block" ng-show="masterDataForm.identification_code.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.identification_code.$error.pattern}">Identification code should be text only</p> 
+                            </div>
+
+                            <div class="form-group">
+                                <label>Identification Name</label>
+                                <input type="text" class="form-control" name="identification_name" placeholder="Enter identification name" ng-model="masterData.identificationName"  />
+                                <p class="help-block" ng-show="masterDataForm.identification_name.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.identification_name.$error.pattern}">Identification name should be text only</p> 
+                             </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    
+                     
+                    <script type="text/ng-template" id="defaultRate.html">
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"   ng-click="open()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Default Rate </button>
+                            <div>
+                               <br> 
+                                    <table class="table table-bordered">
+                                       <thead>
+                                           <tr>
+                                               <td class="text-center">Default Name</td>
+                                               <td class="text-center">Default Rate</td>
+                                               <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr ng-repeat="default in masterData.default">
+                                               <td class="text-center">{{default.defaultNmae}}</td>
+                                               <td class="text-center">{{default.defaultRate}}</td>
+                                               <td ng-hide="readStatus" class="col-sm-1">
+                                                 &nbsp;  <a   style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                                 &nbsp;  <a    style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                               </td>
+                                           </tr>
+                                       </tbody>
+                                    </table>
+                            </div>                 
+                    </script>
+             
+                    
+                    <script type="text/ng-template" id="adddefaultRate.html">
+                        <div class="modal-header">
+                            <h3>ADD NEW DEFAULT RATE</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class=form-group>
+                                    <label>Default Name</label>
+                                    <input type="text" class="form-control" name="default_name"  placeholder="Enter default name"  ng-model="masterData.defaultName"/>
+                                    <p class="help-block" ng-show="masterDataForm.default_name.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.default_name.$error.pattern}">Default name should be text only</p> 
+                            </div>
+                            <div class="form-group">
+                                    <label>Default Rate</label>
+                                    <input type="text" class="form-control" name="default_rate" placeholder="Enter default rate"  ng-model="masterData.defaultRate" />
+                                    <p class="help-block" ng-show="masterDataForm.default_rate.$error.pattern" ng-class="{ 'error_msg' : masterDataForm.default_rate.$error.pattern}">Default rate should be text only</p> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+            </div>
+        </div> 
+    </form>
+</div>    
+

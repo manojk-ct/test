@@ -1,0 +1,750 @@
+<div>
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>Affiliate Company</strong>
+                <span class="pull-right">
+                    <a ng-click="onClickAdd()" style="cursor: pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add Affiliate Company"></span> 
+                    </a>
+                </span>  
+            </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                    placeholder="Search..."
+                                    class="form-control"
+                                    ng-model="searchKeywords"
+                                    ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    Company Name
+                                    <span class="ti-angle-up"
+                                        data-ng-click=" order('companyName') "
+                                        data-ng-class="{active: row === 'companyName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                        data-ng-click=" order('-companyName') "
+                                        data-ng-class="{active: row === '-companyName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Company Type
+                                    <span class="ti-angle-up"
+                                        data-ng-click=" order('companyType') "
+                                        data-ng-class="{active: row === 'companyType'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                        data-ng-click=" order('-companyType') "
+                                        data-ng-class="{active: row === '-companyType'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>                          
+                                <div class="th">
+                                    Category
+                                    <span class="ti-angle-up"
+                                        data-ng-click=" order('category') "
+                                        data-ng-class="{active: row === 'category'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                        data-ng-click=" order('-category') "
+                                        data-ng-class="{active: row === '-category'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="company in currentPageAffiliatedCompany">
+                            <td>{{company.companyName }}</td>
+                            <td>{{company.companyType}}</td>
+                            <td>{{company.category}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteAffiliat($index)" zc-Confirm-Click="Are You sure want to delete affiliate" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                    ng-options="num for num in numPerPageOpt"
+                                    ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredFacilities.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true">
+                            </pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="page" ng-hide="currentTabMain">
+        <form name="affiliateCompanyForm" novalidate role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>
+                        <strong>{{page}} Affiliate Company</strong></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-8 col-lg-6">                                
+                                <div class="form-group">
+                                    <label class="col-md-4  col-sm-4 control-label">Company ID</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.company_id.$invalid && formValidStatus  }">
+                                        <input type="text"  class="form-control input-sm" name="company_id"  placeholder="Enter company id" ng-model="affiliat.companyId"  ng-pattern="" ng-readonly="readStatus" tabindex="1">
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Company Name</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{'has-error' : affiliateCompanyForm.company_name.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="company_name" placeholder="Enter company name" ng-model="affiliat.comapnyName"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Company Type</label>
+                                    <div class="dropdown col-sm-8   " ng-class="{ 'has-error' : affiliateCompanyForm.company_type.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="affiliat.companyType" name="company_type"  ng-readonly="readStatus" tabindex="3">
+                                            <option value="">---Please select---</option> 
+                                            <option value="yes">Type1</option>
+                                            <option value="no">Type1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                     <label   class="col-md-4  col-sm-4 control-label">Category</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.category.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="category"   placeholder="Enter category" ng-model="affiliat.category"  ng-readonly="readStatus" tabindex="4">
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">POS</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.pos.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="5" name="pos" ng-model="affiliat.pos">
+                                            <option value="">---Please select---</option>
+                                            <option value="">POS 1</option>
+                                            <option value="">POS 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                     <label   class="col-md-4  col-sm-4 control-label">NPI*</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.npi.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="npi"   placeholder="Enter NPI" ng-model="affiliat.npi" required="" ng-readonly="readStatus" tabindex="6">
+                                            <p class="help-block" ng-show="affiliateCompanyForm.npi.$error.required && affiliateCompanyForm.npi.$dirty">NPI is required</p>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Default Medicare</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.default_medicare.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="7" name="default_medicare" ng-model="affiliat.defaultMedicareLIstValueId">
+                                            <option value="">---Please select---</option>
+                                            <option value="">Option 1</option>
+                                            <option value="">Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Default Medicaid</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.default_medicaid.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" tabindex="8" name="default_medicaid" ng-model="affiliat.defaultMedicaId">
+                                            <option value="">---Please select---</option>
+                                            <option value="">Option 1</option>
+                                            <option value="">Option 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Federal Tax ID</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.federal_tax_id.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm"  name="federal_tax_id"  placeholder="Enter federal tax id" ng-model="affiliat.fedralTaxId"  ng-readonly="readStatus" tabindex="9">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">   
+                                <div class="form-group" >
+                                     <label   class="col-md-4  col-sm-4 control-label">Federal Drug ID</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.federal_drug_id.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="federal_drug_id"   placeholder="Enter drug id" ng-model="affiliat.fedralDrugsId"  ng-readonly="readStatus" tabindex="10" ng-pattern="/^[0-9]*$/">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.federal_drug_id.$error.pattern" ng-class="{ 'error_msg' : affiliateCompanyForm.federal_drug_id.$error.pattern}">Federal drug id should be number only</p>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Rendering Provider</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.rendering_provider.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm"  name="rendering_provider"  placeholder="Enter rendering provider" ng-model="affiliat.renderingProvider"  ng-pattern="" ng-readonly="readStatus" tabindex="11">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">   
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">UPIN</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.upin.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="upin"   placeholder="Enter UPIN" ng-model="affiliat.upin" ng-readonly="readStatus" tabindex="12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                 <div class="form-group" >
+                                     <label class="col-md-4  col-sm-4 control-label">Stat Time</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.stat_time.$invalid && formValidStatus }">
+                                        <input type="time" class="form-control input-sm"  name="stat_time"  ng-model="affiliat.statTime" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="13">
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">   
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Non Stat Time</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.non_stat_time.$invalid && formValidStatus }">
+                                        <input type="time" class="form-control input-sm" name="non_stat_time" ng-model="affiliat.nonStatTime"  ng-readonly="readStatus" tabindex="14">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Sign on File</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.sign_on_file.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="affiliat.signOnFile" name="sign_on_file" ng-readonly="readStatus" tabindex="15">
+                                            <option value="">---Please select---</option> 
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">   
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Print Bill Date</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.print_bill_date.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="affiliat.isPrintBillDate" name="print_bill_date" ng-readonly="readStatus" tabindex="16">
+                                        <option value="">---Please select---</option> 
+<!--                                        <option value="yes"></option>
+                                        <option value="no">No</option>-->
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Follow Workflow</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.follow_workflow.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="affiliat.isFollowWorkflow" name="follow_workflow" ng-readonly="readStatus" tabindex="17">
+                                            <option value="">---Please select---</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">More than two trip</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.two_trips.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="affiliat.isMoreThanTwoTrip" name="two_trips" ng-readonly="readStatus" tabindex="18">
+                                        <option value="">---Please select---</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                     <label class="col-md-4  col-sm-4 control-label">My Charge</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.my_charge.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm"  name="my_charge"  placeholder="Enter my charge" ng-model="affiliat.charges" ng-pattern="" ng-readonly="readStatus" tabindex="19">
+                                     </div>
+                                </div>
+                            </div>                        
+                            <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Scheduled Type</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.type1.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" tabindex="20" name="type1" ng-model="affiliat.chargesType">
+                                        <option value="">---Please select---</option>
+                                        <option value="scheduled">Scheduled</option>
+                                        <option value="nonscheduled">Non Scheduled</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Discount Charge</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.discount_charge.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm"  name="discount_charge"  placeholder="Enter discount charge" ng-model="affiliat.discount"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="21">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.discount_charge.$error.pattern" ng-class="{ 'error_msg' : affiliateCompanyForm.discount_charge.$error.pattern}">Discount charge should be number only</p>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="col-sm-8 col-lg-6"> 
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Facility Type</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.type2.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" tabindex="22" name="type2" ng-model="affiliat.discountType">
+                                        <option value="">---Please select---</option>
+                                        <option value="scheduled">Facility</option>
+                                        <option value="nonscheduled">Non Facility</option>
+                                    </select>
+                                    </div>
+                                </div> 
+                            </div>    
+                        </div>    
+                        <div class="row">
+                            <h4 > <strong> &nbsp; Contact Details</strong></h4>
+                            <hr/>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label  class="col-md-4  col-sm-4 control-label">Address Line1*</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.address_line1.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="address_line1" placeholder="Enter address line1" ng-model="affiliat.contactAddressLine1" required="" ng-pattern="" ng-readonly="readStatus" tabindex="23">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.address_line1.$error.required && affiliateCompanyForm.address_line1.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.address_line1.$error.required }">Address line1 is required</p>
+                                    </div>
+                                </div>
+                            </div>   
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">Address Line2</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_address_line2.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="address_line2" placeholder="Enter address line2" ng-model="affiliat.contactAddressLine2"  ng-pattern="" ng-readonly="readStatus" tabindex="24">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">                              
+                                <div class="form-group">
+                                     <label  class="col-md-4  col-sm-4 control-label">City*</label>
+                                     <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_city.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_city" placeholder="Enter city" ng-model="affiliat.contactCity" required="" ng-pattern="" ng-readonly="readStatus" tabindex="25">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_city.$error.required && affiliateCompanyForm.contact_city.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_city.$error.required }">City is required</p>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label class="col-md-4  col-sm-4 control-label">Zip Code*</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_zip_code.$invalid && formValidStatus }">
+                                        <input name="contact_zip_code" type="text"  class="form-control input-sm" ng-model="affiliat.contactZipCode" ng-pattern="/^[A-Za-z0-9]*$/" required="" ng-readonly="readStatus" placeholder="Enter zip code" tabindex="26">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_zip_code.$error.required && affiliateCompanyForm.contact_zip_code.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_zip_code.$error.required }">Zip code is required</p>
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">                                
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Country*</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_country.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="affiliat.contactCountryId" name="contact_country" required="" ng-readonly="readStatus" ng-change="GetServiceStates()"  tabindex="27">
+                                            <option value="">---Please select---</option>
+                                            <option value="">US</option>
+                                            <option value="">UK</option>
+                                        </select>
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_country.$error.required && affiliateCompanyForm.contact_country.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_country.$error.required }">Country is required</p> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group" >
+                                    <label   class="col-md-4  col-sm-4 control-label">State/Province*</label>
+                                    <div class="dropdown col-sm-8 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_state_province.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="affiliat.contactStateId" name="contact_state_province" required="" ng-readonly="readStatus" tabindex="28">
+                                            <option value="">---Please select---</option>
+                                            <option value="">State1</option> 
+                                            <option value="">State2</option> 
+                                        </select>
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_state_province.$error.required && affiliateCompanyForm.contact_state_province.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_state_province.$error.required }">State is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Phone No.1*</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_phone_number1.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_phone_number1" placeholder="Enter phone number1" ng-model="affiliat.contactLineLand1" required="" ng-readonly="readStatus" tabindex="29" ng-pattern="/^[0-9]*$/">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_phone_number1.$error.required && affiliateCompanyForm.contact_phone_number1.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_phone_number1.$error.required }">Phone number1 is required</p>
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_phone_number1.$error.pattern" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_phone_number1.$error.pattern}">Phone number1 should be number only</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Extension</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.extension.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="extension" placeholder="Enter extension" ng-model="affiliat.extension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="30">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Mobile No.</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_mobile_no.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_mobile_no" placeholder="Enter mobile number" ng-model="affiliat.mobileNo" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="31">
+                                       
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group">
+                                    <label   class="col-md-4  col-sm-4 control-label">Fax No.</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_fax_no.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_fax_no" placeholder="Enter fax number" ng-model="affiliat.faxId"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="32">
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="col-sm-8 col-lg-6">
+                                <div class="form-group"> 
+                                    <label   class="col-md-4  col-sm-4 control-label">Email Id*</label>
+                                    <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.contact_email_id.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_email_id" placeholder="Enter email address" ng-model="affiliat.emailId" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="33">
+                                        <p class="help-block" ng-show="affiliateCompanyForm.contact_email_id.$error.required && affiliateCompanyForm.contact_email_id.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_email_id.$error.required }">Email id is required</p>
+                                        <p classcmd="help-block" ng-show="affiliateCompanyForm.contact_email_id.$error.email" ng-class="{ 'error_msg' : affiliateCompanyForm.contact_email_id.$error.email}">Invalid email address</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        
+                            <h4 > &nbsp;<strong>  </strong></h4>
+                            <div class="col-sm-4">                                
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="panel with-nav-tabs panel-primaryy">
+                                    <div class="panel-headin">
+                                        <ul id="myTab" class="nav nav-tabs nav-justified" role="tablist">
+                                            <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.url)}">
+                                                <a role="tab" data-toggle="tab" style="cursor:pointer" 
+                                                     ng-click="onClickTab (tab)">{{tab.title}} 
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="col-sm-4">
+                            </div>
+                            <div id="mainView">
+                                <div ng-include="currentTab"></div>
+                            </div> 
+                     
+                        <br/> <br/><br/><br/>
+                        <div class="text-right">
+                            <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                            <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(affiliateCompanyForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                            <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/ng-template" id="receiver.html">                        
+        <br>
+        <br>
+         <div class="form-horizontal">
+            <div class="row">
+                <div class="panel-heading">
+                    <strong>&nbsp; &nbsp; Receiver </strong>                
+                </div> 
+                <hr>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Symbolic Id</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.symblolic_id.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="symblolic_id"  placeholder="Enter symbolic id"  ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.receiverSymbolicId" tabindex="33">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Full Name*</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_full_name.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_full_name"  placeholder="Enter full name"  ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus" ng-model="affiliat.receiverFullName" tabindex="34" required="">
+                            <p class="help-block" ng-show="affiliateCompanyForm.receiver_full_name.$error.required && affiliateCompanyForm.receiver_full_name.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.receiver_full_name.$error.required }">Full name is required</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="panel-heading">
+                    <strong style="align= left">&nbsp; &nbsp; Submitter </strong>                
+                </div> 
+                <hr>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Submitter Id</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.submitter_id.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="submitter_id"  placeholder="Enter submitter id"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.submitterId" tabindex="35">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Entity Name</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_entity_name.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_entity_name"  placeholder="Enter entity name"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.submitterEntityName" tabindex="36">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">First Name*</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_first_name.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_first_name"  placeholder="Enter first name" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.submitterFirstName" tabindex="37" required="">
+                            <p class="help-block" ng-show="affiliateCompanyForm.receiver_first_name.$error.required && affiliateCompanyForm.receiver_first_name.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.receiver_first_name.$error.required }">First name is required</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Middle Name</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_middle_name.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_middle_name"  placeholder="Enter middle name" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.submitterMiddleName" tabindex="38">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Last Name*</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_last_name.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_last_name"  placeholder="Enter last name" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.submitterLastName" tabindex="39" required="">
+                            <p class="help-block" ng-show="affiliateCompanyForm.receiver_last_name.$error.required && affiliateCompanyForm.receiver_last_name.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.receiver_last_name.$error.required }">Last name is required</p>
+                        </div>
+                    </div>
+                </div>                
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Phone No.*</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_phone_no.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_phone_no"  placeholder="Enter phone number" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.submitterPhone" tabindex="40" required="">
+                            <p class="help-block" ng-show="affiliateCompanyForm.receiver_phone_no.$error.required && affiliateCompanyForm.receiver_phone_no.$dirty" ng-class="{ 'error_msg' : affiliateCompanyForm.receiver_phone_no.$error.required }">Phone number is required</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Extension</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_extension.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_extension" placeholder="Enter phone extension" ng-model="affiliat.receiverExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="41">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Fax No.</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_fax.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_fax"  placeholder="Enter fax number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.submitterFax" tabindex="42">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Email Id</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.receiver_email.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="receiver_email"  placeholder="Enter email address" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.submitterEmail" tabindex="43">
+                            <p classcmd="help-block" ng-show="affiliateCompanyForm.receiver_email.$error.email" ng-class="{ 'error_msg' : affiliateCompanyForm.receiver_email.$error.email}">Invalid email address</p>
+                        </div>
+                    </div>
+                </div>             
+            </div> 
+        </div>
+     </script>
+    <script type="text/ng-template" id="settings.html">                           
+        <div class="form-horizontal">
+            <div class="row">
+            <br/>
+                <div class="col-sm-8 col-lg-6">                
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Primary Batch Code</label>
+                        <div class="col-md-8 col-sm-7 "  ng-class="{ 'has-error' : affiliateCompanyForm.primary_batch_code.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="primary_batch_code"  placeholder="Enter primary batch code"  ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.primaryBatchCode" tabindex="33">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Primary Batch</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.primary_batch.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="primary_batch"  placeholder="Enter primary batch"  ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus" ng-model="affiliat.primaryBatchNumber" tabindex="34">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Secondary Batch Code</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.secondary_batch_code.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="secondary_batch_code"  placeholder="Enter secondary batch code"   ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.secondaryBatchCode" tabindex="35">
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Secondary Batch</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.secondary_batch.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="secondary_batch"  placeholder="Enter secondary batch"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.secondaryBatchNumber" tabindex="36">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Tertiary Batch Code</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.tertiary_batch_code.$invalid && formValidStatus }">
+                             <input type="text" class="form-control input-sm" name="tertiary_batch_code"  placeholder="Enter tertiary batch code" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.teriataryBatchCode" tabindex="37">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Tertiary Batch</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.tertiary_batch.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="tertiary_batch"  placeholder="Enter tertiary batch" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.teriataryBatchNumber" tabindex="38">
+                         </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Patient Invoice Code</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.patient_invoice_code.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="patient_invoice_code"  placeholder="Enter patient invoice code" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.patientInvoiceCode" tabindex="39">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Patient Invoice</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.patient_invoice.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="patient_invoice"  placeholder="Enter patient invoice" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.patientInvoiceNumber" tabindex="40">
+                        </div>
+                   </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">PPS Invoice Code</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.pps_invoice_code.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="pps_invoice_code"  placeholder="Enter PPS invoice code" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.pspInvoiceCode" tabindex="41">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">PPS Invoice</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.pps_invoice.$invalid && formValidStatus }">
+                             <input type="text" class="form-control input-sm" name="pps_invoice"  placeholder="Enter PPS invoice" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.ppsInvoiceNumber" tabindex="42">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Patient Payment Term</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.patient_payment_term.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="patient_payment_term"  placeholder="Enter patient payment term" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.patientPaymentTerm" tabindex="43">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Provider ID</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.provider_id.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="provider_id"  placeholder="Enter provider ID" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.providerId" tabindex="44">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Insurance Carry Forward</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.insurance_carry_forward.$invalid && formValidStatus }">
+                             <input type="text" class="form-control input-sm" name="insurance_carry_forward"  placeholder="Enter insurence carry forward" ng-pattern="" ng-readonly="readStatus" ng-model="affiliat.insuranceCarryForward" tabindex="45">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Clearing House</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.clearing_house.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="clearing_house"  placeholder="Enter clearing house" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.clearingHouse" tabindex="46">
+                         </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Format</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.format.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="format"  placeholder="Enter format" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.format" tabindex="47">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Form</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.from.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="from"  placeholder="Enter form" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.form" tabindex="48">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Clia Number</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.clia_number.$invalid && formValidStatus }">
+                            <input type="text" value="34D" class="form-control input-sm" name="clia_number"  placeholder="Enter CLIA number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.clia" tabindex="49">
+                            <p class="help-block" ng-show="affiliateCompanyForm.clia_number.$error.pattern" ng-class="{ 'error_msg' : affiliateCompanyForm.clia_number.$error.pattern}">CLIA no should be number only</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 col-lg-6">
+                    <div class="form-group">
+                        <label   class="col-md-4  col-sm-4 control-label">Charge Type</label>
+                        <div class="col-md-8 col-sm-7 " ng-class="{ 'has-error' : affiliateCompanyForm.charge_type.$invalid && formValidStatus }">
+                            <input type="text" class="form-control input-sm" name="charge_type"  placeholder="Enter charge type" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="affiliat.chargeType" tabindex="50">
+                         </div>
+                    </div>
+                </div>    
+            </div> 
+        </div>  
+    </script>
+</div>

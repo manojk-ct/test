@@ -1,0 +1,389 @@
+<div class="page">
+    <form name="tenantForm">    
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong> {{page}} Tenant</strong></h3> </div>
+            <div class="panel-body">
+                <div class="row">
+                    <h4> <strong> &nbsp; Primary Details </strong></h4>
+                        <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Tenant Name*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.name.$invalid && formValidStatus }">
+                                    <input tabindex="1" type="text" class="form-control input-sm" name="name"  placeholder="Enter tenant name" ng-model="tenant.tenant_name" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.name.$error.required && tenantForm.name.$dirty" ng-class="{ 'error_msg' : tenantForm.name.$error.required }">Tenant name is required</p>
+                                    <p class="help-block" ng-show="tenantForm.name.$error.pattern" ng-class="{ 'error_msg' : tenantForm.name.$error.pattern}">Tenant name should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Address Line1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.addressline1.$invalid && formValidStatus }">
+                                    <input tabindex="3" type="text" class="form-control input-sm" name="addressline1" placeholder="Enter address line1" ng-model="tenant.address_line1" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.addressline1.$error.required && tenantForm.addressline1.$dirty" ng-class="{ 'error_msg' : tenantForm.addressline1.$error.required }">Address line1 is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">City*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.city.$invalid && formValidStatus }">
+                                    <input tabindex="5" type="text" class="form-control input-sm" name="city" placeholder="Enter city" ng-model="tenant.city" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.city.$error.required && tenantForm.city.$dirty" ng-class="{ 'error_msg' : tenantForm.city.$error.required }">City is required</p>
+                                    <p class="help-block" ng-show="tenantForm.city.$error.pattern" ng-class="{ 'error_msg' : tenantForm.city.$error.pattern}">City should be text only</p>
+                                </div>
+                            </div>
+                           <div class="form-group">
+                                    <label   class="col-sm-3 control-label">Country*</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : tenantForm.country.$invalid && formValidStatus }">
+                                        <select tabindex="7" class="form-control input-sm" ng-model="tenant.country" name="country" required="" ng-readonly="readStatus" ng-change="GetStates()" ng-options="country.country_id as country.country_name for country in countryService.countries"> 
+                                            <option value="">---Please select---</option>
+                                            <!--<option ng-repeat="country in countries">{{country}}</option>-->
+                                        </select>
+                                        <p class="help-block" ng-show="tenantForm.country.$error.required && tenantForm.country.$dirty" ng-class="{ 'error_msg' : tenantForm.country.$error.required }">Country is required</p>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label">Service Start Date*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.sss.$invalid && formValidStatus }" required="" ng-readonly="readStatus">
+                                    <div class="input-group ui-datepicker ">
+                                              <input tabindex="9" type="text" 
+                                                     class="form-control input-sm"
+                                                     datepicker-popup="{{format}}"
+                                                     ng-model="tenant.service_start_date"
+                                                     is-open="openedssd"
+                                                     min="minDate"
+                                                     max="'2015-06-22'"
+                                                     datepicker-options="dateOptions" 
+                                                     date-disabled="disabled(date, mode)"
+                                                     ng-required="true" 
+                                                     close-text="Close" name="sss">
+                                              <span class="input-group-addon" ng-click="openssd($event)"><i class="ti-calendar"></i></span>
+                                    </div>
+                                    <p class="help-block" ng-show="tenantForm.sss.$error.required && tenantForm.sss.$dirty" ng-class="{ 'error_msg' : tenantForm.sss.$error.required }">Service Start Date is required</p>
+                                </div>    
+                            </div>
+                        </div>
+                        
+                    </div> 
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                             <div class="form-group">
+                                <label   class="col-sm-3 control-label">Tenant Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.tenantcode.$invalid && formValidStatus }">
+                                    <input tabindex="2" type="text" class="form-control input-sm" name="tenantcode" placeholder="Enter tenant code" ng-model="tenant.tenant_code" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.tenantcode.$error.required && tenantForm.tenantcode.$dirty" ng-class="{ 'error_msg' : tenantForm.tenantcode.$error.required }">Tenant code is required</p>
+                                    <p class="help-block" ng-show="tenantForm.tenantcode.$error.pattern" ng-class="{ 'error_msg' : tenantForm.tenantcode.$error.pattern}">Tenant code should consist of text and number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Address Line2</label>
+                                <div class="col-sm-8">
+                                        <input  tabindex="4" type="text" class="form-control input-sm" name="addressline2" placeholder="Enter address line2" ng-model="tenant.address_line2" ng-readonly="readStatus">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Zip Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.zipcode.$invalid && formValidStatus }">
+                                    <input tabindex="6" type="text" name="zipcode" class="form-control input-sm"   placeholder="Enter zip code" ng-model="tenant.zipcode" required="" ng-pattern="/^[a-zA-z0-9\s]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.zipcode.$error.required && tenantForm.zipcode.$dirty" ng-class="{ 'error_msg' : tenantForm.zipcode.$error.required }">Zip code is required</p>
+                                    <p class="help-block" ng-show="tenantForm.zipcode.$error.pattern" ng-class="{ 'error_msg' : tenantForm.zipcode.$error.pattern}">Zip code should be number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">State*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : tenantForm.state.$invalid && formValidStatus }">
+                                    <select tabindex="8" class="form-control input-sm" name="state" ng-model="tenant.state" required="" ng-options="state.state_id as state.state_name for state in states" ng-readonly="readStatus">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option  ng-options="state.state_name for state in billingStates "-->
+                                        <!--<option ng-repeat="state in states">{{state.state_name}}</option>-->
+                                    </select>
+                                    <p class="help-block" ng-show="tenantForm.state.$error.required && tenantForm.state.$dirty" ng-class="{ 'error_msg' : tenantForm.state.$error.required }">State is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label">Service Valid Upto*</label>                               
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.svu.$invalid && formValidStatus }" required="" ng-readonly="readStatus">
+                                    <div class="input-group ui-datepicker">
+                                              <input tabindex="10" type="text" 
+                                                     class="form-control input-sm"
+                                                     datepicker-popup="{{format}}"
+                                                     ng-model="tenant.service_valid_upto"
+                                                     is-open="openedsvu"
+                                                     min="minDate"
+                                                     max="'2015-06-22'"
+                                                     datepicker-options="dateOptions" 
+                                                     date-disabled="disabled(date, mode)"
+                                                     ng-required="true" 
+                                                     close-text="Close" name="svu">
+                                              <span class="input-group-addon" ng-click="opensvu($event)"><i class="ti-calendar"></i></span>
+                                    </div>  
+                                    <p class="help-block" ng-show="tenantForm.svu.$error.required && tenantForm.svu.$dirty" ng-class="{ 'error_msg' : tenantForm.svu.$error.required }">Service Valid Upto is required</p>
+                                </div>    
+                            </div>
+                            
+                        </div>    
+                    </div> 
+                </div>   
+                <div class="row">
+                    <h4> <strong>  &nbsp; Contact Details  </strong></h4>
+                            <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Phone No.1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.phone1.$invalid && formValidStatus }">
+                                    <input tabindex="11" type="text" name="phone1" class="form-control input-sm"    placeholder="Enter phone number1" ng-model="tenant.landline1" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.phone1.$error.required && tenantForm.phone1.$dirty" ng-class="{ 'error_msg' : tenantForm.phone1.$error.required }">Phone number1 is required</p>
+                                    <p class="help-block" ng-show="tenantForm.phone1.$error.pattern" ng-class="{ 'error_msg' : tenantForm.phone1.$error.pattern}">Phone number1 should be number only</p>
+                                </div>
+                            </div>
+                           
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Mobile </label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.mobilenumber.$invalid && formValidStatus }">
+                                    <input tabindex="13" type="text" class="form-control input-sm" name="mobilenumber"   placeholder="Enter mobile number" ng-model="tenant.mobile_number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.mobilenumber.$error.pattern" ng-class="{ 'error_msg' : tenantForm.mobilenumber.$error.pattern}">Mobile number should be number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Fax No.</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.faxnumber.$invalid && formValidStatus }">
+                                    <input tabindex="15" type="text" class="form-control input-sm"  name="faxnumber"  placeholder="Enter fax number" ng-model="tenant.fax_number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.faxnumber.$error.pattern" ng-class="{ 'error_msg' : tenantForm.faxnumber.$error.pattern}">Fax number should be number only</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Phone No.2</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.phone2.$invalid && formValidStatus }">
+                                    <input tabindex="12" type="text" class="form-control input-sm" name="phone2" placeholder="Enter phone number2" ng-model="tenant.landline2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="tenantForm.phone2.$error.pattern" ng-class="{ 'error_msg' : tenantForm.phone2.$error.pattern}">Phone number2 should be number only</p>
+                                </div>
+                            </div>
+                           
+                           <div class="form-group">
+                                    <label   class="col-sm-3 control-label">Email Id*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.email_id.$invalid && formValidStatus }">
+                                        <input tabindex="13" type="email" class="form-control input-sm" name="email_id" placeholder="Enter email address" ng-model="tenant.email_id" required="" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="tenantForm.email_id.$error.required && tenantForm.email_id.$dirty" ng-class="{ 'error_msg' : tenantForm.email_id.$error.required }">Email id is required</p>
+                                        <p classcmd="help-block" ng-show="tenantForm.email_id.$error.email" ng-class="{ 'error_msg' : tenantForm.email_id.$error.email}">Invalid email address</p>
+                                    </div>
+                                </div>
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Status*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : tenantForm.status.$invalid && formValidStatus }">
+                                    <select tabindex="16" class="form-control input-sm" name="status" ng-model="tenant.status" ng-options="status for status in status" required="" ng-readonly="readStatus">
+                                        <option value=""ng-selected="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                    <p class="help-block" ng-show="tenantForm.status.$error.required && tenantForm.status.$dirty" ng-class="{ 'error_msg' : tenantForm.status.$error.required }">Status is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row">
+                        <h4 > &nbsp;<strong> Official Contact Details </strong></h4>
+        
+                            <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-pills nav-responsive" role="tablist">
+                                    <li ng-repeat="tab in tabs"  ng-class="{active:isActiveTab(tab.url)}" >
+                                        <a role="tab" data-toggle="tab" style="cursor:pointer"   
+                                           ng-click="onClickTab(tab)">{{tab.title}} 
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="mainView">
+                                <div ng-include="currentTab"></div>
+                            </div>
+                        <script type="text/ng-template" id="owner.html">
+                        <div class="row">
+                            <hr/>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">First Name</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.owner_firstname.$invalid && formValidStatus }">
+                                            <input tabindex="17"  type="text" class="form-control input-sm" name="owner_firstname"  placeholder="Enter owner's firstname" ng-model="tenant.owner_firstName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_firstname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.owner_firstname.$error.pattern}">Firstname should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone No.1</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': tenantForm.owner_phone1.$invalid && formValidStatus }">
+                                            <input tabindex="19" type="text" class="form-control input-sm" name="owner_phone1"  placeholder="Enter owner's phone number1"  ng-model="tenant.owner_landline1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_phone1.$error.pattern" ng-class="{ 'error_msg' : tenantForm.owner_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Mobile </label>
+                                        <div class="col-sm-8" ng-class="{'has-error': tenantForm.owner_mobile.$invalid && formValidStatus }">
+                                            <input tabindex="21" type="text" class="form-control input-sm" name="owner_mobile"  placeholder="Enter owner's mobile number"  ng-model="tenant.owner_mobileNumber" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_mobile.$error.pattern" ng-class="{ 'error_msg' : tenantForm.owner_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Last Name</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error': tenantForm.owner_lastname.$invalid && formValidStatus }">
+                                            <input tabindex="18" type="text" class="form-control input-sm" name="owner_lastname"  placeholder="Enter owner's lastname" ng-model="tenant.owner_lastName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_lastname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.owner_lastname.$error.pattern}">Last name should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone No.2</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': tenantForm.owner_phone2.$invalid && formValidStatus }">
+                                            <input tabindex="20" type="text" class="form-control input-sm" name="owner_phone2"  placeholder="Enter owner's phone number2"   ng-model="tenant.owner_landline2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_phone2.$error.pattern" ng-class="{ 'error_msg' : tenantForm.owner_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+
+                                        <label   class="col-sm-3 control-label">Email Id</label>
+                                        <div  class="col-sm-8" class="col-sm-8" ng-class="{ 'has-error' : tenantForm.owner_email_id.$invalid && formValidStatus }">
+                                            <input tabindex="22" type="email" class="form-control input-sm" name="owner_email_id" placeholder="Enter owner's email address"  ng-model="tenant.owner_emailId" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.owner_email_id.$error.email" ng-class="{ 'error_msg' : tenantForm.owner_email_id.$error.email}">Invalid email address</p>
+                                        </div>
+                                    </div>
+
+                                </div>    
+                            </div> 
+                        </div>  
+                        </script>
+                        <script type = "text/ng-template" id = "administrator.html" >
+                        <div class="row">
+                            <hr/>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">First Name</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.administrator_firstname.$invalid && formValidStatus }">
+                                            <input tabindex="23" type="text" class="form-control input-sm" name="administrator_firstname"  placeholder="Enter administrator's firstname" ng-model="tenant.administrator_firstName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.administrator_firstname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.administrator_firstname.$error.pattern}">Firstname should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone No.1</label>
+                                        <div  class="col-sm-8"  ng-class="{'has-error': tenantForm.administrator_phone1.$invalid && formValidStatus }">
+                                            <input tabindex="25" type="text" class="form-control input-sm" name="administrator_phone1"  placeholder="Enter administrator's  phone number1"  ng-model="tenant.administrator_landline1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                           <p class="help-block" ng-show="tenantForm.administrator_phone1.$error.pattern" ng-class="{ 'error_msg' : tenantForm.administrator_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Mobile</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.administrator_mobile.$invalid && formValidStatus }">
+                                            <input  tabindex="27" type="text" class="form-control input-sm" name="administrator_mobile"  placeholder="Enter administrator's mobile number"  ng-model="tenant.administrator_mobileNumber" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.administrator_mobile.$error.pattern" ng-class="{ 'error_msg' : tenantForm.administrator_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Last Name</label>
+                                        <div  class="col-sm-8" ng-class="{ 'has-error': tenantForm.administrator_lastname.$invalid && formValidStatus }">
+                                            <input tabindex="24" type="text" class="form-control input-sm" name="administrator_lastname"  placeholder="Enter administrator's lastname" ng-model="tenant.administrator_lastName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.administrator_lastname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.administrator_lastname.$error.pattern}">Lastname should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone No.2</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.administrator_phone2.$invalid && formValidStatus }">
+                                            <input tabindex="26" type="text" class="form-control input-sm" name="administrator_phone2"  placeholder="Enter administrator's phone number2"   ng-model="tenant.administrator_landline2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.administrator_phone2.$error.pattern" ng-class="{ 'error_msg' : tenantForm.administrator_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+
+                                        <label   class="col-sm-3 control-label">Email Id</label>
+                                        <div  class="col-sm-8" ng-class="{ 'has-error' : tenantForm.administrator_email_id.$invalid && formValidStatus }">
+                                            <input tabindex="28" type="email" class="form-control input-sm" name="administrator_email_id" placeholder="Enter administrator's email address" ng-model="tenant.administrator_emailId" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.administrator_email_id.$error.email" ng-class="{ 'error_msg' : tenantForm.administrator_email_id.$error.email}">Invalid email address</p>
+                                        </div>
+                                    </div>
+
+                                </div>    
+                            </div> 
+                        </div> 
+                        </script>
+                        <script type = "text/ng-template" id = "supervisor.html" >
+                        <div class="row">
+                            <hr/>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">First Name</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.supervisor_firstname.$invalid && formValidStatus }">
+                                            <input tabindex="29" type="text" class="form-control input-sm" name="supervisor_firstname"  placeholder="Enter supervisor's firstname" ng-model="tenant.supervisor_firstName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_firstname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.supervisor_firstname.$error.pattern}">Firstname should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone No.1</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.supervisor_phone1.$invalid && formValidStatus }">
+                                            <input tabindex="31" type="text" class="form-control input-sm" name="supervisor_phone1"  placeholder="Enter supervisor's phone number1" ng-model="tenant.supervisor_landline1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_phone1.$error.pattern" ng-class="{ 'error_msg' : tenantForm.supervisor_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group"> 
+                                        <label   class="col-sm-3 control-label">Mobile</label>
+                                        <div  class="col-sm-8"  ng-class="{'has-error': tenantForm.supervisor_mobile.$invalid && formValidStatus }">
+                                            <input tabindex="33" type="text" class="form-control input-sm" name="supervisor_mobile"  placeholder="Enter supervisor's mobile number"  ng-model="tenant.supervisor_mobileNumber" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_mobile.$error.pattern" ng-class="{ 'error_msg' : tenantForm.supervisor_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Last Name</label>
+                                        <div  class="col-sm-8" ng-class="{ 'has-error': tenantForm.supervisor_lastname.$invalid && formValidStatus }">
+                                            <input tabindex="30" type="text" class="form-control input-sm" name="supervisor_lastname"  placeholder="Enter supervisor's lastname" ng-model="tenant.supervisor_lastName" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_lastname.$error.pattern" ng-class="{ 'error_msg' : tenantForm.supervisor_lastname.$error.pattern}">Lastname should be text only</p> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label   class="col-sm-3 control-label">Phone no.2</label>
+                                        <div  class="col-sm-8" ng-class="{'has-error': tenantForm.supervisor_phone2.$invalid && formValidStatus }">
+                                            <input tabindex="32" type="text" class="form-control input-sm" name="supervisor_phone2"  placeholder="Enter supervisor's phone number2"   ng-model="tenant.supervisor_landline2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_phone2.$error.pattern" ng-class="{ 'error_msg' : tenantForm.supervisor_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" >
+
+                                        <label   class="col-sm-3 control-label">Email Id</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : tenantForm.supervisor_email_id.$invalid && formValidStatus }">
+                                            <input tabindex="34" type="email" class="form-control input-sm" name="supervisor_email_id" placeholder="Enter supervisor's email address"  ng-model="tenant.supervisor_emailId" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="tenantForm.supervisor_email_id.$error.email" ng-class="{ 'error_msg' : tenantForm.supervisor_email_id.$error.email}">Invalid email address</p>
+                                        </div>
+                                    </div>
+
+                                </div>    
+                            </div> 
+                        </div> 
+                        </script>
+                </div>
+                <br/>
+                <div class="text-right">              
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="manageTenant" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                    <button class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(tenantForm.$valid)" ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> Submit</button>
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-info pull-right" ui-sref="manageTenant" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+        

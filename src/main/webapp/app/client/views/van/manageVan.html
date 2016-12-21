@@ -1,0 +1,218 @@
+<div>
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>Van</strong> 
+                <span class="pull-right">
+                    <a ng-click="onClickAdd()" style="cursor:pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add Van"></span> 
+                    </a>
+                </span>  
+            </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                                <form>
+                                    <input type="text"
+                                           placeholder="Search..."
+                                           class="form-control"
+                                           ng-model="searchKeywords"
+                                           ng-keyup="search()">
+                                </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    Van No
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('vanNumber') "
+                                          data-ng-class="{active: row === 'vanNumber'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-vanNumber') "
+                                          data-ng-class="{active: row === '-vanNumber'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                               
+                               <div class="th">
+                                    Current Location
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('currentLocation') "
+                                          data-ng-class="{active: row === 'currentLocation'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-currentLocation') "
+                                          data-ng-class="{active: row === '-currentLocation'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    From Time
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('fromTime') "
+                                          data-ng-class="{active: row === 'fromTime'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-fromTime') "
+                                          data-ng-class="{active: row === '-fromTime'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    To Time
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('toTime') "
+                                          data-ng-class="{active: row === 'toTime'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-toTime') "
+                                          data-ng-class="{active: row === '-toTime'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr ng-repeat="van in currentPageVans">
+                                <td>{{van.vanNumber }}</td>
+                                <td>{{van.currentLocation}}</td>
+                                <td>{{van.fromTime}}</td>
+                                <td>{{van.toTime}}</td>
+                                <td class="col-md-1"> 
+                                    <a  class="" ng-click="onClickEdit($index)" style="cursor:pointer"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                    &nbsp; <a  class="" ng-click="deleteVan($index)" zc-Confirm-Click="Are You sure want to delete van" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                    &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor:pointer"> <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                                </td>                      
+                            </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                    <select ng-model="numPerPage"
+                                            ng-options="num for num in numPerPageOpt"
+                                            ng-change="onNumPerPageChange()">
+                                    </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            ng-model="currentPage"
+                                            total-items="filteredVans.length"
+                                            max-size="4"
+                                            ng-change="select(currentPage)"
+                                            items-per-page="numPerPage"
+                                            rotate="false"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;"
+                                            boundary-links="true"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="page" ng-hide="currentTabMain">
+        <form name="vanForm" novalidate role="form">
+            <div class="panel panel-default">
+                    <div class="panel-heading"><h3><strong>  {{page}} Van</strong>  </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <h4 > &nbsp; <strong>Primary Details </strong></h4>
+                                <hr/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group" >
+                                            <label   class="col-sm-4 control-label">Van No</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : vanForm.van_no.$invalid && formValidStatus }">
+                                                <input type="text" class="form-control input-sm" name="van_no" ng-model="van.vanNo" required="" ng-readonly="readStatus" tabindex="1" placeholder="Enter van no" ng-pattern="/^[0-9]*$/">
+                                                 <p class="help-block" ng-show="vanForm.van_no.$error.required && vanForm.van_no.$dirty" ng-class="{ 'error_msg' : vanForm.van_no.$error.required }">Van no is required</p>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>    
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group" >
+                                             <label class="col-sm-4 control-label">Van ID</label>
+                                             <div class="col-sm-8" ng-class="{'has-error' : vanForm.van_id.$invalid && formValidStatus }">
+                                                    <input type="text" class="form-control input-sm" name="van_id" placeholder="Enter van id" ng-model="van.vanId" required="" ng-pattern="/^[0-9]*$/" ng-readoanly="readStatus" tabindex="2">
+                                                    <p class="help-block" ng-show="vanForm.van_id.$error.pattern" ng-class="{ 'error_msg' : vanForm.van_id.$error.pattern }">Van id should be numeric only</p>
+                                                     <p class="help-block" ng-show="vanForm.van_id.$error.required && vanForm.van_id.$dirty" ng-class="{ 'error_msg' : vanForm.van_id.$error.required }">Van id is required</p>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>    
+                            </div>
+                            <div class="row">
+                                <h4 > <strong> &nbsp;Working Hours</strong></h4>
+                                <hr/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group" >
+                                            <label   class="col-sm-4 control-label">From</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : vanForm.from.$invalid && formValidStatus }">
+                                                <input type="time" class="form-control input-sm" name="from" ng-model="van.from" required="" ng-readonly="readStatus" tabindex="3">
+                                               <p class="help-block" ng-show="vanForm.from.$error.required && vanForm.from.$dirty" ng-class="{ 'error_msg' : vanForm.from.$error.required }">From is required</p>
+                                            </div>
+                                        </div>  
+                                        <div class="form-group">
+                                            <label  class="col-sm-4 control-label">Current Location</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : vanForm.current_location.$invalid && formValidStatus }">
+                                                <input type="text" class="form-control input-sm" name="current_location" placeholder="Enter current location" ng-model="van.currentLocation" required="" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus" tabindex="5">
+                                                <p class="help-block" ng-show="vanForm.current_location.$error.pattern" ng-class="{ 'error_msg' : vanForm.current_location.$error.pattern}">Current location should be text only</p> 
+                                            </div>
+                                        </div>                                
+                                        <div class="form-group">
+                                            <label   class="col-sm-4 control-label">Other Details</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : vanForm.other_details.$invalid && formValidStatus }">
+                                                <textarea class="form-control input-sm" rows="3" cols="50" placeholder="Enter other details" tabindex="7" name="other_details" ng-model="otherDetails"></textarea></div>
+                                        </div>                            
+                                    </div>
+                                </div>    
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                       <div class="form-group" >
+                                            <label   class="col-sm-4 control-label">To</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : vanForm.to.$invalid && formValidStatus }">
+                                                <input type="time" class="form-control input-sm" name="to" ng-model="van.to" required="" ng-readonly="readStatus" tabindex="4">
+                                               <p class="help-block" ng-show="vanForm.to.$error.required && vanForm.to.$dirty" ng-class="{ 'error_msg' : vanForm.to.$error.required }">To is required</p>
+
+                                            </div>
+                                        </div>   
+                                        <div class="form-group">
+                                            <label   class="col-sm-4 control-label">Status</label>
+                                            <div class="dropdown col-sm-8" ng-class="{ 'has-error' : vanForm.status.$invalid && formValidStatus }">
+                                                <select class="form-control input-sm" tabindex="6" name="status" ng-model="van.status">
+                                                        <option value="">---Please select---</option>
+                                                         <option value="Active">Active</option>
+                                                         <option value="Active">Inactive</option>
+                                                </select>
+                                                <p class="help-block" ng-show="vanForm.status.$error.required && vanForm.status.$dirty" ng-class="{ 'error_msg' : vanForm.status.$error.required }">Status is required</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            <br/>
+                            <div class="text-right">
+                                <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                                <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(vanForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                                <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                            </div> 
+                    </div>
+            </div>
+        </form>
+    </div>    
+</div>

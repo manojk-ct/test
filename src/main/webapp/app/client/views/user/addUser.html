@@ -1,0 +1,197 @@
+<div class="page">
+    <form name="userForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>  User management</strong>  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <h4 > <strong> &nbsp; Primary Details </strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">First name*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.primary_firstname.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="primary_firstname" ng-model="user.firstName" placeholder="Enter first name"  required="" ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.primary_firstname.$error.required && userForm.primary_firstname.$dirty">Firstname is required</p>
+                                    <p class="help-block" ng-show="userForm.primary_firstname.$error.pattern">Firstname should be text only</p>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Username*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.primary_username.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="primary_username" ng-model="user.userName" placeholder="Enter username"  required="" ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.primary_username.$error.required && userForm.primary_username.$dirty">Username is required</p>
+                                    <p class="help-block" ng-show="userForm.primary_username.$error.pattern">Username should be text only</p>
+
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Last name*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.primary_lastname.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="primary_lastname" ng-model="user.lastName"  placeholder="Enter last name"  required="" ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.primary_lastname.$error.required && userForm.primary_lastname.$dirty">Lastname is required</p>
+                                    <p class="help-block" ng-show="userForm.primary_lastname.$error.pattern">Lastname should be text only</p>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Role type</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : userForm.primary_role_type.$invalid && formValidStatus  }" >
+                                    <select class="form-control input-sm"  name="primary_role_type" ng-readonly="readStatus" ng-model="user.roleType"  ng-options="value.roleType as value.roleName for value in constant.ROLE">
+                                         <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                    <p class="help-block" ng-show="userForm.primary_role_type.$error.required && userForm.primary_role_type.$dirty">Role type is required</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Middle name</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.primary_middlename.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="primary_middlename" ng-model="user.middleName"  placeholder="Enter middle name"   ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.primary_middlename.$error.pattern">Middlename should be text only</p>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label">Date of birth</label>
+                                <div class="col-sm-8" ng-class="{'has-error': userForm.primary_dob.$invalid && formValidStatus  }" >
+                                    <div class="input-group ui-datepicker">
+                                        <input type="text" 
+                                               class="form-control"
+                                               datepicker-popup="{{format}}"
+                                               ng-model="user.dob"
+                                               is-open="opened"
+                                               min="minDate"
+                                               max="'2015-06-22'"
+                                               datepicker-options="dateOptions" 
+                                               date-disabled="disabled(date, mode)"
+                                               ng-required="true" 
+                                               close-text="Close">
+                                            <span class="input-group-addon" ng-click="open($event)"><i class="ti-calendar"></i></span>
+                                    </div>
+                                </div>                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 > <strong>&nbsp; Contact Details</strong></h4>
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Address Line1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_address_line1.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_address_line1" placeholder="Enter address line 1" ng-model="user.addressLine1" required="" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_address_line1.$error.required && userForm.contact_address_line1.$dirty">Addressline 1 is required</p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group" >
+                                <label  class="col-sm-3 control-label">City*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_city.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_city" placeholder="Enter City"  required="" ng-model="user.city" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_city.$error.required && userForm.contact_city.$dirty">City is required</p>
+                                    <p class="help-block" ng-show="userForm.contact_city.$error.pattern">City should be text only</p>
+                                </div>
+                            </div>
+
+
+                             <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Country</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : userForm.contact_country.$invalid && formValidStatus  }" >
+                                    <select class="form-control input-sm"  name="contact_country" ng-model="user.country" ng-options="country.country_id as country.country_name for country in countryService.countries"  ng-readonly="readStatus" ng-change="GetStates()">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Phone1*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_land_line.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_land_line" placeholder="Enter phone 1"  required="" ng-model="user.phone1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_land_line.$error.pattern">Phone 1 should be number only</p> 
+                                    <p class="help-block" ng-show="userForm.contact_land_line.$error.required && userForm.contact_land_line.$dirty">Phone 1 is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Fax No.*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_fax_number.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_fax_number" placeholder="Enter fax number"  required="" ng-model="user.faxNumber" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_fax_number.$error.pattern">Fax number should be number only</p> 
+                                    <p class="help-block" ng-show="userForm.contact_fax_number.$error.required && userForm.contact_fax_number.$dirty">Fax number is required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Address Line2</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_address_line2.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_address_line2" placeholder="Enter address line 2"  ng-model="user.addressLine2" ng-readonly="readStatus">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">State/Province*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : userForm.contact_state_province.$invalid && formValidStatus  }" >
+                                    <select class="form-control input-sm"  name="contact_state_province" ng-model="user.state" required="" ng-readonly="readStatus">
+                                        <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                         <option ng-repeat="state in states">{{state.state_name}}</option>
+                                    </select>
+                                    <p class="help-block" ng-show="userForm.contact_state_province.$error.required && userForm.contact_state_province.$dirty">State/province is required</p>
+                                </div>
+
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Zip Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_zip_code.$invalid && formValidStatus  }" >
+                                    <input name="contact_zip_code" type="text"  class="form-control input-sm" placeholder="Enter zipcode"  ng-pattern="/^[A-Za-z0-9]*$/" required="" ng-model="user.zipCode" ng-readonly="readStatus" >
+                                    <p class="help-block" ng-show="userForm.contact_zip_code.$error.required && userForm.contact_zip_code.$dirty">Zip code is required</p>
+                                    <p class="help-block" ng-show="userForm.contact_zip_code.$error.pattern">Zip code should be text and number only</p> 
+                                </div>
+                            </div>
+                           <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Phone2*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_land_line1.$invalid && formValidStatus  }" >
+                                    <input type="text" class="form-control input-sm" name="contact_land_line1" placeholder="Enter phone 1" ng-model="user.phone2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_land_line1.$error.pattern">Phone 2 should be number only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Email Id*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : userForm.contact_email_id.$invalid && formValidStatus  }" >
+                                    <input type="email" class="form-control input-sm" name="contact_email_id" placeholder="Enter Email Address"  required="" ng-model="user.emailId" ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="userForm.contact_email_id.$error.required && userForm.contact_email_id.$dirty">Email Id is required</p>
+                                    <p class="help-block" ng-show="userForm.contact_email_id.$error.email">Invalid Email Address</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <br/>
+            <div>
+                <div class="text-right">
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="manageUser" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(userForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-info" ui-sref="manageUser" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                </div>
+            </div>
+        </div>
+    </form>
+</div>    
+

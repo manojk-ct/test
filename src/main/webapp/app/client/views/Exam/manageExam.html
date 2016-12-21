@@ -1,0 +1,239 @@
+<div>
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading">
+                <strong>Exam</strong> 
+                <span class="pull-right">
+                    <a ng-click="onClickAdd()" style="cursor: pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add New Exam"></span> 
+                    </a>
+                </span>  
+            </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                    placeholder="Search..."
+                                    class="form-control"
+                                    ng-model="searchKeywords"
+                                    ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    Exam Name
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('examName') "
+                                          data-ng-class="{active: row === 'examName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-examName') "
+                                          data-ng-class="{active: row === '-examName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Description
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('description') "
+                                          data-ng-class="{active: row === 'description'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-description') "
+                                          data-ng-class="{active: row === '-description'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                               
+                                <div class="th">
+                                    Exam Code
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('examCode') "
+                                          data-ng-class="{active: row === 'examCode'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-examCode') "
+                                          data-ng-class="{active: row === '-examCode'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th class="col-md-1">   
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="exam in currentPageExams">
+                            <td>{{exam.examName }}</td>
+                            <td>{{exam.description}}</td>
+                            <td>{{exam.examCode}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteExam($index)" zc-Confirm-Click="Are You sure want to delete exam" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredExams.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true">
+                            </pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="page" ng-hide="currentTabMain">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><strong>{{page}} EXAM</strong></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <hr/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Exam Name*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.exam_name.$invalid && formValidStatus  }">
+                                    <input tabindex="1" type="text" class="form-control input-sm" name="exam_name"  placeholder="Enter exam name"  ng-readonly="readStatus" required="" ng-model="exam.examName">
+                                    <p class="help-block" ng-show="examForm.exam_name.$error.required && examForm.exam_name.$dirty" ng-class="{ 'error_msg' : examForm.exam_name.$error.required }">Exam name is required</p>
+                                    <p class="help-block" ng-show="examForm.exam_name.$error.pattern" ng-class="{ 'error_msg' : examForm.exam_name.$error.pattern}">Exam name should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Description</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.description.$invalid && formValidStatus  }">
+                                    <input tabindex="3" type="text" class="form-control input-sm" name="description"  placeholder="Enter description"  ng-readonly="readStatus" ng-model="exam.description">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Body Part*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.body_part.$invalid && formValidStatus  }">
+                                    <select tabindex="5" class="form-control input-sm"  name="body_part"  ng-readonly="readStatus" required=""  ng-model="exam.bodyPartId" ng-options="value.bodyPartId as value.bodyPartName for value in bodyparts" ng-change="GetModalities()">
+                                        <option value="">---Please select---</option> 
+                                    </select>
+                                    <p class="help-block" ng-show="examForm.body_part.$error.required && examForm.body_part.$dirty" ng-class="{ 'error_msg' : examForm.body_part.$error.required }">Body part is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Left </label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.left.$invalid && formValidStatus  }">
+                                    <input tabindex="7" type="checkbox" name="left" value="" ng-model="exam.leftFlag">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">CPT Case</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.left_cpt_case.$invalid && formValidStatus  }">
+                                    <input tabindex="9" type="text" class="form-control input-sm" ng-readonly="readStatus" name="left_cpt_case"  placeholder="Enter left CPT Case" ng-model="exam.leftCPTCase">
+                                    <p class="help-block" ng-show="examForm.left_cpt_case.$error.pattern" ng-class="{ 'error_msg' : examForm.left_cpt_case.$error.pattern}">Left CPT case should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Right</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.right.$invalid && formValidStatus  }" >
+                                    <input tabindex="11" type="checkbox" name="right"  ng-model="exam.rightFlag">
+
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">CPT Case</label>
+                                <div class="col-sm-8"  ng-class="{ 'has-error' : examForm.right_cpt_case.$invalid && formValidStatus  }">
+                                    <input tabindex="13" type="text" class="form-control input-sm" ng-readonly="readStatus" name="right_cpt_case"  placeholder="Enter right CPT Case"  ng-model="exam.rightCPTCase">
+                                    <p class="help-block" ng-show="examForm.right_cpt_case.$error.pattern" ng-class="{ 'error_msg' : examForm.right_cpt_case.$error.pattern}">Right CPT case should be text only</p> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-3 control-label">Exam Code*</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.exam_code.$invalid && formValidStatus  }">
+                                    <input tabindex="2" name="exam_code" type="text" class="form-control input-sm" ng-readonly="readStatus" placeholder="Enter exam code" required=""  ng-model="exam.examCode">
+                                    <p class="help-block" ng-show="examForm.exam_code.$error.required && examForm.exam_code.$dirty" ng-class="{ 'error_msg' : examForm.exam_code.$error.required }">Exam code is required</p>
+                                    <p class="help-block" ng-show="examForm.exam_code.$error.pattern" ng-class="{ 'error_msg' : examForm.exam_code.$error.pattern}" >Exam code should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Modality*</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : examForm.modality.$invalid && formValidStatus  }">
+                                    <select tabindex="4" class="form-control input-sm"  name="modality"  ng-readonly="readStatus"  required="" ng-model="exam.modalityId" ng-options="value.modalityId as value.modalityName for value in bodypartModalities">
+                                        <option value="">---Please select---</option> 
+                                    </select>
+                                    <p class="help-block" ng-show="examForm.modality.$error.required && examForm.modality.$dirty" ng-class="{ 'error_msg' : examForm.modality.$error.required }">Modality is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">ICD Code</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : examForm.icdCode.$invalid && formValidStatus  }">
+                                    <select  tabindex="6" class="form-control input-sm"  name="icdCode"   ng-readonly="readStatus"  ng-model="exam.icdCode" ng-options="value.icdCode as value.icdCodeName for value in icdCodes">
+                                        <option>---Please select---</option> 
+                                    </select>
+                                </div>
+                            </div> 
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Status</label>
+                                <div class="dropdown col-sm-8" ng-class="{ 'has-error' : examForm.status.$invalid && formValidStatus  }">
+                                    <select tabindex="8" class="form-control input-sm"  name="status"  ng-readonly="readStatus"  ng-model="exam.status">
+                                        <option value="">---Please select---</option> 
+                                        <option value="A">Active</option> 
+                                        <option value="I">Inactive</option> 
+                                    </select>
+                                </div>
+                            </div> 
+                            <div class="form-group" >   
+                                <label class="col-sm-3 control-label">Bilateral</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.bilateral.$invalid && formValidStatus  }">
+                                    <input tabindex="10" type="checkbox" name="bilateral"  ng-model="exam.biletralFlag">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">CPT Case</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : examForm.bilateral_cpt_case.$invalid && formValidStatus  }">
+                                    <input tabindex="12" type="text" class="form-control input-sm" ng-readonly="readStatus" name="bilateral_cpt_case"  placeholder="Enter bilateral CPT Case"  ng-model="exam.biletralCPTCase">
+                                    <p class="help-block" ng-show="examForm.bilateral_cpt_case.$error.pattern" ng-class="{ 'error_msg' : examForm.bilateral_cpt_case.$error.pattern}">Bilateral CPT case should be text only</p> 
+                                </div>
+                             </div>
+                        </div>
+                    </div>   
+                </div>
+                <div class="text-right">
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer ;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-success pull-right" ng-click="Submit(examForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                </div>
+            </div>
+        </div> 
+    </div>    
+</div>
+

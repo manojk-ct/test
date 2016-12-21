@@ -1,0 +1,806 @@
+<div>
+    <form name="facilityForm" novalidate role="form">
+    <div class="page page-table" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>Facilities</strong> 
+                <span class="pull-right"><a ng-click="onClickAdd()" style="cursor: pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add New Facility"></span> 
+                    </a>
+
+                </span>  
+            </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                                <input type="text"
+                                       placeholder="Search..."
+                                       class="form-control"
+                                       ng-model="searchKeywords"
+                                       ng-keyup="search()">
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    Facility Name
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('facilityName') "
+                                          data-ng-class="{active: row === 'facilityName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-facilityName') "
+                                          data-ng-class="{active: row === '-facilityName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                      Email Id
+                                      <span class="ti-angle-up"
+                                            data-ng-click=" order('billingEmailId') "
+                                            data-ng-class="{active: row === 'billingEmailId'}" style="cursor: pointer"></span>
+                                      <span class="ti-angle-down"
+                                            data-ng-click=" order('-billingEmailId') "
+                                            data-ng-class="{active: row === '-billingEmailId'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                      POS Code
+                                      <span class="ti-angle-up"
+                                            data-ng-click=" order('posCode') "
+                                            data-ng-class="{active: row === 'posCode'}" style="cursor: pointer"></span>
+                                      <span class="ti-angle-down"
+                                            data-ng-click=" order('-posCode') "
+                                            data-ng-class="{active: row === '-posCode'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th class="col-md-1">    
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="facility in currentPageFacilities">
+                            <td>{{facility.facilityName }}</td>
+                            <td>{{facility.billingEmailId}}</td>
+                            <td>{{facility.posCode}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteFacility($index)" zc-Confirm-Click="Are You sure want to delete facility" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer"  > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        ng-model="currentPage"
+                                        total-items="filteredFacilities.length"
+                                        max-size="4"
+                                        ng-change="select(currentPage)"
+                                        items-per-page="numPerPage"
+                                        rotate="false"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;"
+                                        boundary-links="true"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page" ng-hide="currentTabMain">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>{{page}} Facility</strong>  </h3>
+            </div>
+                <div class="panel-body">
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(facilityForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer"  ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+                    <div class="row">
+                        <h4 > &nbsp; <strong>Primary Details </strong></h4>
+                                <hr/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                <label class="col-md-4 control-label">Facility Name*</label>
+                                <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.facility_name.$invalid && formValidStatus }">
+                                    <input tabindex="1" type="text" class="form-control input-sm" name="facility_name"  placeholder="Enter facility name" ng-model="facility.facilityName" required=""  ng-readonly="readStatus">
+                                    <p class="help-block" ng-show="facilityForm.facility_name.$error.required && facilityForm.facility_name.$dirty" ng-class="{ 'error_msg' : facilityForm.facility_name.$error.required }">Facility name is required</p>
+                                    <p class="help-block" ng-show="facilityForm.facility_name.$error.pattern" ng-class="{ 'error_msg' : facilityForm.facility_name.$error.pattern}">Facility name should be text only</p> 
+                                </div>
+                                </div>
+                                <div class="form-group">
+                                     <label   class="col-md-4 control-label">Tax Id*</label>
+                                     <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.taxid.$invalid && formValidStatus }">
+                                            <input tabindex="3" name="taxid" type="text" class="form-control input-sm" placeholder="Enter tax id" ng-model="facility.taxId" required=""  ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="facilityForm.taxid.$error.required && facilityForm.taxid.$dirty" ng-class="{ 'error_msg' : facilityForm.taxid.$error.required }">Tax Id is required</p>
+                                            <p class="help-block" ng-show="facilityForm.taxid.$error.pattern" ng-class="{ 'error_msg' : facilityForm.taxid.$error.pattern}">Tax id should consist of number and text only</p>
+                                     </div>
+                                </div>
+                                 <div class="form-group" >
+                                     <label class="col-md-4 control-label">CLIA No.*</label>
+                                     <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.cliano.$invalid && formValidStatus }">
+                                            <input tabindex="5" type="text" class="form-control input-sm"  name="cliano"  placeholder="Enter CLIA number" ng-model="facility.cliaNo" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="facilityForm.cliano.$error.required && facilityForm.cliano.$dirty" ng-class="{ 'error_msg' : facilityForm.cliano.$error.required }">CLIA number is required</p>
+                                            <p class="help-block" ng-show="facilityForm.cliano.$error.pattern" ng-class="{ 'error_msg' : facilityForm.cliano.$error.pattern}">CLIA number should be number only</p>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                     <label class="col-md-4 control-label">Facility NPI*</label>
+                                     <div class="col-md-8" ng-class="{'has-error' : facilityForm.facility_npi.$invalid && formValidStatus }">
+                                            <input tabindex="2" type="text" class="form-control input-sm" name="facility_npi" placeholder="Enter facility NPI" ng-model="facility.facilityNpi" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="facilityForm.facility_npi.$error.required && facilityForm.facility_npi.$dirty" ng-class="{ 'error_msg' : facilityForm.facility_npi.$error.required }">Facility NPI is required</p>
+                                            <p class="help-block" ng-show="facilityForm.facility_npi.$error.pattern " ng-class="{ 'error_msg' : facilityForm.facility_npi.$error.pattern}">Facility NPI should be number only</p>
+<!--                                            <p class="help-block" ng-show="facilityForm.facility_npi.$error.minlength">Facility NPI should be 10 digit number only</p>
+                                            <p class="help-block" ng-show="facilityForm.facility_npi.$error.maxlength">Facility NPI should be 10 digit number only</p>-->
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label   class="col-md-4 control-label">POS Code*</label>
+                                     <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.poscode.$invalid && formValidStatus }">
+                                            <select tabindex="4" class="form-control input-sm" ng-model="facility.posCode" name="poscode" required="" ng-readonly="readStatus" ng-options="value for value in constant.POSCODE">
+                                                <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                            </select>
+                                            <p class="help-block" ng-show="facilityForm.poscode.$error.required && facilityForm.poscode.$dirty" ng-class="{ 'error_msg' : facilityForm.poscode.$error.required }">POS Code is required</p>
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-md-4 control-label">Dispatch Region*</label>
+                                    <div class="dropdown col-md-8" ng-class="{ 'has-error' : facilityForm.dispatchregion.$invalid && formValidStatus }">
+                                        <select tabindex="6" class="form-control input-sm" ng-model="facility.dispatchRegionId" name="dispatchregion" required="" ng-readonly="readStatus" ng-options="value.dispatch_region_id as value.dispatch_region_name for value in dispatchRegions">
+                                            <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                            
+                                        </select>
+                                        <p class="help-block" ng-show="facilityForm.dispatchregion.$error.required && facilityForm.dispatchregion.$dirty" ng-class="{ 'error_msg' : facilityForm.dispatch_region_name.$error.required }">Dispatch region is required</p>
+                                    </div>
+                                </div>                               
+                            </div>    
+                        </div>    
+                    </div>
+                    <div class="row">
+                        <h4 > <strong> &nbsp; Service Location</strong></h4>
+                        <hr/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label   class="col-md-4 control-label">Address Line1*</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_address_line1.$invalid && formValidStatus }">
+                                        <input tabindex="7" type="text" class="form-control input-sm" name="service_address_line1" placeholder="Enter address line1" ng-model="facility.serviceAddressLine1" required="" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_address_line1.$error.required && facilityForm.service_address_line1.$dirty" ng-class="{ 'error_msg' : facilityForm.service_address_line1.$error.required }">Address line1 is required</p>
+                                    </div>
+                                </div>                               
+                                <div class="form-group">
+                                        <label  class="col-md-4 control-label">City*</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_city.$invalid && formValidStatus }">
+                                            <input tabindex="9" type="text" class="form-control input-sm" name="service_city" placeholder="Enter city" ng-model="facility.serviceCity" required=""  ng-readonly="readStatus">
+                                            <p class="help-block" ng-show="facilityForm.service_city.$error.required && facilityForm.service_city.$dirty" ng-class="{ 'error_msg' : facilityForm.service_city.$error.required }">City is required</p>
+                                            <p class="help-block" ng-show="facilityForm.service_city.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_city.$error.pattern}">City should be text only</p>
+                                        </div>
+                                </div>                                
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Country*</label>
+                                    <div class="dropdown col-md-8" ng-class="{ 'has-error' : facilityForm.service_country.$invalid && formValidStatus }">
+                                        <select tabindex="11" class="form-control input-sm" ng-model="facility.serviceCountryId" name="service_country" required="" ng-readonly="readStatus" ng-change="GetServiceStates()" ng-options="country.country_id as country.country_name for country in countryService.countries">
+                                                <option value="">---Please select---</option>
+                                        </select>
+                                        <p class="help-block" ng-show="facilityForm.service_country.$error.required && facilityForm.service_country.$dirty" ng-class="{ 'error_msg' : facilityForm.service_country.$error.required }">Country is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Email Id*</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_email_id.$invalid && formValidStatus }">
+                                        <input tabindex="13" type="email" class="form-control input-sm" name="service_email_id" placeholder="Enter email address" ng-model="facility.serviceEmailId" required="" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_email_id.$error.required && facilityForm.service_email_id.$dirty" ng-class="{ 'error_msg' : facilityForm.service_email_id.$error.required }">Email id is required</p>
+                                        <p classcmd="help-block" ng-show="facilityForm.service_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.service_email_id.$error.email}">Invalid email address</p>
+                                    </div>
+                                </div>
+                                <div class="form-group"> 
+                                    <label   class="col-md-4 control-label">Fax No.1*</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_fax_number1.$invalid && formValidStatus }">
+                                        <input tabindex="15" type="text" class="form-control input-sm" name="service_fax_number1" placeholder="Enter fax number1" ng-model="facility.serviceFaxNumber1" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_fax_number1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_fax_number1.$error.pattern}">Fax number1 should be number only</p> 
+                                        <p class="help-block" ng-show="facilityForm.service_fax_number1.$error.required && facilityForm.service_fax_number1.$dirty" ng-class="{ 'error_msg' : facilityForm.service_fax_number1.$error.required }">Fax number1 is required</p>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Phone No.1*</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_phone1.$invalid && formValidStatus }">
+                                        <input tabindex="17" type="text" class="form-control input-sm" name="service_phone1" placeholder="Enter phone number1" ng-model="facility.serviceLandLine1" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                        <p class="help-block" ng-show="facilityForm.service_phone1.$error.required && facilityForm.service_phone1.$dirty" ng-class="{ 'error_msg' : facilityForm.service_phone1.$error.required }">Phone number1 is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                     <label   class="col-md-4 control-label">Phone No.2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_phone2.$invalid && formValidStatus }">
+                                        <input tabindex="19" type="text" class="form-control input-sm" name="service_phone2" placeholder="Enter phone number2" ng-model="facility.serviceLandLine2"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                    </div>
+                                </div>  
+                                <div class="form-group">
+                                     <label   class="col-md-4 control-label">Is Billing Location</label>
+                                    <div class="col-sm-1">
+                                    </div>
+                                    <div class=" col-sm-5 checkbox">
+                                        <input tabindex="20" type="checkbox"  ng-model="facility.isBillingLocation" ng-change="IsBillingAddress()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label   class="col-md-4 control-label">Address Line2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_address_line2.$invalid && formValidStatus }">
+                                        <input tabindex="8" type="text" class="form-control input-sm" name="service_address_line2" placeholder="Enter address line2" ng-model="facility.serviceAddressLine2"  ng-readonly="readStatus">
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group" >
+                                    <label class="col-md-4 control-label">Zip Code*</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_zip_code.$invalid && formValidStatus }">
+                                        <input tabindex="10" name="service_zip_code" type="text"  class="form-control input-sm" ng-model="facility.serviceZipCode"  required="" ng-readonly="readStatus" placeholder="Enter zip code">
+                                        <p class="help-block" ng-show="facilityForm.service_zip_code.$error.required && facilityForm.service_zip_code.$dirty" ng-class="{ 'error_msg' : facilityForm.service_zip_code.$error.required }">Zip code is required</p>
+                                        <p class="help-block" ng-show="facilityForm.service_zip_code.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_zip_code.$error.pattern}">Zip code should be text only</p> 
+                                    </div>
+                                </div>
+                                 <div class="form-group" >
+                                    <label   class="col-md-4 control-label">State/Province*</label>
+                                    <div class="dropdown col-md-8" ng-class="{ 'has-error' : facilityForm.service_state_province.$invalid && formValidStatus }">
+                                        <select tabindex="12" class="form-control input-sm" ng-model="facility.serviceStateId" name="service_state_province" required="" ng-readonly="readStatus" ng-options="state.state_id as state.state_name for state in serviceStates">
+<!--                                            <option value="">---Please select---</option>  not selected / blank option  ng-options="state.state_name for state in serviceStates "-->
+                                                <option value="">---Please select---</option>
+                                            <!--<option ng-repeat="state in serviceStates">{{state.state_name}}</option>-->
+                                        </select>
+                                        <p class="help-block" ng-show="facilityForm.service_state_province.$error.required && facilityForm.service_state_province.$dirty" ng-class="{ 'error_msg' : facilityForm.service_state_province.$error.required }">State/province is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Work phone</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_work_phone.$invalid && formValidStatus }">
+                                        <input tabindex="14" type="text" class="form-control input-sm" name="service_work_phone" placeholder="Enter work phone" ng-model="facility.serviceWorkPhone"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_work_phone.$error.required && facilityForm.service_work_phone.$dirty" ng-class="{ 'error_msg' : facilityForm.service_work_phone.$error.required }">Work phone is required</p>
+                                        <p class="help-block" ng-show="facilityForm.service_work_phone.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_work_phone.$error.pattern}">Work phone should be number only</p>
+                                    </div>
+                                </div>
+                                       
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Fax No.2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_fax_number2.$invalid && formValidStatus }">
+                                        <input tabindex="16" type="text" class="form-control input-sm" name="service_fax_number2" placeholder="Enter fax number2" ng-model="facility.serviceFaxNumber2" ng-pattern="/^[0-9]*$/"  ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_fax_number2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_fax_number2.$error.pattern}">Fax number2 should be number only</p> 
+                                    </div>
+                                </div>  
+                                       <div class="form-group"> 
+                                    <label   class="col-md-4 control-label">Extension</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.service_extension.$invalid && formValidStatus }">
+                                        <input tabindex="18" type="text" class="form-control input-sm" name="service_extension" placeholder="Enter phone extension " ng-model="facility.serviceLandLineExtension" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.service_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.service_extension.$error.pattern}">Extension should be number only</p> 
+                         
+                                    </div>
+                                </div>
+                                
+                          
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="row" ng-hide="isBillingSame">
+                        <h4 > <strong>&nbsp; Billing Location</strong></h4>
+                            <hr/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                 <div class="form-group" >
+                                    <label   class="col-md-4 control-label">Address Line1</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_address_line1.$invalid && formValidStatus }">
+                                        <input tabindex="21" type="text" class="form-control input-sm" name="billing_address_line1" placeholder="Enter address line1" ng-model="facility.billingAddressLine1" required="" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_address_line1.$error.required && facilityForm.billing_address_line1.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_address_line1.$error.required }">Address line1 is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label  class="col-md-4 control-label">City</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_city.$invalid && formValidStatus }">
+                                        <input tabindex="23" type="text" class="form-control input-sm" name="billing_city" placeholder="Enter city" ng-model="facility.billingCity"   ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_city.$error.required && facilityForm.billing_city.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_city.$error.required }">City is required</p>
+                                        <p class="help-block" ng-show="facilityForm.billing_city.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_city.$error.pattern}">City should be text only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Country</label>
+                                    <div class="dropdown col-md-8" ng-class="{ 'has-error' : facilityForm.billing_country.$invalid && formValidStatus }">
+                                        <select tabindex="25" class="form-control input-sm" ng-model="facility.billingCountryId" name="billing_country"  ng-readonly="readStatus" ng-change="GetBillingStates()" ng-options="country.country_id as country.country_name for country in countryService.countries" > 
+                                            <option value="">---Please select---</option>
+                                            <!--<option ng-repeat="country in countries">{{country}}</option>-->
+                                        </select>
+                                        <p class="help-block" ng-show="facilityForm.billing_country.$error.required && facilityForm.billing_country.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_country.$error.required }">Country is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Email Id</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_email_id.$invalid && formValidStatus }">
+                                        <input  tabindex="27" type="email" class="form-control input-sm" name="billing_email_id" placeholder="Enter email address" ng-model="facility.billingEmailId" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_email_id.$error.required && facilityForm.billing_email_id.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_email_id.$error.required }">Email id is required</p>
+                                        <p classcmd="help-block" ng-show="facilityForm.billing_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.billing_email_id.$error.email}">Invalid email address</p>
+                                    </div>
+                                </div>
+                                  <div class="form-group">
+                                    <label   class="col-md-4 control-label">Fax No.1</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_fax_number1.$invalid && formValidStatus }">
+                                        <input tabindex="29" type="text" class="form-control input-sm" name="billing_fax_number1" placeholder="Enter fax number1" ng-model="facility.billingFaxNumber1"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_fax_number1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_fax_number1.$error.pattern}">Fax number1 should be number only</p> 
+                                        <p class="help-block" ng-show="facilityForm.billing_fax_number1.$error.required && facilityForm.billing_fax_number1.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_fax_number1.$error.required }">Fax number1 is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Phone No.1</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_phone1.$invalid && formValidStatus }">
+                                        <input tabindex="31" type="text" class="form-control input-sm" name="billing_phone1" placeholder="Enter phone number1" ng-model="facility.billingLandLine1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_phone1.$error.pattern}">Phone number1 should be number only</p> 
+
+                                        <p class="help-block" ng-show="facilityForm.billing_phone1.$error.required && facilityForm.billing_phone1.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_phone1.$error.required }">Phone number1 is required</p>
+                                    </div>
+                                </div>  
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Phone No.2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_phone2.$invalid && formValidStatus }">
+                                        <input tabindex="33" type="text" class="form-control input-sm" name="billing_phone2" placeholder="Enter phone number2" ng-model="facility.billingLandLine2"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Address Line2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_address_line2.$invalid && formValidStatus }">
+                                        <input tabindex="22" type="text" class="form-control input-sm" name="billing_address_line2" placeholder="Enter address line2" ng-model="facility.billingAddressLine2"  ng-readonly="readStatus">
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group" >
+                                    <label class="col-md-4 control-label">Zip Code</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_zip_code.$invalid && formValidStatus }">
+                                        <input tabindex="24" name="billing_zip_code" type="text"  class="form-control input-sm" ng-model="facility.billingZipCode" ng-readonly="readStatus" placeholder="Enter zip code">
+                                        <p class="help-block" ng-show="facilityForm.billing_zip_code.$error.required && facilityForm.billing_zip_code.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_zip_code.$error.required }">Zip code is required</p>
+                                        <p class="help-block" ng-show="facilityForm.billing_zip_code.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_zip_code.$error.pattern}">Zip code should be text only</p> 
+                                    </div>
+                                </div>
+                                  <div class="form-group">
+                                    <label  class="col-md-4 control-label">State/Province</label>
+                                    <div class="dropdown col-md-8" ng-class="{ 'has-error' : facilityForm.billing_state_province.$invalid && formValidStatus }">
+                                        <select tabindex="26" class="form-control input-sm" ng-model="facility.billingStateId" name="billing_state_province"  ng-readonly="readStatus" ng-options="state.state_id as state.state_name for state in billingStates">
+                                            <option value="">---Please select---</option> <!-- not selected / blank option  ng-options="state.state_name for state in billingStates "-->
+                                            <!--<option ng-repeat="state in billingStates">{{state.state_name}}</option>-->
+                                        </select>
+                                        <p class="help-block" ng-show="facilityForm.billing_state_province.$error.required && facilityForm.billing_state_province.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_state_province.$error.required }">State/province is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Work phone</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_work_phone.$invalid && formValidStatus }">
+                                        <input tabindex="28" type="text" class="form-control input-sm" name="billing_work_phone" placeholder="Enter work phone" ng-model="facility.billingWorkPhone"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_work_phone.$error.required && facilityForm.billing_work_phone.$dirty" ng-class="{ 'error_msg' : facilityForm.billing_work_phone.$error.required }">Work phone is required</p>
+                                        <p class="help-block" ng-show="facilityForm.billing_work_phone.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_work_phone.$error.pattern}">Work phone should be number only</p>
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Fax No.2</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_fax_number2.$invalid && formValidStatus }">
+                                        <input tabindex="30" type="text" class="form-control input-sm" name="billing_fax_number2" placeholder="Enter fax number2" ng-model="facility.billingFaxNumber2" ng-pattern="/^[0-9]*$/"  ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_fax_number2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_fax_number2.$error.pattern}">Fax number2 should be number only</p> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">Extension</label>
+                                    <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.billing_extension.$invalid && formValidStatus }">
+                                        <input tabindex="32" type="text" class="form-control input-sm" name="billing_extension" placeholder="Enter phone extension" ng-model="facility.billingLandLineExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                        <p class="help-block" ng-show="facilityForm.billing_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.billing_extension.$error.pattern}">Extension should be number only</p> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4 > &nbsp;<strong> Official Contact Details </strong></h4>
+                     
+                            <div class="panel with-nav-tabs panel-primaryy">
+                                <div class="panel-headin">
+                                        
+                                        <ul id="myTab" class="nav nav-tabs nav-responsive nav-justified" role="tablist">
+                                                <li ng-repeat="tab in tabs"  ng-class="{active:isActiveTab(tab.url)}" >
+                                                        <a role="tab" data-toggle="tab" style="cursor:pointer"
+                                                           ng-click="onClickTab(tab)">{{tab.title}} 
+                                                        </a>
+                                                </li>
+                                        </ul>
+                                </div>
+                            </div>
+                            <div id="mainView">
+                                <div ng-include="currentTab"></div>
+                            </div>                                                  
+                    </div>
+                    <div class="row">
+                        <h4 > &nbsp;<strong> Facility Contacts </strong></h4>
+                        <hr/>
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-right" ng-click="open()" ng-hide="readStatus"><span class="glyphicon glyphicon-plus"></span> &nbsp; Add Contact </button>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td class="text-center">Contact Name</td>
+                                    <td class="text-center">Contact Type</td>
+                                    <td class="text-center">Phone  1</td>
+                                    <td class="text-center">Phone  2</td>
+                                    <td class="text-center">Fax Number</td>
+                                    <td class="text-center">Email</td>
+                                    <td class="text-center col-sm-1" ng-hide="readStatus">Action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="contact in facility.contacts">
+                                    <td class="text-center">{{contact.contactPersonName}}</td>
+                                    <td class="text-center">{{contact.contactType}}</td> 
+                                    <td class="text-center">{{contact.landLine}}</td>
+                                    <td class="text-center">{{contact.mobileNumber}}</td>
+                                    <td class="text-center">{{contact.faxNumber}}</td>
+                                    <td class="text-center">{{contact.emailId}}</td>
+                                    <td ng-hide="readStatus" class="col-sm-1">
+                                      &nbsp;  <a   ng-click="editFacilityContact($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                      &nbsp;  <a   ng-click="deleteFacilityContact($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(facilityForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer"  ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+            </div>
+        </div>
+</div>      
+
+<script type="text/ng-template" id="administrator.html">                           
+                            <div class="row">
+                            <br/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">First Name</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.administrator_firstname.$invalid && facilityForm.administrator_firstname.$dirty }">
+                                                    <input tabindex="34" type="text" class="form-control input-sm" name="administrator_firstname"  placeholder="Enter administrator's firstname"   ng-readonly="readStatus" ng-model="facility.administratorFirstName">
+                                                    <p class="help-block" ng-show="facilityForm.administrator_firstname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.administrator_firstname.$error.pattern}">Firstname should be text only</p>  
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.1</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.administrator_phone1.$invalid && facilityForm.administrator_phone1.$dirty }">
+                                                <input tabindex="36" type="text" class="form-control input-sm" name="administrator_phone1"  placeholder="Enter administrator's phone number1"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.administratorLandLine1">
+                                                <p class="help-block" ng-show="facilityForm.administrator_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.administrator_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.2</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.administrator_phone2.$invalid && facilityForm.administrator_phone2.$dirty }">
+                                                <input tabindex="38" type="text" class="form-control input-sm" name="administrator_phone2"  placeholder="Enter administrator's phone number2"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.administratorLandLine2">
+                                                <p class="help-block" ng-show="facilityForm.administrator_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.administrator_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Email Id</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.administrator_email_id.$invalid && facilityForm.administrator_email_id.$dirty}">
+                                                <input tabindex="40" type="email" class="form-control input-sm" name="administrator_email_id" placeholder="Enter administrator's email address"    ng-readonly="readStatus" ng-model="facility.administratorEmailId">
+                                               <p class="help-block" ng-show="facilityForm.administrator_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.administrator_email_id.$error.pattern}">Invalid email address</p>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error': facilityForm.administrator_lastname.$invalid && facilityForm.administrator_lastname.$dirty }">
+                                                <input tabindex="35" type="text" class="form-control input-sm" name="administrator_lastname"  placeholder="Enter administrator's lastname"  ng-readonly="readStatus" ng-model="facility.administratorLastName">
+                                                <p class="help-block" ng-show="facilityForm.administrator_lastname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.administrator_lastname.$error.pattern}">Lastname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_director_nursing_extension.$invalid && formValidStatus }">
+                                                <input tabindex="32" type="text" class="form-control input-sm" name="assistant_director_nursing_extension" placeholder="Enter phone extension" ng-model="facility.administratorLandLineExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_extension.$error.pattern}">Extension should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Mobile</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.administrator_mobile.$invalid && facilityForm.administrator_mobile.$dirty }">
+                                                <input tabindex="39" type="text" class="form-control input-sm" name="administrator_mobile"  placeholder="Enter administrator's mobile number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.administratorMobile">
+                                                <p class="help-block" ng-show="facilityForm.administrator_mobile.$error.pattern" ng-class="{ 'error_msg' : facilityForm.administrator_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div> 
+                            </div>  
+                        </script>
+                        
+    <script type="text/ng-template" id="facilitycontacts.html">
+        <div class="modal-header">
+            <h3>Contact</h3>
+        </div>
+        <div class="modal-body">
+                <div class=form-group>
+                    <label>Contact Person Name</label>
+                    <input type="text" class="form-control" name="contact_name"  placeholder="Enter contact name"  ng-model="contact.contactPersonName"/>
+                     <p class="help-block" ng-show="facilityForm.contact_name.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_name.$error.pattern}">Contact type should be text only</p> 
+                </div>
+                <div class=form-group>
+                    <label>Contact Type</label>
+                    <input type="text" class="form-control" name="contact_type"  placeholder="Enter contact type"  ng-model="contact.contactType"/>
+                     <p class="help-block" ng-show="facilityForm.contact_type.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_type.$error.pattern}">Contact type should be text only</p> 
+                </div>
+                <div class="form-group">
+                    <label>Phone No.1</label>
+                    <input type="text" class="form-control" name="contact_phone1" placeholder="Enter phone number1"  ng-pattern="/^[0-9]*$/" ng-model="contact.landLine"/>
+                      <p class="help-block" ng-show="facilityForm.contact_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                </div>
+                <div class="form-group">
+                    <label>Extension</label>
+                    <input type="text" class="form-control" name="contact_extension" placeholder="Enter phone number1"  ng-pattern="/^[0-9]*$/" ng-model="contact.extension"/>
+                      <p class="help-block" ng-show="facilityForm.contact_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_extension.$error.pattern}">Extension should be number only</p> 
+                </div>
+                <div class="form-group">
+                    <label>Phone No.2</label>
+                    <input type="text" class="form-control" name="contact_phone2" placeholder="Enter phone number2"  ng-pattern="/^[0-9]*$/" ng-model="contact.mobileNumber"/>
+                      <p class="help-block" ng-show="facilityForm.contact_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                </div>
+                <div class="form-group">
+                    <label>Fax No.</label>
+                    <input type="text" class="form-control" name="contact_fax_number" placeholder="Enter fax number"  ng-pattern="/^[0-9]*$/" ng-model="contact.faxNumber"/>
+                      <p class="help-block" ng-show="facilityForm.contact_fax_number.$error.pattern" ng-class="{ 'error_msg' : facilityForm.contact_fax_number.$error.pattern}">Fax number should be number only</p> 
+                </div>
+                <div class="form-group">
+                    <label>Email Id</label>
+                    <input type="email" class="form-control" name="contact_email" placeholder="Enter email address" ng-model="contact.emailId"/>
+                     <p class="help-block" ng-show="facilityForm.contact_email.$error.email" ng-class="{ 'error_msg' : facilityForm.contact_email.$error.email}">Invalid email address</p>
+                </div>
+
+            <br/>            
+        </div>
+        <div class="modal-footer">                            
+            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+        </div>
+   </script>
+
+<script type="text/ng-template" id="assistant_director_nursing.html">
+                            <div class="row">
+                                <br/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">First Name</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_director_nursing_firstname.$invalid && facilityForm.assistant_director_nursing_firstname.$dirty }">
+                                                <input tabindex="55" type="text" class="form-control input-sm" name="assistant_director_nursing_firstname"  placeholder="Enter assistant director of nursing's firstname"   ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingFirstName">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_firstname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_firstname.$error.pattern}">Firstname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.1</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_director_nursing_phone1.$invalid && facilityForm.assistant_director_nursing_phone1.$dirty }">
+                                                <input tabindex="57" type="text" class="form-control input-sm" name="assistant_director_nursing_phone1"  placeholder="Enter assistant director of nursing's phone number1"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingLandLine1">
+                                               <p class="help-block" ng-show="facilityForm.assistant_director_nursing_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_phone1.$error.pattern}" >Phone number1 should be number only</p> 
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.2</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_director_nursing_phone2.$invalid && facilityForm.assistant_director_nursing_phone2.$dirty }">
+                                                <input tabindex="59" type="text" class="form-control input-sm" name="assistant_director_nursing_phone2"  placeholder="Enter assistant director of nursing's phone number2"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingLandLine2">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Email Id</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_director_nursing_email_id.$invalid && facilityForm.assistant_director_nursing_email_id.$dirty}">
+                                                <input tabindex="61" type="email" class="form-control input-sm" name="assistant_director_nursing_email_id" placeholder="Enter assistant director of nursing's email address"   ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingEmailId">
+                                               <p class="help-block" ng-show="facilityForm.assistant_director_nursing_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_email_id.$error.email}">Invalid email address</p>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error': facilityForm.assistant_director_nursing_lastname.$invalid && facilityForm.assistant_director_nursing_lastname.$dirty }">
+                                                <input tabindex="56" type="text" class="form-control input-sm" name="assistant_director_nursing_lastname"  placeholder="Enter assistant director of nursing's lastname"  ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingLastName">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_lastname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_lastname.$error.pattern}">Lastname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_director_nursing_extension.$invalid && formValidStatus }">
+                                                <input tabindex="32" type="text" class="form-control input-sm" name="assistant_director_nursing_extension" placeholder="Enter phone extension" ng-model="facility.directorNursingLandLineExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_extension.$error.pattern}">Extension should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label   class="col-md-4 control-label">Mobile</label>
+                                                <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_director_nursing_mobile.$invalid && facilityForm.assistant_director_nursing_mobile.$dirty }">
+                                                    <input tabindex="60" type="text" class="form-control input-sm" name="assistant_director_nursing_mobile"  placeholder="Enter assistant director of nursing's mobile number"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantDirectorNursingMobile">
+                                                    <p class="help-block" ng-show="facilityForm.assistant_director_nursing_mobile.$error.pattern"  ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                                </div>
+                                        </div>
+                                        
+                                    </div>    
+                                </div> 
+                            </div>  
+                        </script>
+                        
+<script type="text/ng-template" id="director_nursing.html">
+                            <div class="row">
+                                <br/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">First Name</label>
+                                                <div class="col-md-8" ng-class="{'has-error': facilityForm.director_nursing_firstname.$invalid && facilityForm.director_nursing_firstname.$dirty }">
+                                                    <input  tabindex="48" type="text" class="form-control input-sm" name="director_nursing_firstname"  placeholder="Enter director of nursing's firstname"  ng-readonly="readStatus" ng-model="facility.directorNursingFirstName">
+                                                    <p class="help-block" ng-show="facilityForm.director_nursing_firstname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.director_nursing_firstname.$error.pattern}">Firstname should be text only</p> 
+                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.1</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.director_nursing_phone1.$invalid && facilityForm.director_nursing_phone1.$dirty }">
+                                                <input tabindex="50" type="text" class="form-control input-sm" name="director_nursing_phone1"  placeholder="Enter director of nursing's phone number1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.directorNursingLandLine1">
+                                               <p class="help-block" ng-show="facilityForm.director_nursing_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.director_nursing_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                            </div>
+                                        </div>
+                                          <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.2</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.director_nursing_phone2.$invalid && facilityForm.director_nursing_phone2.$dirty }">
+                                                <input tabindex="52" type="text" class="form-control input-sm" name="director_nursing_phone2"  placeholder="Enter director of nursing's phone number2"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.directorNursingLandLine2">
+                                                <p class="help-block" ng-show="facilityForm.director_nursing_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.director_nursing_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Email Id</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.director_nursing_email_id.$invalid && facilityForm.director_nursing_email_id.$dirty}">
+                                                <input tabindex="54" type="email" class="form-control input-sm" name="director_nursing_email_id" placeholder="Enter director of nursing's email address"    ng-readonly="readStatus" ng-model="facility.directorNursingEmailId">
+                                                <p class="help-block" ng-show="facilityForm.director_nursing_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.director_nursing_email_id.$error.email}">Invalid email address</p>
+                                            </div>
+                                        </div>
+                                        
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error': facilityForm.director_nursing_lastname.$invalid && facilityForm.director_nursing_lastname.$dirty }">
+                                                <input tabindex="49" type="text" class="form-control input-sm" name="director_nursing_lastname"  placeholder="Enter director of nursing's lastname"  ng-pattern="" ng-readonly="readStatus" ng-model="facility.directorNursingLastName">
+                                                    <p class="help-block" ng-show="facilityForm.director_nursing_lastname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.director_nursing_lastname.$error.pattern}">Lastname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_director_nursing_extension.$invalid && formValidStatus }">
+                                                <input tabindex="32" type="text" class="form-control input-sm" name="director_nursing_extension" placeholder="Enter phone extension" ng-model="facility.assistantDirectorNursingLandLineExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_extension.$error.pattern}">Extension should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Mobile</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.director_nursing_mobile.$invalid && facilityForm.director_nursing_mobile.$dirty }">
+                                                <input tabindex="53" type="text" class="form-control input-sm" name="director_nursing_mobile"  placeholder="Enter director of nursing's mobile number"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.directorNursingMobile">
+                                                <p class="help-block" ng-show="facilityForm.director_nursing_mobile.$error.pattern" ng-class="{ 'error_msg' : facilityForm.director_nursing_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                            </div>  
+                                        </div>
+                                        
+                                    </div>    
+                                </div> 
+                            </div>  
+                        </script>
+
+<script type="text/ng-template" id="assistant_administrator.html">
+                            <div class="row">
+                                <br/>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">First Name</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_admin_firstname.$invalid && facilityForm.assistant_admin_firstname.$dirty }">
+                                                <input tabindex="41" type="text" class="form-control input-sm" name="assistant_admin_firstname"  placeholder="Enter assistant administrator's firstname"  ng-readonly="readStatus" ng-model="facility.assistantAdministratorFirstName">
+                                                <p class="help-block" ng-show="facilityForm.assistant_admin_firstname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_admin_firstname.$error.pattern}">Firstname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.1</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_admin_phone1.$invalid && facilityForm.assistant_admin_phone1.$dirty }">
+                                                <input tabindex="43" type="text" class="form-control input-sm" name="assistant_admin_phone1"  placeholder="Enter assistant administrator's phone number1"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantAdministratorLandLine1">
+                                              <p class="help-block" ng-show="facilityForm.assistant_admin_phone1.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_admin_phone1.$error.pattern}">Phone number1 should be number only</p> 
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label   class="col-md-4 control-label">Phone No.2</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_admin_phone2.$invalid && facilityForm.assistant_admin_phone2.$dirty }">
+                                                <input tabindex="45" type="text" class="form-control input-sm" name="assistant_admin_phone2"  placeholder="Enter assistant administrator's phone number2"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantAdministratorLandLine2">
+                                                <p class="help-block" ng-show="facilityForm.assistant_admin_phone2.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_admin_phone2.$error.pattern}">Phone number2 should be number only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label   class="col-md-4 control-label">Email Id</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_admin_email_id.$invalid && facilityForm.assistant_admin_email_id.$dirty}">
+                                                <input tabindex="47" type="email" class="form-control input-sm" name="assistant_admin_email_id" placeholder="Enter assistant administrator's email address"   ng-readonly="readStatus" ng-model="facility.assistantAdministratorEmailId">
+                                               <p class="help-block" ng-show="facilityForm.assistant_admin_email_id.$error.email" ng-class="{ 'error_msg' : facilityForm.assistant_admin_email_id.$error.email}">Invalid email address</p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Last Name</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error': facilityForm.assistant_admin_lastname.$invalid && facilityForm.assistant_admin_lastname.$dirty }">
+                                                <input tabindex="42" type="text" class="form-control input-sm" name="assistant_admin_lastname"  placeholder="Enter assistant administrator's lastname"   ng-readonly="readStatus" ng-model="facility.assistantAdministratorLastName">
+                                                <p class="help-block" ng-show="facilityForm.assistant_admin_lastname.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_admin_lastname.$error.pattern}">Lastname should be text only</p> 
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Extension</label>
+                                            <div class="col-md-8" ng-class="{ 'has-error' : facilityForm.assistant_director_nursing_extension.$invalid && formValidStatus }">
+                                                <input tabindex="32" type="text" class="form-control input-sm" name="director_nursing_extension" placeholder="Enter phone extension" ng-model="facility.assistantAdministratorLandLineExtension"  ng-pattern="/^[0-9]*$/" ng-readonly="readStatus">
+                                                <p class="help-block" ng-show="facilityForm.assistant_director_nursing_extension.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_director_nursing_extension.$error.pattern}">Extension should be number only</p> 
+                                            </div>
+                                        </div>   
+                                      
+                                        <div class="form-group">
+                                            <label   class="col-md-4 control-label">Mobile</label>
+                                            <div class="col-md-8" ng-class="{'has-error': facilityForm.assistant_admin_mobile.$invalid && facilityForm.assistant_admin_mobile.$dirty }">
+                                                <input tabindex="46" type="text" class="form-control input-sm" name="assistant_admin_mobile"  placeholder="Enter assistant administrator's mobile number"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="facility.assistantAdministratorMobile">
+                                                <p class="help-block" ng-show="facilityForm.assistant_admin_mobile.$error.pattern" ng-class="{ 'error_msg' : facilityForm.assistant_admin_mobile.$error.pattern}">Mobile number should be number only</p> 
+                                            </div>
+                                        </div>
+                                        
+                                    </div>    
+                                </div> 
+                            </div>
+    </script>
+    </form>
+</div>

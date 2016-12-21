@@ -1,0 +1,1094 @@
+<!--
+<div class="page page-grid">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Requisitions</strong> 
+            <span class="pull-right">
+                <a ui-sref="addRequisition">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span data-i18n="Add Requisition"></span> 
+                </a>
+            </span>  
+        </div>
+            <div class="panel-body">
+                <div class="display">
+                    <table class="table table-striped table-bordered" id="table" width="100%" >
+                        <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Insurance No.</th>
+                                <th>Guarantor SSN</th>
+                                <th>Phone No.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ABC</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                <td>9921583919</td>
+                                
+                            </tr>
+                            <tr>
+                                <td>Pradnya</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                 <td>9921583919</td>
+                            </tr>
+                            <tr>
+                                <td>Nikki</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                             <td>9921583919</td>
+                            </tr>
+                            <tr>
+                                 <td>Danny</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>
+                            <tr>
+                                <td>Prachi</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                 <td>9921583919</td>
+                            </tr>
+                                    <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     
+                            <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                  <td>9921583919</td>
+                            </tr>     
+                            <tr>
+                                <td>Manoj</td>
+                                <td>XYZ</td>
+                                <td>43546346</td>
+                                <td>035-46-3146</td>
+                                <td>9921583919</td>
+                            </tr>     
+                        </tbody>
+                    </table>
+                
+                </div>
+            </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+	
+    $(document).ready(function() {
+	
+    $('#table').dataTable( {
+            "language": 
+        {
+            "lengthMenu"  : "Display _MENU_ records per page",
+            "zeroRecords" : "Oopps! No match found",
+            "info"        : "Showing page _PAGE_ of _PAGES_",
+            "infoEmpty"   : "No records available",
+            "infoFiltered": "(filtered from _MAX_ total records)"
+        },
+	 dom: 'C<"clear">lfrtip',
+         colVis:
+                 {
+            exclude: [  ]
+        } ,"columnDefs": [
+            {
+                "targets": [ 2 ],
+                "visible": false,
+                "searchable": false
+            } ],
+        "scrollY"       : true,
+        "scrollX"       : true,
+        "scrollCollapse": true,
+        
+        "orderMulti" : false,
+        "lengthMenu"    : [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "stateSave"     : true,
+	"colReorder"    : true  
+
+    } );
+//	
+//	$('#table tbody').on( 'click', 'tr', function () {
+//        $(this).toggleClass('selected');
+//		
+//		
+//    } );
+   
+    } );
+</script> -->
+    <div class="page">
+        <form name="requisitionForm" novalidate role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3><strong>{{page}} Requisition </strong>  </h3>
+                </div>
+                    <div class="panel-body">
+                        <div class="row wide">
+                            <div class="form-horizontal">
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Patient Name</label>
+                                        <div class="col-md-8">
+                                            <label class="control-label">John S D'Souza</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Date of Birth</label>
+                                        <div class="col-md-8">
+                                            <label class="control-label">07/07/1980</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Marital Status</label>
+                                        <div class="dropdown col-md-8">
+                                            <label class="control-label">Married</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal">
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">SSN</label>
+                                        <div class="dropdown col-md-8">
+                                            <label class=" control-label">11345</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Gender</label>
+                                        <div class="dropdown col-md-8" >
+                                                <label class="control-label">Male</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">&nbsp;</label>
+                                        <div class="col-md-7">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>    
+                    <br/>  
+                    <div class="row ">
+                        <div class="form-horizontal">
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Case No.</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.case_no.$invalid && formValidStatus }">
+                                            <label class="control-label">501</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Case created Date/Time</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.case_created_date_time.$invalid && formValidStatus }">
+                                            <label class="control-label">3/9/2015 5:19PM</label> 
+                                        </div>
+                                    </div>
+                                </div>                               
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-sm-4 control-label">Stat</label>
+                                        <div class=" col-sm-1 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.stat" tabindex="1" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Reason for Partable Imaging</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.reason_for_portable_imaging.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.reason" name="reason_for_portable_imaging" required="" ng-readonly="readStatus" tabindex="2">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Company</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.company.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.company" name="company" required="" ng-readonly="readStatus" tabindex="3">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Modality</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.modality.$invalid && formValidStatus }">
+                                            <select tabindex="4" class="form-control input-sm" ng-model="requisition.modality" name="modality" required="" ng-readonly="readStatus" >
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Place Of Service</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.place_of_service.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.placeOfService" name="place_of_service" required="" ng-readonly="readStatus" tabindex="5">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Charge Type</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.charge_type.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.chargeType" name="charge_type" required="" ng-readonly="readStatus" tabindex="6">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Technologist</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.technologist.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.technologist" name="technologist" required="" ng-readonly="readStatus" tabindex="7">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Option 1</option>
+                                                <option value="">Option 2</option>
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Visit Time</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.visit_time.$invalid && formValidStatus }">
+                                            <input type="time" class="form-control input-sm" name="visit_time"  ng-model="requisition.visitTime" required="" ng-readonly="readStatus" tabindex="8">
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Bill To</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.bill_to.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.billTo" name="bill_to" required="" ng-readonly="readStatus" tabindex="9">
+                                                <option value="">---Please select---</option> 
+                                                <option value="">Medicare</option>
+                                                <option value="">Medicaid</option>
+                                                <option value="">Tricare Champus</option>
+                                                <option value="">Group Health Plan</option>
+                                                <option value="">Facility</option>
+                                                <option value="">Other</option>
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Bill to-Other</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.bill_to_other.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="bill_to_other"   placeholder="Enter bill amount" ng-model="requisition.billToOther" required="" ng-readonly="readStatus" tabindex="10">
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                        <div class="panel with-nav-tabs panel-primaryy">
+                            <div class="panel-headin">
+                                <ul class="nav nav-tabs ">
+                                    <li ng-repeat="tab in tabs"  ng-class="{active:isActiveTab(tab.url)}">
+                                        <a role="tab" data-toggle="tab" style="cursor:pointer"
+                                             ng-click="onClickTab(tab)">{{tab.title}} 
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                         </div>            
+                        <div id="mainView">
+                            <div ng-include="currentTab"></div>
+                        </div>                                                  
+                    <br/><br/><br/>
+                    <br/>
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="manageRequisition" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(requisitionForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ui-sref="manageRequisition" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+            </div> 
+        </form>
+    </div>
+    <script type="text/ng-template" id="facility.html"> 
+            <div class="form-horizontal">             
+                    <div class="row">
+                    <br/>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Facility</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.facility.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.facility" name="facility" required="" ng-readonly="readStatus"  tabindex="11"> 
+                                                    <option value="">---Please select---</option>
+                                                    <option value="">Option 1</option> 
+                                                    <option value="">Option 2</option> 
+                                            </select>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Contact Type</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.facility_contact_type.$invalid && formValidStatus }">
+                                                <input type="text" class="form-control input-sm" name="facility_contact_type"  placeholder="Enter contact type"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.contactType" tabindex="12">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Contact Name</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.facility_contact_name.$invalid && formValidStatus }">
+                                                <input type="text" class="form-control input-sm" name="facility_contact_name"  placeholder="Enter contact name"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.facilityContactName" tabindex="13">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Facility Room No.</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.facility_room_no.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="facility_room_no" placeholder="Enter facility room number" ng-model="requisition.facilityRoomNo"  ng-pattern="" ng-readonly="readStatus" tabindex="14">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Facility Phone No.</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.facility_phone.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="facility_phone"  placeholder="Enter facility phone number"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.facilityPhone" tabindex="15">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Facility Fax No.</label>
+                                        <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.facility_fax.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="facility_fax" placeholder="Enter facility fax number" ng-model="requisition.facilityFax"  ng-pattern="" ng-readonly="readStatus" tabindex="16">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Ordering Physician</label>
+                                        <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.ordering_physician.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.orderingPhysician" name="ordering_physician" required="" ng-readonly="readStatus"  tabindex="17"> 
+                                                <option value="">---Please select---</option>
+                                                <option value="">Option 1</option> 
+                                                <option value="">Option 2</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Person Call Order In</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.person_calling.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="person_calling"  placeholder="Enter person call"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.personCalling" tabindex="18">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Station</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.station.$invalid && formValidStatus}">
+                                            <select class="form-control input-sm" ng-model="requisition.station" name="station" required="" ng-readonly="readStatus"  tabindex="19"> 
+                                                 <option value="">---Please select---</option>
+                                                 <option value="">Option 1</option> 
+                                                 <option value="">Option 2</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Sub Station Available</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.altername_phone.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.serviceCountry" name="" required="" ng-readonly="readStatus"  tabindex="20"> 
+                                                <option value="">---Please select---</option>
+                                                 <option value="">Option 1</option> 
+                                                <option value="">Option 2</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Substation Selected</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.substation.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.substation" name="substation" required="" ng-readonly="readStatus"  tabindex="21"> 
+                                                <option value="">---Please select---</option>
+                                                <option value="">Option 1</option> 
+                                                <option value="">Option 2</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div> 
+            </div>  
+    </script>       
+    <script type="text/ng-template" id="complaints.html">
+            <div class="form-horizontal">
+                    <div class="row">
+                    <br/>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Chief Complaint</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.chief_complaint.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="chief_complaint"  placeholder="Enter chief complaint"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.chiefComplaint" tabindex="11">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">File Diagnosis</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.file_diagnosis.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="file_diagnosis"  ng-model="requisition.fileDiagnosis" required="" ng-pattern="" ng-readonly="readStatus" tabindex="12">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Last Diagonosis</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.last_diagnosis.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="last_diagnosis"    required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.lastDiagnosis" tabindex="13">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Diagnosis Type</label>
+                                        <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.diagnosis_type.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.diagnosisType" name="diagnosis_type" required="" ng-readonly="readStatus"  tabindex="14"> 
+                                                <option value="">---Please select---</option>
+                                                <option value="">Option 1</option> 
+                                                <option value="">Option 2</option> 
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Hospitalize From</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.hospitalize_from.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="hospitalize_from"    required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.hospitalizeFrom" tabindex="15">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                         <label   class="col-md-4 control-label">Hospitalize To</label>
+                                         <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.hospitalize_to.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="hospitalize_to"  ng-model="requisition.hospitalizeTo" required="" ng-pattern="" ng-readonly="readStatus" tabindex="16">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Unable to Work From</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.unable_to_work.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="unable_to_work"    required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.unableToWork" tabindex="17">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Unable to work To</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.unable_to_work.$invalid && formValidStatus }">
+                                            <input type="date" class="form-control input-sm" name="unable_to_work"  ng-model="requisition.unableToWork" required="" ng-pattern="" ng-readonly="readStatus" tabindex="18">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Patient Type(DD)</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.patient_type.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="patient_type"  placeholder="Enter patient type"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.patientType" tabindex="19">
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Remarks</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.remarks.$invalid && formValidStatus }">
+                                            <input type="text" placeholder="Enter remarks" class="form-control input-sm" name="remarks"  ng-model="requisition.remarks" required="" ng-pattern="" ng-readonly="readStatus" tabindex="20">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Signed Physician Order</label>
+                                        <div class=" col-md-3 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.signed_physician_order" tabindex="21">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Upload sign order</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.upload_sign_order.$invalid && formValidStatus }">
+                                            <button tabindex="7" type="file" ngf-select ng-model="user.file" name="file"    
+                                            accept="image/*" ngf-max-size="2MB" required
+                                            ngf-model-invalid="errorFile" class="btn btn-success" tabindex="22"> Select File </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Patient face sheet</label>
+                                        <div class=" col-md-3 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.patient_face_sheet" tabindex="23">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">&nbsp;</label>
+                                    <div class="col-md-8">
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">File Path 1</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.file_path1.$invalid && formValidStatus }">
+                                            <button tabindex="7" type="file" ngf-select ng-model="user.file" name="file"    
+                                            accept="image/*" ngf-max-size="2MB" required
+                                            ngf-model-invalid="errorFile" class="btn btn-success" tabindex="25"> Select File </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">File Path 2</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.file_path2.$invalid && formValidStatus }">
+                                            <button tabindex="7" type="file" ngf-select ng-model="user.file" name="file"    
+                                            accept="image/*" ngf-max-size="2MB" required
+                                            ngf-model-invalid="errorFile" class="btn btn-success" tabindex="26"> Select File </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">File Path 3</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.file_path3.$invalid && formValidStatus }">
+                                            <button tabindex="7" type="file" ngf-select ng-model="user.file" name="file"    
+                                            accept="image/*" ngf-max-size="2MB" required
+                                            ngf-model-invalid="errorFile" class="btn btn-success" tabindex="27"> Select File </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label">&nbsp;</label>
+                                    <div class="col-md-8">
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Is Employed</label>
+                                        <div class=" col-md-3 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.is_employed" tabindex="29">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Is Auto Accident</label>
+                                        <div class=" col-md-3 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.is_auto_accident" tabindex="30" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Accident Place(State)</label>
+                                        <div class="col-md-8" ng-class="{'has-error': requisitionForm.accident_place.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="accident_place"  placeholder="Enter accident place"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.accidentPlace" tabindex="31">
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Is Other Accident</label>
+                                        <div class=" col-md-3 checkbox" id="alignment">
+                                            <input type="checkbox"    ng-model="requisition.is_other_accident" tabindex="32">
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>    
+            </div>
+    </script>
+    <script type="text/ng-template" id="body_parts.html">
+            <div class="row">
+                <br/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                               
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label">Body part name</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : requisitionForm.body_part_name.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="requisition.bodyPartName" name="body_part_name" required="" ng-readonly="readStatus"  tabindex="15"> 
+                                             <option value="">---Please select---</option>
+                                             <option value="">Body part 1</option> 
+                                             <option value="">Body part 2</option> 
+                                        </select> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label">Exam 1</label>
+                                    <div class="col-sm-7" ng-class="{'has-error': requisitionForm.exam.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="exam"  placeholder=""  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.exam" tabindex="13">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label">Exam 2</label>
+                                    <div class="col-sm-7" ng-class="{'has-error': requisitionForm.exam.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="exam"  placeholder=""  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.exam" tabindex="13">
+                                    </div>
+                                </div>
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label"><u><b>&nbsp;</b></u></label>
+                                    <div class="col-sm-7">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-2 control-label">Right</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.right1" >
+                                    </div>
+                                    <label   class="col-sm-2 control-label">Left</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.left1" >
+                                    </div>
+                                    <label   class="col-sm-2 control-label">Bilateral</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.bilateral1" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-2 control-label">Right</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.right2" >
+                                    </div>
+                                    <label   class="col-sm-2 control-label">Left</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.left2" >
+                                    </div>
+                                    <label   class="col-sm-2 control-label">Bilateral</label>
+                                    <div class=" col-sm-1 checkbox">
+                                            <input type="checkbox"    ng-model="requisition.bilateral2" >
+                                    </div>
+                                </div>
+                            </div>    
+                        </div> 
+                    </div>     
+        </script> 
+        <script type="text/ng-template" id="diseases.html">
+                    <div class="row">
+                    <br/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label">Name</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : requisitionForm.name.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="requisition.name" name="name" required="" ng-readonly="readStatus"  tabindex="15"> 
+                                            <option value="">---Please select---</option>
+                                            <option value="">option 1</option> 
+                                            <option value="">option 2</option> 
+                                        </select>   
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label"></label>
+                                    <div class="col-sm-7" >
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label"></label>
+                                </div>
+                           
+                                <div class="form-group" >
+                                   <label   class="col-sm-4 control-label"></label>
+                                   <div class="dropdown col-sm-7" >
+                                   </div>
+                                </div>
+                            </div>    
+                        </div> 
+                    </div>      
+         
+            </script>
+            <script type="text/ng-template" id="procedures.html">  
+                    <div class="row">
+                        <br/>
+                                <div class="form-horizontal">
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label   class="col-sm-4 control-label">Name</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : requisitionForm.procedures_name.$invalid && formValidStatus }">
+                                                <select class="form-control input-sm" ng-model="requisition.proceduresName" name="procedures_name" required="" ng-readonly="readStatus"  tabindex="11"> 
+                                                     <option value="">---Please select---</option>
+                                                     <option value="">name1</option> 
+                                                     <option value="">name2</option> 
+                                                </select>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label   class="col-sm-4 control-label">Hours</label>
+                                            <div class="col-sm-8" ng-class="{'has-error': requisitionForm.procedures_hours.$invalid && formValidStatus }">
+                                                    <input type="text" class="form-control input-sm" name="procedures_hours"  placeholder="Enter hours"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="requisition.procedures_hours" tabindex="12">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group">
+                                            <label   class="col-sm-4 control-label">Total Views</label>
+                                            <div class="col-sm-8" ng-class="{ 'has-error' : requisitionForm.total_views.$invalid && formValidStatus }">
+                                                    <input type="text" class="form-control input-sm" name="total_views" placeholder="Enter total views" ng-model="requisition.totalViews"  ng-pattern="" ng-readonly="readStatus" tabindex="13">
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm-8 col-lg-6">
+                                        <div class="form-group" >
+                                            <label   class="col-sm-4 control-label">Minutes</label>
+                                            <div class="dropdown col-sm-8" ng-class="{ 'has-error' : requisitionForm.minutes.$invalid && formValidStatus }">
+                                                    <input type="text" class="form-control input-sm" name="minutes" placeholder="Enter minutes" ng-model="requisition.minutes"  ng-pattern="" ng-readonly="readStatus" tabindex="14">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                        </div>     
+        </script>   
+        <script type="text/ng-template" id="poa.html">                        
+                      <div class="row">
+                       <br/>
+                            <div class="form-horizontal">
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">First Name</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_first_name.$invalid && formValidStatus}">
+                                            <input type="text" class="form-control input-sm" name="poa_first_name"  placeholder="Enter firstname" ng-model="requisition.firstName" required="" ng-pattern="" ng-readonly="readStatus" tabindex="18">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label class="col-md-4 control-label">Last Name</label>
+                                        <div class="col-md-8" ng-class="{'has-error' : requisitionForm.poa_last_name.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_last_name" placeholder="Enter lastname" ng-model="requisition.lastName" required="" ng-pattern="" ng-readonly="readStatus" tabindex="19">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group">
+                                        <label   class="col-md-4 control-label">Address Line1</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_addressline1.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_addressline1"  placeholder="Enter address line1" ng-model="requisition.addressLine1" required="" ng-pattern="" ng-readonly="readStatus" tabindex="20">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label   class="col-md-4 control-label">Address Line2</label>
+                                         <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_addressline2.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_addressline2"   placeholder="Enter address line2" ng-model="requisition.addressLine2" required="" ng-readonly="readStatus" tabindex="21">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label class="col-md-4 control-label">City</label>
+                                         <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_city.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm"  name="poa_city"  placeholder="Enter city" ng-model="requisition.city" required="" ng-pattern="" ng-readonly="readStatus" tabindex="22">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label class="col-md-4 control-label">Zip Code</label>
+                                         <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_zip_code.$invalid && formValidStatus }">
+                                                <input type="text" class="form-control input-sm" name="poa_zip_code"  placeholder="Enter zip code" ng-model="requisition.zipCode" required="" ng-pattern="" ng-readonly="readStatus" tabindex="24">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">State</label>
+                                        <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.state.$invalid && formValidStatus }">
+                                            <select class="form-control input-sm" ng-model="requisition.state" name="state" required="" ng-readonly="readStatus" tabindex="23">
+                                                    <option value="">---Please select---</option>
+                                                    <option value="">State 1</option> 
+                                                    <option value="">State 2</option> 
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label class="col-md-4 control-label">Mobile No.</label>
+                                         <div class="col-md-8" ng-class="{'has-error' : requisitionForm.poa_mobile_no.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_mobile_no" placeholder="Enter mobile number" ng-model="requisition.mobileNo" required="" ng-pattern="" ng-readonly="readStatus" tabindex="29">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label class="col-md-4 control-label">Phone No.</label>
+                                         <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_phone.$invalid && formValidStatus }">
+                                             <input type="text" class="form-control input-sm" name="poa_phone"  placeholder="Enter phone number" ng-model="requisition.phoneNo" required="" ng-pattern="" ng-readonly="readStatus" tabindex="26">
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Extension</label>
+                                        <div class="dropdown col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_extension.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_extension"  placeholder="Enter phone extension" ng-model="requisition.extension" required="" ng-pattern="" ng-readonly="readStatus" tabindex="27">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                         <label class="col-md-4 control-label">Fax No.</label>
+                                         <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_fax.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm"  name="poa_fax"  placeholder="Enter fax number" ng-model="requisition.fax" required="" ng-pattern="" ng-readonly="readStatus" tabindex="28">
+                                         </div>
+                                    </div>
+                                </div>
+                               <div class="col-sm-8 col-lg-6">
+                                    <div class="form-group" >
+                                        <label   class="col-md-4 control-label">Email Id</label>
+                                        <div class="col-md-8" ng-class="{ 'has-error' : requisitionForm.poa_email.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="poa_email"  placeholder="Enter email address" ng-model="requisition.email" required="" ng-pattern="" ng-readonly="readStatus" tabindex="25">
+                                        </div>   
+                                    </div> 
+                                </div>
+                            </div>    
+                    </div>
+    </script>
+    <script type="text/ng-template" id="insurances.html">  
+                           
+    
+    
+    </script>  
+    <script type="text/ng-template" id="review.html">                           
+                 <div class="row">
+                 <br/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">List of body parts</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : requisitionForm.body_parts.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="requisition.bodyParts" name="body_parts" required="" ng-readonly="readStatus" tabindex="7">
+                                            <option value="">---Please select---</option> 
+                                            <option value="">Body part 1</option>
+                                         </select>  
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Question 1</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-group">
+                                            <label   class="col-sm-2 control-label">Yes</label>
+                                            <div class=" col-sm-1 checkbox">
+                                                     <input type="checkbox"    ng-model="requisition.yes" >
+                                            </div>
+                                            <label   class="col-sm-2 control-label">No</label>
+                                            <div class=" col-sm-1 checkbox">
+                                                    <input type="checkbox"    ng-model="requisition.no" >
+                                            </div>
+                                            <label   class="col-sm-2 control-label">NA</label>
+                                            <div class=" col-sm-1 checkbox">
+                                                    <input type="checkbox"    ng-model="requisition.na" >
+                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label   class="col-md-4 control-label"><u><b>&nbsp;</b></u></label>
+                                    <div class="col-sm-7">
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <div class="col-sm-7" ng-class="{'has-error' : requisitionForm.remark.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="remark" placeholder="Remark" ng-model="requisition.remark" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="2">
+                                    </div>
+                                 </div>
+                             </div>    
+                        </div>    
+                    </div>
+        </script>    
+        <script type="text/ng-template" id="special_notes.html">                           
+                <div class="col-md-11">
+                <br/>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                        <label   class="col-sm-4 control-label">Special Notes</label>
+                                        <div class="col-sm-8" ng-class="{'has-error': requisitionForm.special_note.$invalid && formValidStatus }">
+                                        <textarea rows="4" cols="50" class="form-control input-sm" placeholder="Enter special note" tabindex="7" name="special_note" ng-model="requisition.specialNote"></textarea></div>
+                                </div>
+                            </div>
+                </div>
+        </script>  
+        <script type="text/ng-template" id="related_document.html">               
+                <div >
+                <div class="panel-body">
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left" ng-click="open()" ng-hide="readStatus" > <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Related Document </button>
+                    <br/><br/>
+                    <div class="row">
+                    <br/>
+                    <table class="table table-bordered table-striped table-responsive table-justified">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No.
+                                    </th>
+                                    <th>
+                                        Document Type
+                                    </th>
+                                    <th>
+                                      Document Name
+                                    </th>
+                                    <th>
+                                      Note
+                                    </th>
+                                    <th class="col-md-1">   
+                                        Action
+                                    </th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="requisition in requisitions">
+                                    <td></td>
+                                <td>{{requisition.docType}}</td>
+                                    <td>{{requisition.documentName}}</td>
+                                    <td>{{requisition.note}}</td>
+                                    <td class="col-md-1"> 
+                                        <a  class="" ng-click="editRequisitionDocument($index)" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                        &nbsp; <a  class="" ng-click="deleteRequisitionDocument($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                        &nbsp;<a  class="" ng-click="viewRequisitionDocument($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                                    </td> 
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>   
+            </div>
+       </script>
+       <script type="text/ng-template" id="addRelatedDocument.html">
+            <div class="modal-header">
+                    <h3>ADD NEW DOCUMENT</h3>
+            </div>
+            <div class="modal-body">
+                        <div class=form-group>
+                            <label>Document Type</label>
+                            <select class="form-control input-sm" id="docType" ng-model="requisition.docType" name="doc_type" required="" ng-readonly="readStatus" >
+                               <option value="">---Please select---</option>
+                               <option value="">State 1</option> 
+                               <option value="">State 2</option> 
+                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Document Name</label>
+                            <input type="text" class="form-control" name="doc_name" placeholder="Enter document name" ng-model="requisition.documentName"   />
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Document</label>
+                            <button tabindex="7" type="file" ngf-select ng-model="user.file" name="file"    
+                            accept="image/*" ngf-max-size="2MB" required
+                            ngf-model-invalid="errorFile" class="btn btn-success"> Select File </button>
+                        </div>
+                        <div class="form-group">
+                            <label>Note</label>
+                            <input type="text" class="form-control" name="note" placeholder="Enter note" ng-model="requisition.note"  />
+                        </div>
+            </div>
+            <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+            </div>
+       </script>

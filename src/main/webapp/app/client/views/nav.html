@@ -1,0 +1,110 @@
+        
+<div class="nav-wrapper">
+    <ul id="nav"
+        class="nav"
+        data-ng-controller="NavCtrl"
+        data-collapse-nav
+        >
+
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN"><a ui-sref="dashboard"> <i class="ti-home"></i><span data-i18n="Dashboard"></span> </a></li>
+        <li ng-show="sessionService.getUserRole() === constant.SADMIN">
+            <a ui-sref="manageTenant"><span data-i18n="Dispatch Centers"></span></a>
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN || sessionService.getUserRole() === constant.DCOPERATOR">
+            <a ui-sref="#"><span data-i18n="Care Network"></span></a>        
+            <ul>
+                <li>
+                    <a ui-sref="manageFacility"><i class="ti-angle-left"></i><span data-i18n="Facility"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageProvider"><i class="ti-angle-left"></i><span data-i18n="Provider "></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageRadiologist"><i class="ti-angle-left"></i><span data-i18n="Radiologist  "></span></a>
+                </li>
+                <li ng-show="sessionService.getUserRole() === constant.DCADMIN">
+                    <a ui-sref="addRadiologyGroup"><i class="ti-angle-left"></i><span data-i18n="Radiologist Group "></span></a>
+                </li>
+                <li>
+                    <a ui-sref="managePatient"><i class="ti-angle-left"></i><span data-i18n="Patient"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="managePayer"><i class="ti-angle-left"></i><span data-i18n="Payer "></span></a>
+                </li>
+<!--            <li>
+                    <a ui-sref="manageRequisition"><i class="ti-angle-left"></i><span data-i18n="Requisition "></span></a>
+                </li>-->
+                <li>
+                    <a ui-sref="manageAffiliat"><i class="ti-angle-left"></i><span data-i18n="Affiliate Company"></span></a>
+                </li>
+                <li ng-show="sessionService.getUserRole() === constant.DCADMIN">
+                    <a ui-sref="manageTechnologist"><i class="ti-angle-left"></i><span data-i18n="Technologist "></span></a>
+                </li>
+            </ul>
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.FACILITY">
+            <a ui-sref="#"><span data-i18n="Care Network"></span></a>        
+            <ul>
+                <li>
+                    <a ui-sref="managePatient"><i class="ti-angle-left"></i><span data-i18n="Patient"></span></a>
+                </li>
+<!--                <li>
+                    <a ui-sref="manageProvider"><i class="ti-angle-left"></i><span data-i18n="Provider "></span></a>
+                </li>-->
+            </ul>
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN">
+            <a ui-sref="#"><span data-i18n="Medical Record Setup"></span></a>        
+            <ul>
+                <li>
+                    <a ui-sref="manageIcd"><i class="ti-angle-left"></i><span data-i18n="ICD Code"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageCptCode"><i class="ti-angle-left"></i><span data-i18n="CPT Code"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageCptCharges"><i class="ti-angle-left"></i><span data-i18n="CPT Charge"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageCptModifier"><i class="ti-angle-left"></i><span data-i18n="CPT Modifier"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageBodyPart"><i class="ti-angle-left"></i><span data-i18n="Body Part"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageExam"><i class="ti-angle-left"></i><span data-i18n="Exam"></span></a>
+                </li>
+                <li>
+                    <a ui-sref="manageReviewSystem"><i class="ti-angle-left"></i><span data-i18n="Review of System"></span></a>
+                </li>
+            </ul>
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN">	
+            <a ui-sref="#"><span data-i18n="User Management"></span></a>
+            <ul>
+                <li>
+                    <a ui-sref="manageUser"><i class="ti-angle-left"></i><span data-i18n="User "></span></a>
+                </li>
+            </ul>
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN">	
+            <a ui-sref="manageMasterdata"><span data-i18n="Masterdata Management"></span></a>       
+        </li>
+        <li ng-hide="sessionService.getUserRole() === constant.SADMIN">	
+            <a ui-sref="manageRequisition"><span data-i18n="Case/Workflow Management"></span></a>           
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCOPERATOR">	
+            <a ui-sref="manageSchedule"><span data-i18n="Schedule"></span></a>           
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN || sessionService.getUserRole() === constant.DCOPERATOR || sessionService.getUserRole() === constant.TECHNOLOGIST|| sessionService.getUserRole() === constant.SADMIN ">	
+            <a ui-sref="manageMessage"><span data-i18n="Message"></span></a>           
+        </li> 
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN || sessionService.getUserRole() === constant.SADMIN ">	
+            <a ui-sref="reports"><span data-i18n="Reports"></span></a>           
+        </li>
+        <li ng-show="sessionService.getUserRole() === constant.DCADMIN || sessionService.getUserRole() === constant.DCOPERATOR || sessionService.getUserRole() === constant.TECHNOLOGIST">	
+            <a ui-sref="manageVan"><span data-i18n="Van"></span></a>           
+        </li>
+
+    </ul>
+</div>

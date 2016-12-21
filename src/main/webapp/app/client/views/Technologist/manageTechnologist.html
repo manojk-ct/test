@@ -1,0 +1,771 @@
+<div>
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><strong>Technologist</strong> <span class="pull-right"><a ng-click="onClickAdd()" style="cursor: pointer"><span class="glyphicon glyphicon-plus"></span><span data-i18n="Add Technologist"></span> </a></span>  </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">   
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                       placeholder="Search..."
+                                       class="form-control"
+                                       ng-model="searchKeywords"
+                                       ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    First Name
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('firstName') "
+                                          data-ng-class="{active: row === 'firstName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-firstName') "
+                                          data-ng-class="{active: row === '-firstName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    User Name
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('userName') "
+                                          data-ng-class="{active: row === 'userName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-userName') "
+                                          data-ng-class="{active: row === '-userName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Affliated Company
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('affiliatedCompany') "
+                                          data-ng-class="{active: row === 'affiliatedCompany'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-affiliatedCompany') "
+                                          data-ng-class="{active: row === '-affiliatedCompany'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>  
+                                <div class="th">
+                                    Technologist Type
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('technologistType') "
+                                          data-ng-class="{active: row === 'technologistType'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-technologistType') "
+                                          data-ng-class="{active: row === '-technologistType'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>  
+                                <div class="th">
+                                    Action
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="technologist in currentPageFacilities">
+                            <td>{{technologist.firstName }}</td>
+                            <td>{{technologist.userName}}</td>
+                            <td>{{technologist.affiliatedCompany}}</td>
+                            <td>{{technologist.technologistType}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteTechniologist($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr>
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                        ng-model="currentPage"
+                                        total-items="filteredTechnologist.length"
+                                        max-size="4"
+                                        ng-change="select(currentPage)"
+                                        items-per-page="numPerPage"
+                                        rotate="false"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;"
+                                        boundary-links="true"></pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+  <div class="page" ng-hide="currentTabMain">
+    <form name="technologistForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>  {{page}} Technologist</strong>  </h3>
+            </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">First Name*</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.first_name.$invalid && formValidStatus}">
+                                        <input type="text" class="form-control input-sm" name="first_name"  placeholder="Enter first name" ng-model="technologist.firstName" required="" ng-pattern="" ng-readonly="readStatus" tabindex="1">
+                                        <p class="help-block" ng-show="technologistForm.first_name.$error.required && technologistForm.first_name.$dirty" ng-class="{ 'error_msg' : technologistForm.first_name.$error.required }">First name is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label   class="col-sm-4 control-label">Last Name*</label>
+                                    <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.last_name.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="last_name"  placeholder="Enter last name" ng-model="technologist.lastName" required="" ng-pattern="" ng-readonly="readStatus" tabindex="3">
+                                        <p class="help-block" ng-show="technologistForm.last_name.$error.required && technologistForm.last_name.$dirty" ng-class="{ 'error_msg' : technologistForm.last_name.$error.required }">Last name is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Alise Name</label>
+                                     <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.alise_name.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm"  name="alise_name"  placeholder="Enter alise name" ng-model="technologist.aliseName" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="5">
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-4 control-label">Marital Status</label>
+                                    <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.marital_status.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="technologist.maritalStatus" name="marital_status" required="" ng-readonly="readStatus" tabindex="7">
+                                            <option value="">---Please select---</option> 
+                                            <option value="married">Married</option>
+                                            <option value="nonmarried">Unmarried</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Affiliated Company</label>
+                                     <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.affiliated_company.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="technologist.affiliatedCompany" name="affiliated_company" required="" ng-readonly="readStatus" tabindex="9">
+                                            <option value="">---Please select---</option> 
+                                            <option value="">Company 1</option> 
+                                            <option value="">Company 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                     <label class="col-sm-4 control-label">Middle Name</label>
+                                     <div class="col-sm-7" ng-class="{'has-error' : technologistForm.middle_name.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="middle_name" placeholder="Enter middle name" ng-model="technologist.middleName" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="2">
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                     <label   class="col-sm-4 control-label">User Name/Tech ID</label>
+                                     <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.user_name.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="user_name"   placeholder="Enter user name/tech id" ng-model="technologist.userName" required="" ng-readonly="readStatus" tabindex="4">
+                                     </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-sm-4 control-label">Gender</label>
+                                    <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.gender.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="technologist.gender" name="gender" required="" ng-readonly="readStatus" tabindex="6">
+                                            <option value="">---Please select---</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>  
+                                <div class="form-group" >
+                                    <label   class="col-sm-4 control-label">Date of Joining</label>
+                                    <div class="col-sm-7">                                          
+                                        <div class="input-group ui-datepicker">
+                                                <input type="text" 
+                                                      class="form-control"
+                                                      datepicker-popup="{{format}}"
+                                                      ng-model="technologist.dateOfJoining"
+                                                      is-open="openDateOfJoiningStatus"
+                                                      min="minDate"
+                                                      max="'2015-06-22'"
+                                                      datepicker-options="dateOptions" 
+                                                      ng-required="true" 
+                                                      close-text="Close">
+                                                <span class="input-group-addon" ng-click="openDateOfJoining($event)"><i class="ti-calendar"></i></span>
+                                         </div>
+                                     </div>  
+                                </div> 
+                                <div class="form-group" >
+                                    <label   class="col-sm-4 control-label">Technologist Type</label>
+                                    <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.technologist_type.$invalid && formValidStatus }">
+                                        <select class="form-control input-sm" ng-model="technologist.technologistType" name="technologist_type" required="" ng-readonly="readStatus" tabindex="10">
+                                            <option value="">---Please select---</option> 
+                                            <option value="">Technologist 1</option> 
+                                             <option value="">Technologist 2</option> 
+                                        </select>
+                                    </div>
+                                </div> 
+                            </div>    
+                        </div>    
+                    </div>          
+                    <div class="row">
+                        <h4 > &nbsp;<strong>  </strong></h4>
+                        <div class="panel with-nav-tabs panel-primaryy">
+                            <div class="panel-headin">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li ng-repeat="tab in tabs"  ng-class="{active:isActiveTab(tab.url)}">
+                                        <a role="tab" data-toggle="tab" style="cursor:pointer"
+                                            ng-click="onClickTab(tab)">{{tab.title}} 
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div> 
+                        </div>
+                        <div id="mainView">
+                            <div ng-include="currentTab"></div>
+                        </div>                                                  
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(technologistForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div> 
+                    </div>
+                </div>
+            </div>
+        </form>  
+  </div>  
+
+<script type="text/ng-template" id="contactdetails.html">                           
+    <div class="row">
+    <br/>
+                <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Address Line 1*</label>
+                                <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.address.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="address" placeholder="Enter address line1" ng-model="technologist.addressLine1"  ng-pattern="" required="" ng-readonly="readStatus" tabindex="11">
+                                    <p class="help-block" ng-show="technologistForm.address.$error.required && technologistForm.address.$dirty" ng-class="{ 'error_msg' : technologistForm.address.$error.required }">Address line1 is required</p> 
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">City*</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.city.$invalid && formValidStatus }">
+                                     <input type="text" class="form-control input-sm" name="city"  placeholder="Enter city"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.city" tabindex="13">
+                                     <p class="help-block" ng-show="technologistForm.city.$error.required && technologistForm.city.$dirty" ng-class="{ 'error_msg' : technologistForm.city.$error.required }">City is required</p> 
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Country</label>
+                                <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.service_country.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="technologist.serviceCountry" name="" required="" ng-readonly="readStatus"  tabindex="15"> 
+                                        <option value="">---Please select---</option>
+                                        <option value="">US</option> 
+                                        <option value="">UK</option> 
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Home Phone*</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.home_phone.$invalid && formValidStatus}">
+                                    <input type="text" class="form-control input-sm" name="home_phone"  placeholder="Enter home phone number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.homePhone" tabindex="17" required="" ng-pattern="/^[0-9]*$/">
+                                    <p class="help-block" ng-show="technologistForm.home_phone.$error.required && technologistForm.home_phone.$dirty" ng-class="{ 'error_msg' : technologistForm.home_phone.$error.required }">Home phone is required</p> 
+                                    <p class="help-block" ng-show="technologistForm.home_phone.$error.pattern" ng-class="{ 'error_msg' : technologistForm.home_phone.$error.pattern}">Home phone should be number only</p>
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Mobile No.</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.mobile_no.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="mobile_no"  placeholder="Enter mobile number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.mobileNo" tabindex="19"  ui-mask="'99-99-9999'">
+                                    <p class="help-block" ng-show="technologistForm.mobile_no.$error.pattern" ng-class="{ 'error_msg' : technologistForm.mobile_no.$error.pattern}">Mobile no. should be number only</p>
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Fax No.</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.fax_no.$invalid && formValidStatus }">
+                                     <input type="text" class="form-control input-sm" name="fax_no"  placeholder="Enter fax number" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.faxNo" tabindex="21">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Pager</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.pager.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="pager"  placeholder="Enter pager" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.pager" tabindex="23">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Address Line 2</label>
+                                <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.address_line2.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="address_line2" placeholder="Enter address line2" ng-model="technologist.addressLine2"  ng-pattern="" ng-readonly="readStatus" tabindex="12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                 <label   class="col-sm-4 control-label">Zip Code*</label>
+                                 <div class="col-sm-7" ng-class="{'has-error': technologistForm.zip_code.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="zip_code"  placeholder="Enter zip code"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.zipCode" tabindex="14">
+                                    <p class="help-block" ng-show="technologistForm.zip_code.$error.required && technologistForm.zip_code.$dirty" ng-class="{ 'error_msg' : technologistForm.zip_code.$error.required }">Zip code is required</p> 
+                                </div>
+                            </div>  
+                            <div class="form-group" >
+                                <label   class="col-sm-4 control-label">State/Province*</label>
+                                <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.service_state_province.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="technologist.serviceStateProvince" name="service_state_province" required="" ng-readonly="readStatus" tabindex="16">
+                                        <option value="">---Please select---</option>
+                                        <option value="">State 1</option> 
+                                        <option value="">State 2</option> 
+                                    </select>
+                                    <p class="help-block" ng-show="technologistForm.service_state_province.$error.required && technologistForm.service_state_province.$dirty" ng-class="{ 'error_msg' : technologistForm.service_state_province.$error.required }">State is required</p> 
+                                </div>
+                             </div>          
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Alternate Phone</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.altername_phone.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="altername_phone"  placeholder="Enter alternate phone number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.alternamePhone" tabindex="18">
+                                        <p class="help-block" ng-show="technologistForm.altername_phone.$error.pattern" ng-class="{ 'error_msg' : technologistForm.altername_phone.$error.pattern}">Alternate phone should be number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Work Phone</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.work_phone.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="work_phone"  placeholder="Enter work phone number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.workPhone" tabindex="20">
+                                        <p class="help-block" ng-show="technologistForm.work_phone.$error.pattern" ng-class="{ 'error_msg' : technologistForm.work_phone.$error.pattern}">Work phone should be number only</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Email ID*</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.contact_email_id.$invalid && formValidStatus }">
+                                        <input type="text" class="form-control input-sm" name="contact_email_id"  placeholder="Enter email id"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.contactEmailId" tabindex="22">
+                                        <p class="help-block" ng-show="technologistForm.contact_email_id.$error.required && technologistForm.contact_email_id.$dirty" ng-class="{ 'error_msg' : technologistForm.contact_email_id.$error.required }">Email id is required</p> 
+                                </div>
+                            </div>
+                         </div>    
+                    </div> 
+                </div>  
+     </script>
+     <script type="text/ng-template" id="credentials.html">
+                <div class="row">
+                <br/>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Licence No.</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.licence_no.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="licence_no"  placeholder="Enter licence number"  ng-pattern="" ng-readonly="readStatus" ng-model="technologist.licenceNo" tabindex="11" required="">
+                                    <p class="help-block" ng-show="technologistForm.licence_no.$error.required && technologistForm.licence_no.$dirty" ng-class="{ 'error_msg' : technologistForm.licence_no.$error.required }">License no is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Licence CE</label>
+                                <div class="col-sm-7">                                          
+                                    <div class="input-group ui-datepicker">
+                                                <input type="text" 
+                                                      class="form-control"
+                                                      datepicker-popup="{{format}}"
+                                                      ng-model="technologist.liceneceCe"
+                                                      is-open="openLicenceCeStatus"
+                                                      min="minDate"
+                                                      max="'2015-06-22'"
+                                                      datepicker-options="dateOptions" 
+                                                      date-disabled="disabled(date, mode)"
+                                                      ng-required="true" 
+                                                      close-text="Close">
+                                                <span class="input-group-addon" ng-click="openLicenceCe($event)"><i class="ti-calendar"></i></span>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Qualification</label>
+                                <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.qualification.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="technologist.qualification" name="qualification" required="" ng-readonly="readStatus" tabindex="15">
+                                        <option value="">---Please select---</option> 
+                                        <option value="">Qualification 1</option> 
+                                        <option value="">Qualification 2</option> 
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Last Emp By</label>
+                                <div class="dropdown col-sm-7" ng-class="{ 'has-error' : technologistForm.last_emp_by.$invalid && formValidStatus }">
+                                    <select class="form-control input-sm" ng-model="technologist.lastEmpBy" name="last_emp_by" required="" ng-readonly="readStatus" tabindex="17">
+                                        <option value="">---Please select---</option> 
+                                        <option value="">Option 1</option> 
+                                        <option value="">Option 2</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">Licence Exp</label>
+                                    <div class="col-sm-7">                                          
+                                        <div class="input-group ui-datepicker">
+                                                <input type="text" 
+                                                      class="form-control"
+                                                      datepicker-popup="{{format}}"
+                                                      ng-model="tenant.service_start_date"
+                                                      is-open="openLicenceExpireStatus"
+                                                      min="minDate"
+                                                      max="'2015-06-22'"
+                                                      datepicker-options="dateOptions" 
+                                                      date-disabled="disabled(date, mode)"
+                                                      ng-required="true" 
+                                                      close-text="Close">
+                                                <span class="input-group-addon" ng-click="openLicenceExpire($event)"><i class="ti-calendar"></i></span>
+                                         </div>
+                                     </div>  
+                            </div>
+                            <div class="form-group">
+                                <label   class="col-sm-4 control-label">UID</label>
+                                <div class="col-sm-7" ng-class="{'has-error': technologistForm.uid.$invalid && formValidStatus }">
+                                    <input type="text" class="form-control input-sm" name="uid"  placeholder="Enter UID"  required="" ng-pattern="" ng-readonly="readStatus" ng-model="technologist.uid" tabindex="14">
+                                 </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-4 control-label">School Attended</label>
+                                <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.school_attended.$invalid && formValidStatus}">
+                                    <input type="text" class="form-control input-sm" name="school_attended" placeholder="Enter school attended"  required=""  ng-readonly="readStatus" ng-model="technologist.schoolAttended" tabindex="16">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-4 control-label">Exp Year</label>
+                                <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.exp_year.$invalid && formValidStatus}">
+                                    <input type="text" class="form-control input-sm" name="exp_year" placeholder="Enter expiry year"  required=""  ng-readonly="readStatus" ng-model="technologist.expYear" tabindex="18" ng-pattern="/^[0-9]*$/">
+                                    <p class="help-block" ng-show="technologistForm.exp_year.$error.pattern" ng-class="{ 'error_msg' : technologistForm.exp_year.$error.pattern}">Exp year should be number only</p>
+                                </div>
+                            </div>
+                        </div>    
+                    </div> 
+                </div>
+            </script>
+    <script type="text/ng-template" id="speciality.html">
+            <div class="row">
+            <br/>
+                    <div class="col-md-4">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label   class="col-sm-7 control-label">Radiographer</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.radiographer" >
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">Computed Tromography</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.computedTromography" >
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">PET</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.pet" >
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">Echo Cardiogram</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.echoCardiogram" >
+                                </div>
+                        </div>
+                    </div>   
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">Sonographer</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.sonographer">
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">Magnetic Resonance</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.magneticResonance" >
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">Plabotomist</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.plabotomist" >
+                                </div>
+                        </div>
+                        <div class="form-group">
+                                <label   class="col-sm-7 control-label">ECG</label>
+                                <div class="col-sm-1">
+                                </div>
+                                <div class=" col-sm-3 checkbox">
+                                    <input type="checkbox"    ng-model="technologist.ecg" >
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">EKG</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.ekg">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Holter Monitoring</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.holterMonitoring">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Nuclear Machine</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.nuclearMachine">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Bone Densitometrist</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                            <input type="checkbox"    ng-model="technologist.boneDensitometrist" >
+                        </div>
+                    </div>
+                </div>
+</script>  
+<script type="text/ng-template" id="technique.html">
+    <div class="row">
+        <br/>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Combative Patient</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.combativePatient" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Upper Extrimity</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.upperExtrimity" >
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Lower Extrimity</label>
+                            <div class="col-sm-1">
+                            </div>
+                             <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.lowerExtrimity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                           <label   class="col-sm-7 control-label">Other Restriction</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.otherRestriction">
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Decubitus Firms</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.decubitusFirms" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </script> 
+    <script type="text/ng-template" id="availability.html">  
+         <div class="row">
+        <br/>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Monday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox" ng-model="technologist.monday" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Thursday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.thursday" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Sunday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox" ng-model="technologist.sunday" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Tuesday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.tuesday" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Friday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.friday" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Wednesday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.wednesday" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-7 control-label">Saturday</label>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class=" col-sm-3 checkbox">
+                                <input type="checkbox"    ng-model="technologist.saturday" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</script>    
+<script type="text/ng-template" id="otherInfo.html">                           
+            <div class="row">
+            <br/>
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">SSN</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_ssn.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_ssn"  placeholder="Enter SSN"  ng-pattern="" ng-readonly="readStatus" ng-model="technologist.ssn" tabindex="11">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">Age</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_age.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_age"  placeholder="Enter age"  required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.age" tabindex="13">
+                                <p class="help-block" ng-show="technologistForm.otherinfo_age.$error.pattern" ng-class="{ 'error_msg' : technologistForm.otherinfo_age.$error.pattern}">Age should be number only</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Emergency Contact</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_emergency_contact.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_emergency_contact"  placeholder="Enter emergency contact number" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.emergencyContact" tabindex="15">
+                                <p class="help-block" ng-show="technologistForm.otherinfo_emergency_contact.$error.pattern" ng-class="{ 'error_msg' : technologistForm.otherinfo_emergency_contact.$error.pattern}">Emergency contact should be number only</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">Emergency Phone No.1</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_emergency_phone1.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_emergency_phone1"  placeholder="Enter emergency phone number1" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.emergencyPhone" tabindex="17">
+                                <p class="help-block" ng-show="technologistForm.otherinfo_emergency_phone1.$error.pattern" ng-class="{ 'error_msg' : technologistForm.otherinfo_emergency_phone1.$error.pattern}">Emergency phone1 should be number only</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">Date of Birth</label>
+                            <div class="col-sm-7" ng-class="{ 'has-error' : technologistForm.otherinfo_dob.$invalid && formValidStatus }">
+                                <input type="date" class="form-control input-sm" name="otherinfo_dob"  ng-model="technologist.dob" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" tabindex="12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">Ethinicity</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_ethinicity.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_ethinicity"  placeholder="Enter ethinicity"  required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.ethinicity" tabindex="14">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label   class="col-sm-4 control-label">Relationship</label>
+                            <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_relationship.$invalid && formValidStatus }">
+                                <input type="text" class="form-control input-sm" name="otherinfo_relationship"  placeholder="Enter relationship" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.relationship" tabindex="16">
+                        </div>
+                    </div>
+                   <div class="form-group">
+                        <label class="col-sm-4 control-label">Emergency Phone No.2</label>
+                        <div class="col-sm-7" ng-class="{'has-error': technologistForm.otherinfo_emergency_phone2.$invalid && formValidStatus}">
+                            <input type="text" class="form-control input-sm" name="otherinfo_emergency_phone2"  placeholder="Enter emergency phone number2" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="technologist.emergencyPhone2" tabindex="18">
+                            <p class="help-block" ng-show="technologistForm.otherinfo_emergency_phone2.$error.pattern" ng-class="{ 'error_msg' : technologistForm.otherinfo_emergency_phone2.$error.pattern}">Emergency phone2 should be number only</p>
+                        </div>
+                    </div>
+           </div>    
+       </div> 
+   </div>  
+</script>
+</div>   

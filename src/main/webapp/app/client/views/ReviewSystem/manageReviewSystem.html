@@ -1,0 +1,167 @@
+<div class="page">
+    <form name="reviewSystemForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong> Review of System</strong>  </h3>
+            </div>
+            <div style="height: 500px;  border: 1px solid gray;">
+                <div class="panel-body">
+
+                     <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left" ng-click="openGroup()" ng-hide="readStatus" > <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Group </button>
+
+                    <br/>
+                    <div class="row">
+                        <br/>
+                        <table class="table table-bordered table-striped table-responsive table-justified">
+                            <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No.
+                                    </th>
+                                    <th>
+                                        Group Name
+                                    </th>
+                                    <th>
+                                        Sequence No.
+                                    </th>
+                                    <th class="col-md-1">   
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="reviewSystem in currentPageExams">
+                                    <td>{{reviewSystem.serialNumber}}</td>
+                                    <td>{{reviewSystem.group}}</td>
+                                    <td>{{reviewSystem.sequenceNumber}}</td>
+                                    <td class="col-md-1"> 
+<!--                                        <a  class="" ui-sref="editReviewSystem({groupReviewSystem:ReviewSystem.groupSystem})" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                        &nbsp; <a  class="" ng-click="deleteReviewSystem($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> -->
+                                    </td> 
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+            </div>  <br>  <br> 
+            <div style="height: 500px; border: 1px solid gray;">
+                <div class="panel-body">
+                
+                     <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"  ng-click="openQuestion()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Question </button>
+
+                    <br/>
+                    <div class="row">
+
+                        <br/>
+                        <div class="form-group" >
+                            <label class="col-sm-2 control-label">Select Group</label>
+                            <div class="dropdown col-sm-4" ng-class="{ 'has-error' : reviewSystemForm.select_group.$invalid && formValidStatus  }">
+                                <select tabindex="4" class="form-control input-sm"  name="select_group"  ng-readonly="readStatus"    >
+                                    <option value="">---Please select---</option> 
+                                </select>
+                            </div>
+                        </div>
+                        <br/>  <br/>
+                        <table class="table table-bordered table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No.
+                                    </th>
+                                    <th>
+                                        Question
+                                    </th>
+                                    <th>
+                                        Sequence No.
+                                    </th>
+                                    <th class="col-md-1">   
+                                        Action
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="reviewSystem in currentPageExams">
+                                    <td>{{reviewSystem.serialNumber}}</td>
+                                    <td>{{reviewSystem.group}}</td>
+                                    <td>{{reviewSystem.sequenceNumber}}</td>
+                                    <td class="col-md-1"> 
+<!--                                        <a  class="" ui-sref="editReviewSystem({questionReviewSystem:ReviewSystem.questionSystem})" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                        &nbsp; <a  class="" ng-click="deleteReviewSystem($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> -->
+                                    </td> 
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                         <script type="text/ng-template" id="addGroup.html">
+                    
+                              <div class="modal-header">
+                            <h3>ADD NEW GROUP</h3>
+                        </div>
+                        <div class="modal-body">
+                            
+                                <div class=form-group>
+                                    <label>Group Name</label>
+                                    <input type="text" class="form-control" name="group_name"  placeholder="Enter group name"  />
+                                     <p class="help-block" ng-show="reviewSystemForm.group_name.$error.pattern" ng-class="{ 'error_msg' : reviewSystemForm.group_name.$error.pattern}">Group name should be text only</p> 
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input type="text" class="form-control" name="description" placeholder="Enter description"   />
+                                      <p class="help-block" ng-show="reviewSystemForm.description.$error.pattern" ng-class="{ 'error_msg' : reviewSystemForm.description.$error.pattern}">Description should be text only</p> 
+                                </div>
+                                
+                                    
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    </script>
+                    
+                    <script type="text/ng-template" id="addQuestion.html">
+                    
+                            <div class="modal-header">
+                            <h3>ADD NEW QUESTION</h3>
+                        </div>
+                        <div class="modal-body">
+                            
+                                <div class=form-group>
+                                    <label>Group</label>
+                                    <input type="text" class="form-control" name="group"  placeholder="Enter group"  />
+                                     <p class="help-block" ng-show="reviewSystemForm.group.$error.pattern" ng-class="{ 'error_msg' : reviewSystemForm.group.$error.pattern}">Group should be text only</p> 
+                                </div>
+                                <div class="form-group">
+                                    <label>Question</label>
+                                    <input type="text" class="form-control" name="question" placeholder="Enter question"   />
+                                      <p class="help-block" ng-show="reviewSystemForm.question.$error.pattern" ng-class="{ 'error_msg' : reviewSystemForm.question.$error.pattern}">Question should be text only</p> 
+                                </div>
+                                <div class="form-group">
+                                    <label>Sequence No.</label>
+                                    <input type="text" class="form-control" name="sequence_number" placeholder="Enter sequence number"   />
+                                      <p class="help-block" ng-show="reviewSystemForm.sequence_number.$error.pattern" ng-class="{ 'error_msg' : reviewSystemForm.sequence_number.$error.pattern}">Sequence number should be text only</p> 
+                                </div>
+                                
+                                    
+                        </div>
+                        <div class="modal-footer">                            
+                            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                            <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+                        </div>
+                    
+                    </script>
+                    
+                    <br>               
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+

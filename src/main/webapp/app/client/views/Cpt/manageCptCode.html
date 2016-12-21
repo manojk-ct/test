@@ -1,0 +1,296 @@
+    <div>
+        <div class="page page-grid" ng-show="currentTabMain">
+            <div class="panel panel-default table-dynamic">
+                <div class="panel-heading"><strong>CPT Code</strong>
+                    <span class="pull-right">
+                        <a ng-click="onClickAdd()" style="cursor: pointer">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <span data-i18n="Add CPT Code"></span> 
+                        </a>
+                    </span>  
+                </div>
+                <div class="panel-body">
+                    <div class="table-filters">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-6">
+                                <form>
+                                    <input type="text"
+                                           placeholder="Search..."
+                                           class="form-control"
+                                           ng-model="searchKeywords"
+                                           ng-keyup="search()">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered table-striped table-responsive">
+                        <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                        <thead>
+                            <tr>
+                                <th>
+                                   
+                                   <div class="th">
+                                        CPT Code
+                                        <span class="ti-angle-up"
+                                              data-ng-click=" order('cptCode') "
+                                              data-ng-class="{active: row === 'cptCode'}" style="cursor: pointer"></span>
+                                        <span class="ti-angle-down"
+                                              data-ng-click=" order('-cptCode') "
+                                              data-ng-class="{active: row === '-cptCode'}" style="cursor: pointer"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                 
+                                    <div class="th">
+                                        Status
+                                        <span class="ti-angle-up"
+                                              data-ng-click=" order('status') "
+                                              data-ng-class="{active: row === 'status'}" style="cursor: pointer"></span>
+                                        <span class="ti-angle-down"
+                                              data-ng-click=" order('-status') "
+                                              data-ng-class="{active: row === '-status'}" style="cursor: pointer"></span>
+                                    </div>
+                                </th>
+                                <th>
+                                 
+                                    <div class="th">
+                                        Exam
+                                        <span class="ti-angle-up"
+                                              data-ng-click=" order('exam') "
+                                              data-ng-class="{active: row === 'exam'}" style="cursor: pointer"></span>
+                                        <span class="ti-angle-down"
+                                              data-ng-click=" order('-exam') "
+                                              data-ng-class="{active: row === '-exam'}" style="cursor: pointer"></span>
+                                    </div>
+                                </th>
+                                <th>  
+                                    
+                                    <div class="th">
+                                        Proc View
+                                        <span class="ti-angle-up"
+                                              data-ng-click=" order('procView') "
+                                              data-ng-class="{active: row === 'procView'}" style="cursor: pointer"></span>
+                                        <span class="ti-angle-down"
+                                              data-ng-click=" order('-procView') "
+                                              data-ng-class="{active: row === '-procView'}" style="cursor: pointer"></span>
+                                    </div>
+                                </th>
+                                <th> 
+                                    <div class="th">
+                                        Action
+                                    </div>
+                                   
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cptCode in currentPageCptCodes">
+                                <td>{{cptCode.cptCode }}</td>
+                                <td>{{cptCode.status}}</td>
+                                <td>{{cptCode.exam}}</td>
+                                <td>{{cptCode.procView}}</td>
+                                <td class="col-md-1"> 
+                                    <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                    &nbsp; <a  class="" ng-click="deleteCptCode($index)" zc-Confirm-Click="Are You sure want to delete cptCode" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                    &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                                </td>                      
+                            </tr>
+                        </tbody>
+                    </table>
+                    <footer class="table-footer">
+                        <div class="row">
+                            <div class="col-md-6 page-num-info">
+                                <span>
+                                    Show 
+                                    <select ng-model="numPerPage"
+                                            ng-options="num for num in numPerPageOpt"
+                                            ng-change="onNumPerPageChange()">
+                                    </select> 
+                                    entries per page
+                                </span>
+                            </div>
+                            <div class="col-md-6 text-right pagination-container">
+                                <pagination class="pagination-sm"
+                                            ng-model="currentPage"
+                                            total-items="filteredCptCodes.length"
+                                            max-size="4"
+                                            ng-change="select(currentPage)"
+                                            items-per-page="numPerPage"
+                                            rotate="false"
+                                            previous-text="&lsaquo;" next-text="&rsaquo;"
+                                            boundary-links="true"></pagination>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    <div class="page" ng-hide="currentTabMain">
+        <form name="cptCodeForm" novalidate role="form">
+            <div class="panel panel-default">
+                    <div class="panel-heading"><h3><strong>{{page}} CPT Code</strong>  </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">CPT Code*</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.cpt_code.$invalid && formValidStatus  }">
+                                                <input type="text" class="form-control input-sm" name="cpt_code"  placeholder="Enter CPT code." ng-model="cptCode.cptCode" required="" ng-readonly="readStatus" tabindex="1">
+                                                <p class="help-block" ng-show="cptCodeForm.cpt_code.$error.required && cptCodeForm.cpt_code.$dirty" ng-class="{ 'error_msg' : cptCodeForm.cpt_code.$error.required }">CPT code is required</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">Proc View*</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.proc_view.$invalid && formValidStatus  }">
+                                                 <input type="text" class="form-control input-sm" name="proc_view" placeholder="Enter Proc View" ng-model="cptCode.procView" required="" ng-pattern="" ng-readonly="readStatus" tabindex="3">
+                                                 <p class="help-block" ng-show="cptCodeForm.proc_view.$error.required && cptCodeForm.proc_view.$dirty" ng-class="{ 'error_msg' : cptCodeForm.proc_view.$error.required }">Proc view is required</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">Time</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.time.$invalid && formValidStatus  }">
+                                            <input type="time" class="form-control input-sm" name="time" ng-model="cptCode.cptTime" required="" ng-pattern="" ng-readonly="readStatus" tabindex="5">
+<!--                                            <div class="input-group"
+                                                moment-picker="timepicker"
+                                                format="HH:mm:ss">
+                                               <span class="input-group-addon">
+                                                   <i class="octicon octicon-clock"></i>
+                                               </span>
+                                               <input class="form-control"
+                                                      placeholder="Select a time"
+                                                      ng-model="cptCode.cptTime"
+                                                      ng-model-options="{ updateOn: 'blur' }">
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">Long Description</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.long_description.$invalid && formValidStatus  }">
+                                                <textarea rows="3" cols="50" class="form-control input-sm" name="long_description" placeholder="Enter long description" ng-model="cptCode.longDescription" tabindex="7"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-3 control-label">Place of Service</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.place_of_service.$invalid && formValidStatus  }">
+                                                 <input type="text" class="form-control input-sm" name="place_of_service"  placeholder="Enter place of service" ng-model="cptCode.placeOfService" required="" ng-pattern="" ng-readonly="readStatus" tabindex="9">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+<!--                                    <div class="form-group" >
+                                        <label class="col-sm-4 control-label">Status</label>
+                                        <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptCodeForm.status.$invalid && formValidStatus  }">
+                                            <select class="form-control input-sm" ng-model="cptCode.status" name="status" required="" ng-readonly="readStatus" tabindex="2">
+                                                   <option value="">---Please select---</option> 
+                                                   <option value="">Active</option>
+                                                   <option value="">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group" >
+                                        <label class="col-sm-4 control-label">Exam*</label>
+                                        <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptCodeForm.exam.$invalid && formValidStatus  }">
+                                            <select class="form-control input-sm" ng-model="cptCode.bodyPartExamId" name="exam" required="" ng-readonly="readStatus" tabindex="4">
+                                                    <option value="">---Please select---</option> 
+                                                    <option value=1>Exam 1</option>
+                                                    <option value=2>Exam 2</option>
+                                            </select>
+                                            <p class="help-block" ng-show="cptCodeForm.exam.$error.required && cptCodeForm.exam.$dirty" ng-class="{ 'error_msg' : cptCodeForm.exam.$error.required }">Exam is required</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-4 control-label">Short Description*</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.short_description.$invalid && formValidStatus  }">
+                                            <input type="text" class="form-control input-sm" name="short_description"  placeholder="Enter short description" ng-model="cptCode.shortDescription" required="" ng-pattern="" ng-readonly="readStatus" tabindex="6">
+                                            <p class="help-block" ng-show="cptCodeForm.short_description.$error.required && cptCodeForm.short_description.$dirty" ng-class="{ 'error_msg' : cptCodeForm.short_description.$error.required }">Short description is required</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-4 control-label">Remark</label>
+                                        <div class="col-sm-8" ng-class="{ 'has-error' : cptCodeForm.remark.$invalid && formValidStatus }">
+                                            <textarea rows="3" cols="50" class="form-control input-sm" name="remark" placeholder="Enter remark" ng-model="cptCode.remark" tabindex="8"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label class="col-sm-4 control-label">CPT Code Rules</label>
+                                        <div class="dropdown col-sm-8" ng-class="{ 'has-error' : cptCodeForm.cpt_code_rules.$invalid && formValidStatus }">
+                                            <input type="text" class="form-control input-sm" name="cpt_code_rules"  placeholder="Enter cptCode rule" ng-model="cptCode.cptCodeRule" ng-readonly="readStatus" tabindex="6">
+                                        </div>
+                                    </div>
+                                 </div>    
+                            </div>    
+                        </div>
+                        <hr/>
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-right" ng-click="open()" ng-hide="readStatus"><span class="glyphicon glyphicon-plus"></span> &nbsp; Add CPT Information </button>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td class="text-center">CPT Time Code</td>
+                                                <td class="text-center">Description</td>
+                                                <td class="text-center">Time</td>
+                                                <td class="text-center">Remark</td>
+                                                <td class="text-center">Action</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="cptTime in cptCode.cptTimeObject">
+                                                <td class="text-center">{{cptTime.cptTimeCode}}</td>
+                                                <td class="text-center">{{cptTime.description}}</td>
+                                                <td class="text-center">{{cptTime.cptTime}}</td>
+                                                <td class="text-center">{{cptTime.remark}}</td>
+                                                <td ng-hide="readStatus" class="col-sm-1">
+                                                   &nbsp;  <a   ng-click="editCptTime($index)" style="cursor: pointer" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                                   &nbsp;  <a   ng-click="deleteCptTime($index)" zc-Confirm-Click="Are You sure want to delete" style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br/>
+                            <div>
+                              <div class="text-right">
+                                <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                                <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(cptCodeForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                                <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                            </div>
+                    </div>
+                </div>
+        </form>
+    </div>    
+    <script type="text/ng-template" id="cptinformation.html">
+           <div class="modal-header">
+                <h3>Contact</h3>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class=form-group>
+                        <label>CPT Time Code</label>
+                        <input type="text" class="form-control" placeholder="Enter CPT Time Code" ng-model="cptTime.cptTimeCode"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" placeholder="Enter Description" ng-model="cptTime.description"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Time</label>
+                        <input type="time" class="form-control" ng-model="cptTime.cptTime"/>
+                    </div>
+                    <div class="form-group">
+                         <label>Remark</label>
+                         <input type="text" class="form-control" placeholder="Enter Remark" ng-model="cptTime.remark"/>
+                    </div>
+                </form>
+                <br/>            
+            </div>
+            <div class="modal-footer">                            
+                <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+                <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+          </div>
+     </script>
+</div>

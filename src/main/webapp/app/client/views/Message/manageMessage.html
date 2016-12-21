@@ -1,0 +1,131 @@
+<div class="page">
+    <form name="messageModuleForm" novalidate role="form">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading"><h3><strong> Message's </strong>  </h3>
+            </div>
+            <div class="panel-body">
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-warning pull-left"  ng-click="addMessage()" ng-hide="readStatus"> <span class="glyphicon glyphicon-plus"></span> &nbsp; Add Message </button>
+                    <br>
+                    <div>
+                        <table class="table table-bordered">
+                            <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="th">
+                                            Subject
+                                            <span class="ti-angle-up"
+                                                  data-ng-click=" order('subject') "
+                                                  data-ng-class="{active: row === 'subject'}" style="cursor: pointer"></span>
+                                            <span class="ti-angle-down"
+                                                  data-ng-click=" order('-subject') "
+                                                  data-ng-class="{active: row === '-subject'}" style="cursor: pointer"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th">
+                                            Message
+                                            <span class="ti-angle-up"
+                                                  data-ng-click=" order('message') "
+                                                  data-ng-class="{active: row === 'message'}" style="cursor: pointer"></span>
+                                            <span class="ti-angle-down"
+                                                  data-ng-click=" order('-message') "
+                                                  data-ng-class="{active: row === '-message'}" style="cursor: pointer"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th">
+                                            To
+                                            <span class="ti-angle-up"
+                                                  data-ng-click=" order('to') "
+                                                  data-ng-class="{active: row === 'to'}" style="cursor: pointer"></span>
+                                            <span class="ti-angle-down"
+                                                  data-ng-click=" order('-to') "
+                                                  data-ng-class="{active: row === '-to'}" style="cursor: pointer"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th">
+                                            Date
+                                            <span class="ti-angle-up"
+                                                  data-ng-click=" order('date') "
+                                                  data-ng-class="{active: row === 'date'}" style="cursor: pointer"></span>
+                                            <span class="ti-angle-down"
+                                                  data-ng-click=" order('-date') "
+                                                  data-ng-class="{active: row === '-date'}" style="cursor: pointer"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th">
+                                            Action
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr ng-repeat="message in messages">
+                                    <td class="text-center">{{message.subject}}</td>
+                                    <td class="text-center">{{message.message}}</td>
+                                    <td class="text-center">{{message.to}}</td>
+                                    <td class="text-center">{{message.date}}</td>
+                                    <td ng-hide="readStatus" class="col-sm-1">
+                                        &nbsp;  <a  style="cursor: pointer" ng-click="editMessage($index)" > <span class="glyphicon glyphicon-pencil"></span></a>
+                                      &nbsp;  <a  style="cursor: pointer" > <span class="glyphicon glyphicon-trash"></span> </a> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                </div>
+        </div> 
+
+    </form>
+</div> 
+
+
+<script type="text/ng-template" id="addMessage.html">
+        <div class="modal-header">
+            <h3>ADD NEW MESSAGE {{message.subject}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label   class="col-sm-3 control-label">To</label>
+                        <div class="dropdown col-sm-8" >
+                            <select class="form-control input-sm" name="message_to" ng-model="message.to" >
+                                <option value="">---Please select---</option>
+                            </select>
+                         </div>
+                    </div>
+                    <div class="form-group">
+                            <label class="col-sm-3 control-label">Subject </label>
+                            <div class="col-sm-8" >
+                                   <input type="text" class="form-control" name="subject" placeholder="Enter subject"  ng-model="message.subject" />
+                                    <p class="help-block" ng-show="messageModuleForm.subject.$error.pattern" ng-class="{ 'error_msg' : messageModuleForm.subject.$error.pattern}">Subject should be text only</p> 
+                           </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Message </label>
+                        <div class="col-sm-8" >
+                            <textarea rows="5" type="text" class="form-control" name="message" placeholder="Enter message" ng-model="message.message"  />
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label   class="col-sm-3 control-label">Send Text </label>
+                        <div class="col-sm-1">
+                        </div>
+                        <div class=" col-sm-5 checkbox">
+                            <input  type="checkbox" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">                            
+            <button class="btn btn-danger btn-round" ng-click="cancel()"> <span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</button>
+            <button class="btn btn-warning btn-round" ng-click="clear()"> <span class="glyphicon glyphicon-refresh"></span> &nbsp; Clear</button>
+          <button class="btn btn-success btn-round" ng-click="ok()"> <span class="glyphicon glyphicon-ok"></span> &nbsp; Save</button>
+        </div>
+</script>

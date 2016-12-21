@@ -1,0 +1,314 @@
+<div>    
+    <div class="page page-grid" ng-show="currentTabMain">
+        <div class="panel panel-default table-dynamic">
+            <div class="panel-heading">
+                <strong>Radiology</strong> 
+                <span class="pull-right">
+                    <a ng-click="onClickAdd()" style="cursor: pointer">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span data-i18n="Add New Radiologist"></span> 
+                    </a>                    
+                </span>  
+            </div>
+            <div class="panel-body">
+                <div class="table-filters">
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-6">
+                            <form>
+                                <input type="text"
+                                    placeholder="Search..."
+                                    class="form-control"
+                                    ng-model="searchKeywords"    
+                                    ng-keyup="search()">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-bordered table-striped table-responsive">
+                    <span us-spinner="{radius:15, width:5, length: 10}" spinner-on="showSpinner"></span>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th">
+                                    Name
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('firstName') "
+                                          data-ng-class="{active: row === 'firstName'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-firstName') "
+                                          data-ng-class="{active: row === '-firstName'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th">
+                                    Taxanomy Code
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('taxanomyCode') "
+                                          data-ng-class="{active: row === 'taxanomyCode'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-taxanomyCode') "
+                                          data-ng-class="{active: row === '-taxanomyCode'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th>
+                              
+                                <div class="th">
+                                    State License No.
+                                    <span class="ti-angle-up"
+                                          data-ng-click=" order('stateLicenceNumber') "
+                                          data-ng-class="{active: row === 'stateLicenceNumber'}" style="cursor: pointer"></span>
+                                    <span class="ti-angle-down"
+                                          data-ng-click=" order('-stateLicenceNumber') "
+                                          data-ng-class="{active: row === '-stateLicenceNumber'}" style="cursor: pointer"></span>
+                                </div>
+                            </th>
+                            <th class="col-md-1">  
+                                <div class="th">
+                                    Action
+                                </div>
+                                
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="radiologist in currentPageRadiologists">
+                            <td>{{radiologist.firstName }}</td>
+                            <td>{{radiologist.taxanomyCode}}</td>
+                            <td>{{radiologist.stateLicenceNumber}}</td>
+                            <td class="col-md-1"> 
+                                <a  class="" ng-click="onClickEdit($index)" style="cursor: pointer"> <span class="glyphicon glyphicon-pencil"></span></a>
+                                &nbsp; <a  class="" ng-click="deleteRadiologist($index)" zc-Confirm-Click="Are You sure want to delete radiologist" style="cursor: pointer"> <span class="glyphicon glyphicon-trash"></span> </a> 
+                                &nbsp;<a  class="" ng-click="onClickView($index)" style="cursor: pointer"  > <span class="glyphicon glyphicon-eye-open"></span> </a> 
+                            </td>                      
+                        </tr> 
+                    </tbody>
+                </table>
+                <footer class="table-footer">
+                    <div class="row">
+                        <div class="col-md-6 page-num-info">
+                            <span>
+                                Show 
+                                <select ng-model="numPerPage"
+                                        ng-options="num for num in numPerPageOpt"
+                                        ng-change="onNumPerPageChange()">
+                                </select> 
+                                entries per page
+                            </span>
+                        </div>
+                        <div class="col-md-6 text-right pagination-container">
+                            <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredRadiologists.length"
+                                max-size="4"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true">                                        
+                            </pagination>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="page" ng-hide="currentTabMain">
+        <form name="radiologistForm" novalidate role="form">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3><strong> {{page}} Radiologist</strong>  </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="text-right">
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                       <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(radiologistForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                       <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+                    <div class="row">
+                        <h4 > <strong> &nbsp; Primary Details </strong></h4>
+                        <hr/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">First name*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.firstname.$invalid && formValidStatus  }" >
+                                        <input tabindex="1"  type="text" class="form-control input-sm" name="firstname"  placeholder="Enter first name"  required="" ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus" ng-model="radiologist.firstName">
+                                        <p class="help-block" ng-show="radiologistForm.firstname.$error.required && radiologistForm.firstname.$dirty" ng-class="{ 'error_msg' : radiologistForm.firstname.$error.required }">Firstname is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.firstname.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.firstname.$error.pattern}">Firstname should be text only</p>
+                                    </div>
+                                </div>  
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">Last name*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.lastname.$invalid && formValidStatus  }" >
+                                        <input tabindex="3"  type="text" class="form-control input-sm" name="lastname"  placeholder="Enter last name"  required="" ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus" ng-model="radiologist.lastName">
+                                        <p class="help-block" ng-show="radiologistForm.lastname.$error.required && radiologistForm.lastname.$dirty" ng-class="{ 'error_msg' : radiologistForm.lastname.$error.required }">Lastname is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.lastname.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.firstname.$error.pattern}">Lastname should be text only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Taxanomy Code*</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : radiologistForm.taxanomy_code.$invalid && formValidStatus  }" >
+                                        <select tabindex="5"  class="form-control input-sm"  name="taxanomy_code" required="" ng-readonly="readStatus" ng-model="radiologist.taxanomyCode" ng-options="value for value in constant.CLAIMTYPE">
+                                            <option value="">---Please select---</option> 
+                                        </select>
+                                        <p class="help-block" ng-show="radiologistForm.taxanomy_code.$error.required && radiologistForm.taxanomy_code.$dirty" ng-class="{ 'error_msg' : radiologistForm.taxanomy_code.$error.required }">Taxanomy Code is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">Radiology Group*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.radiology_group.$invalid && formValidStatus  }" >                           
+                                        <select tabindex="7"  class="form-control input-sm"  name="radiology_group" required="" ng-readonly="readStatus" ng-model="radiologist.radiologyGroupId" ng-options="value.radiologistGroupId as value.radiologistGroupName for value in radiologistGroups">
+                                            <option value="">---Please select---</option> 
+                                            <!--<option value="1">Group1</option>--> 
+                                        </select>
+                                        <p class="help-block" ng-show="radiologistForm.radiology_group.$error.required && radiologistForm.radiology_group.$dirty" ng-class="{ 'error_msg' : radiologistForm.radiology_group.$error.required }">Radiology group is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">Middle name</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.middlename.$invalid && formValidStatus  }" >
+                                        <input tabindex="2"  type="text" class="form-control input-sm" name="middlename"  placeholder="Enter middle name"   ng-pattern="/^[A-Za-z]*$/" ng-readonly="readStatus" ng-model="radiologist.middleName">
+                                        <p class="help-block" ng-show="radiologistForm.middlename.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.middlename.$error.pattern}">Middle name should be text only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">Degree</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.degree.$invalid && formValidStatus  }" >
+                                        <input tabindex="4"  type="text" class="form-control input-sm" name="degree"  placeholder="Enter degree"    ng-pattern="/^[A-Za-z\s\.\/]*$/" ng-readonly="readStatus" ng-model="radiologist.degree">
+                                        <p class="help-block" ng-show="radiologistForm.degree.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.degree.$error.pattern}">Degree should be text only</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">NPI*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.npi.$invalid && formValidStatus  }" >
+                                        <input tabindex="6"  type="text" class="form-control input-sm" name="npi"  placeholder="Enter NPI"  required="" ng-pattern="/^[0-9]{10}$/" ng-readonly="readStatus" ng-model="radiologist.npi">
+                                        <p class="help-block" ng-show="radiologistForm.npi.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.npi.$error.pattern}">NPI should be 10 digit number </p>
+                                        <p class="help-block" ng-show="radiologistForm.npi.$error.required && radiologistForm.npi.$dirty" ng-class="{ 'error_msg' : radiologistForm.npi.$error.required }">NPI is required</p>
+                                    </div>
+                                </div> 
+                                <div class="form-group" >
+                                    <label class="col-sm-3 control-label">State License No.*</label>
+                                    <div class="col-sm-8"  ng-class="{ 'has-error' : radiologistForm.license_number.$invalid && formValidStatus  }" >
+                                        <input tabindex="8"  type="text" class="form-control input-sm" name="license_number"  placeholder="Enter License No."  required="" ng-pattern="/^[A-Za-z0-9]*$/" ng-readonly="readStatus" ng-model="radiologist.stateLicenceNumber">
+                                        <p class="help-block" ng-show="radiologistForm.license_number.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.license_number.$error.pattern} ">License number should consist of text and digit only. </p>
+                                        <p class="help-block" ng-show="radiologistForm.license_number.$error.required && radiologistForm.license_number.$dirty" ng-class="{ 'error_msg' : radiologistForm.license_number.$error.required }">License number is required</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4 > <strong>&nbsp; Contact Details</strong></h4>
+                        <hr/>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Address Line1*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.address_line1.$invalid && formValidStatus  }" >
+                                        <input tabindex="9"  type="text" class="form-control input-sm" name="address_line1" placeholder="Enter address line 1"  required="" ng-readonly="readStatus" ng-model="radiologist.addressLine1">
+                                        <p class="help-block" ng-show="radiologistForm.address_line1.$error.required && radiologistForm.address_line1.$dirty" ng-class="{ 'error_msg' : radiologistForm.address_line1.$error.required }">Address line1 is required</p>
+                                    </div>
+                                </div>                           
+                                <div class="form-group" >
+                                    <label  class="col-sm-3 control-label">City*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.city.$invalid && formValidStatus  }" >
+                                        <input tabindex="11"  type="text" class="form-control input-sm" name="city" placeholder="Enter City"  required="" ng-pattern="/^[A-Za-z\s]*$/" ng-readonly="readStatus" ng-model="radiologist.city">
+                                        <p class="help-block" ng-show="radiologistForm.city.$error.required && radiologistForm.city.$dirty" ng-class="{ 'error_msg' : radiologistForm.city.$error.required }">City is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.city.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.city.$error.pattern}">City should be text only</p>
+                                    </div>
+                                </div>                            
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Country*</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : radiologistForm.country.$invalid && formValidStatus  }" >
+                                        <select tabindex="13"  class="form-control input-sm"  name="country"  ng-readonly="readStatus" ng-options="country.country_id as country.country_name for country in countryService.countries" required="" ng-change="GetStates()" ng-model="radiologist.countryId">
+                                            <option value="">---Please select---</option> 
+                                        </select>            
+                                    </div>
+                                </div>                          
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Phone No.*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.phone1.$invalid && formValidStatus  }" >
+                                        <input tabindex="15"  type="text" class="form-control input-sm" name="phone1" placeholder="Enter phone number" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="radiologist.phone">
+                                        <p class="help-block" ng-show="radiologistForm.phone1.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.phone1.$error.pattern}">Phone number should be number only</p> 
+                                        <p class="help-block" ng-show="radiologistForm.phone1.$error.required && radiologistForm.phone1.$dirty" ng-class="{ 'error_msg' : radiologistForm.phone1.$error.required }">Phone number is required</p>
+                                    </div>
+                                </div>                       
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Mobile No.</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.mobile_number.$invalid && formValidStatus  }" >
+                                        <input tabindex="17"  type="text" class="form-control input-sm" name="mobile_number" placeholder="Enter mobile number"   ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="radiologist.mobileNumber">
+                                        <p class="help-block" ng-show="radiologistForm.mobile_number.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.mobile_number.$error.pattern}">Mobile number should be number only</p> 
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Email Id*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.email_id.$invalid && formValidStatus  }" >
+                                        <input tabindex="19"  type="email" class="form-control input-sm" name="email_id" placeholder="Enter email address"  required="" ng-readonly="readStatus" ng-model="radiologist.emailId">
+                                        <p class="help-block" ng-show="radiologistForm.email_id.$error.required && radiologistForm.email_id.$dirty" ng-class="{ 'error_msg' : radiologistForm.email_id.$error.required }">Email id is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.email_id.$error.email" ng-class="{ 'error_msg' : radiologistForm.email_id.$error.email}">Invalid email address</p>
+                                    </div>
+                                </div>                      
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-horizontal">
+                                 <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Address Line2</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.address_line2.$invalid && formValidStatus  }" >
+                                        <input tabindex="10"  type="text" class="form-control input-sm" name="address_line2" placeholder="Enter address line 2"   ng-readonly="readStatus" ng-model="radiologist.addressLine2">
+                                    </div>
+                                </div>                           
+                                 <div class="form-group" >
+                                    <label class="col-sm-3 control-label">Zip Code*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.zip_code.$invalid && formValidStatus  }" >
+                                        <input tabindex="12"  name="zip_code" type="text"  class="form-control input-sm" placeholder="Enter zipcode"  ng-pattern="/^[A-Za-z0-9]*$/" required="" ng-readonly="readStatus" ng-model="radiologist.postalCode">
+                                        <p class="help-block" ng-show="radiologistForm.zip_code.$error.required && radiologistForm.zip_code.$dirty" ng-class="{ 'error_msg' : radiologistForm.zip_code.$error.required }">Zip code is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.zip_code.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.zip_code.$error.pattern}">Zip code should consist of text and number only</p> 
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">State/Province*</label>
+                                    <div class="dropdown col-sm-8" ng-class="{ 'has-error' : radiologistForm.state_province.$invalid && formValidStatus  }" >
+                                        <select tabindex="14"  class="form-control input-sm"  name="state_province"  required="" ng-readonly="readStatus" ng-model="radiologist.stateId" ng-options="state.state_id as state.state_name for state in states">
+                                            <option value="">---Please select---</option> <!-- not selected / blank option -->
+                                            <!--<option ng-repeat="state in states">{{state.state_name}}</option>-->
+                                        </select>
+                                        <p class="help-block" ng-show="radiologistForm.state_province.$error.required && radiologistForm.state_province.$dirty" ng-class="{ 'error_msg' : radiologistForm.state_province.$error.required }">State/province is required</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Extension</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.extension.$invalid && formValidStatus  }" >
+                                        <input tabindex="16"  type="text" class="form-control input-sm" name="extension" placeholder="Enter phone extension" required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="radiologist.phoneExtension">
+                                        <p class="help-block" ng-show="radiologistForm.extension.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.extension.$error.pattern}">Extension should be number only</p> 
+                                    </div>
+                                </div>                         
+                                <div class="form-group" >
+                                    <label   class="col-sm-3 control-label">Fax No.*</label>
+                                    <div class="col-sm-8" ng-class="{ 'has-error' : radiologistForm.fax_number.$invalid && formValidStatus  }" >
+                                        <input tabindex="18"  type="text" class="form-control input-sm" name="fax_number" placeholder="Enter fax number"  required="" ng-pattern="/^[0-9]*$/" ng-readonly="readStatus" ng-model="radiologist.faxNumber">
+                                        <p class="help-block" ng-show="radiologistForm.fax_number.$error.required && radiologistForm.fax_number.$dirty" ng-class="{ 'error_msg' : radiologistForm.fax_number.$error.required }">Fax number is required</p>
+                                        <p class="help-block" ng-show="radiologistForm.fax_number.$error.pattern" ng-class="{ 'error_msg' : radiologistForm.fax_number.$error.pattern}">Fax number should be number only</p> 
+                                    </div>
+                                </div>                          
+                            </div>
+                        </div>
+                    </div>     
+                </div>
+                <br/>
+                <div>
+                    <div class="text-right">
+                         <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ng-click="onClickList()" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                        <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(radiologistForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                        <a class="btn btn-w-md btn-gap-v btn-round btn-info" ng-click="onClickList()" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>    
+</div>

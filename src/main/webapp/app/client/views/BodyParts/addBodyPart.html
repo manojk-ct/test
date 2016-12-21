@@ -1,0 +1,81 @@
+<div class="page">
+    <form name="bodyPartForm" novalidate role="form">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3><strong>  Body Part Management</strong>  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Body Part Name</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : bodyPartForm.body_part_name.$invalid  && formValidStatus  }" >
+                                    <input tabindex="1" name="body_part_name" type="text" class="form-control input-sm" placeholder="Enter body part name"  ng-readonly="readStatus" ng-model="bodypart.bodyPartName">
+                                    <p class="help-block" ng-show="bodyPartForm.body_part_name.$error.pattern" ng-class="{ 'error_msg' : bodyPartForm.body_part_name.$error.pattern}">Body part name should be text only</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="control-label col-sm-3">Description</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : bodyPartForm.description.$invalid && formValidStatus }"  >
+                                    <textarea tabindex="3" name="description"  type="text"  class="form-control input-sm" rows="4" placeholder="Enter description"   ng-readonly="readStatus" ng-model="bodypart.description"></textarea>                                 
+                                    <p class="help-block" ng-show="bodyPartForm.description.$error.pattern" ng-class="{ 'error_msg' : bodyPartForm.description.$error.pattern}">Description should include text and number only</p> 
+
+                                </div>
+                                      </div>
+                                  <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Status</label>
+                                <div class="dropdown col-sm-8">
+                                    <select tabindex="5" class="form-control input-sm"  name="status"   ng-readonly="readStatus" ng-model="bodypart.status">
+                                        <option value="">---Please select---</option> 
+                                        <option name="active" value="A">Active</option> 
+                                        <option name="inactive" value="I">Inactive</option> 
+                                    </select>
+                                </div>
+                            </div>
+
+                      
+<!--                            <div class="form-group" >
+                                <label class="col-sm-3 control-label">Upload doc</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : bodyPartForm.upload_doc.$invalid && formValidStatus }"  >
+                                    <input name="upload_doc" type="file" class="form-control input-sm" placeholder="" ng-readonly="readStatus" ng-model="bodypart.bodyPartName">
+                                    <p class="help-block" ng-show="bodyPartForm.upload_doc.$error.pattern" ng-class="{ 'error_msg' : bodyPartForm.upload_doc.$error.pattern}">Body part name should be text only</p> 
+
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Body Part Code</label>
+                                <div class="col-sm-8" ng-class="{ 'has-error' : bodyPartForm.body_part_code.$invalid && formValidStatus  }" >
+                                    <input tabindex="2" name="body_part_code" type="text" class="form-control input-sm" placeholder="Enter body part code"    ng-readonly="readStatus" ng-model="bodypart.bodyPartCode">
+                                    <p class="help-block" ng-show="bodyPartForm.body_part_code.$error.pattern" ng-class="{ 'error_msg' : bodyPartForm.body_part_code.$error.pattern}">Body part code should include text and number only.</p> 
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label   class="col-sm-3 control-label">Modality</label>
+                                <div class="dropdown col-sm-8" >
+                                    <select tabindex="4" size="5" multiple name="modality" class="form-control input-sm" ng-readonly="readStatus" ng-model="bodypart.modality" ng-multiple="true" ng-options="value.modalityId as value.modalityName for value in modalities">
+<!--                                        <option value="">---Please select---</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                          
+
+                        </div>    
+                    </div>
+                </div>
+                <br>               
+                <div class="text-right">
+                     <a class="btn btn-w-md btn-gap-v btn-round btn-danger" ui-sref="manageBodyPart" style="cursor: pointer;margin-right: 20px" ng-hide="readStatus"><span class="glyphicon glyphicon-remove"></span> &nbsp; Cancel</a>              
+                    <button  class="btn btn-w-md btn-gap-v btn-round btn-success" ng-click="Submit(bodyPartForm.$valid)"  ng-hide="readStatus"><span class="glyphicon glyphicon-ok"></span> &nbsp; Submit </button>
+                    <a class="btn btn-w-md btn-gap-v btn-round btn-info" ui-sref="manageBodyPart" style="cursor: pointer" ng-show="readStatus"><span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Back</a>              
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
